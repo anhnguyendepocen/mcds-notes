@@ -1,0 +1,44 @@
+\chapter{Boosting {\color{red} DRAFT} \label{chapter:boosting}}
+
+Each decision tree within a random forest provides a full model of some subset of the training data. The trees are fully grown and have low bias - most of their generalization error comes from their high variance (they overfit to details of their individual training sets). Averaging the votes from the different trees reduces this variance and increases accuracy.
+
+There is also a different approach, called \textbf{boosting}, that uses an ensemble of \emph{biased} learners. As more learners are added, the importance of datapoints that have been previously misclassified is upweighted so that subsequent learners will ``focus on'' those points. Averaging the votes from the different classifiers reduces the overall bias and increases accuracy in a way distinct from bagging/random forests. 
+
+\subsection{AdaBoost}
+
+The first boosting algorithm was called \textbf{AdaBoost}, which is what we will look at today. Assume we have a training set 
+$$\{ (x^{(1)}, y^{(1)}),  \dots, (x^{(n)}, y^{(n)}) \}.$$ We will start by assuming a binary outcome, $Y \in \{1, -1\}$. The $x^{(i)}$ are feature vectors of length $p$. Assume we have $p$ total classifiers (for example, one classifier based on each feature in your training data).
+
+\begin{enumerate}
+\item Initialize the observation weights to $w_i = \frac{1}{N}$ for $i = 1, \dots, N$.
+\item For $m = 1, \dots, M$:
+    \begin{enumerate}
+    \item[(a)] Calculate the weighted errors of the available classifiers using the current training weights, $w_i$. Select the classifier $G_m(x)$ that minimizes the weighted training error. 
+    \item[(b)] Compute
+    $$ \text{err}_m = \frac{\sum_{i=1}^N w_i \cdot \mathcal{I}(y^{(i)} \neq G_m (x^{(i)}))}{\sum_{i=1}^N w_i} $$
+    \item[(c)] Compute voting weight for classifier $m$:
+    $$ \alpha_m = \log \left( \frac{1 - \text{err}_m}{\text{err}_m} \right) $$
+    \item[(d)] Set 
+    $$ w_i \coloneqq w_i \cdot \text{exp} \left[ \alpha_m \cdot \mathcal{I}(y^{(i)} \neq G_m (x^{(i)})) \right] $$
+    for $i = 1, \dots, N$. 
+    \end{enumerate}
+\item Output 
+$$G(x) = \text{sign} \left[ \sum_{m=1}^M \alpha_m G_m(x) \right]$$. 
+\end{enumerate}
+
+We will now apply AdaBoost to the ``happiness'' example.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Gradient Boosting}
+
+Jerome Friedman and Leo Breiman generalized AdaBoost into a general framework called \textbf{gradient boosting}. In this framework, of which AdaBoost is a subset, there are three components:
+
+\begin{enumerate}
+\item A loss function to be optimized.
+\item Weak learners to make predictions.
+\item An additive model that adds the contributions of different weak learners to minimize the loss function.
+\end{enumerate}
+
+We don't have time to get into the details of the gradient boosting framework today, but its basic advantage is that it formulates the boosting process in such a way that any differentiable loss function can be used. In addition, although classification trees or regression trees are usually the weak learners (and technically, Friedman defined ``gradient boosting'' as a model that uses trees as learners) the framework is general enough to encompass other types of weak learners. 
+

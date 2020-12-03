@@ -1,0 +1,60 @@
+\chapter{Random Forests {\color{red} DRAFT} \label{chapter:randomforests}}
+
+A random forest is just a collection (or \textbf{ensemble}) of decision trees whose ``votes'' are uncorrelated. The trees vote to produce a final prediction. 
+
+Two details are important to the construction of random forests:
+\begin{enumerate} 
+\item Each tree is built using a subset of training examples sampled with replacement from the original training set. This is called \textbf{bagging} (bootstrap aggregating). Typically around $2/3$ of training examples are used per tree. Note that bagging is a general-purpose procedure that can be used for other models besides random forests.
+\item For each split, the tree considers not all $m$ predictor variables, but only a randomly-chosen subset, usually of size approximately $\sqrt{m}$ (for classification problems) or $m/3$ (for regression problems). This keeps you from building the same tree over and over again and ensures that the votes from different trees are uncorrelated. 
+\end{enumerate}
+
+Here are two bagged samples of size $6$ from the dataset in Table~\ref{tab:sampledata}. 
+
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+ID & friends $(X_1)$ & money $(X_2)$ & free time $(X_3)$ & happy $(Y)$ \\
+\midrule
+5 & 1 & 0 & 0 & 0 \\[1mm]
+4 & 0 & 0 & 0 & 0 \\[1mm]
+2 & 1 & 1 & 1 & 0 \\[1mm]
+\midrule
+10 & 1 & 0 & 0 & 1 \\[1mm]
+8 & 1 & 0 & 1 & 1 \\[1mm]
+10 & 1 & 0 & 0 & 1 \\[1mm]
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+ID & friends $(X_1)$ & money $(X_2)$ & free time $(X_3)$ & happy $(Y)$ \\
+\midrule
+5 & 1 & 0 & 0 & 0 \\[1mm]
+6 & 0 & 0 & 0 & 0 \\[1mm]
+2 & 1 & 1 & 1 & 0 \\[1mm]
+5 & 1 & 0 & 0 & 0 \\[1mm]
+\midrule
+9 & 0 & 0 & 1 & 1 \\[1mm]
+7 & 1 & 2 & 1 & 1 \\[1mm]
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{mdframed}
+\textbf{Question 3.11:} Use a random forest to fit the data from the low birthweight example used in the logistic regression model, above. Use the following commands exactly as shown to ensure it all runs smoothly and you can view the output:
+\begin{center}
+\begin{lstlisting}
+  library(randomForest)
+  d <- read.delim("../data/logistic-lowbwt-data.tsv")
+  d$RACE <- as.factor(d$RACE)  # <- ensure RACE coded as factor
+  d$LOW <- as.factor(d$LOW)    # <- ensure LOW coded as factor
+  r <- randomForest(LOW ~ AGE + LWT + RACE + SMOKE + PTL + HT + UI + FTV, data = d, ntree = 100, do.trace = TRUE)
+  plot(r)
+\end{lstlisting}
+\end{center}
+The random forest will report a number called the \textbf{out-of-bag (OOB)} error as it runs. To calculate OOB error, the trees are allowed to vote on the points that were \emph{not} used in their construction. This provides an ongoing estimate of the generalization error of the algorithm, so you can see if adding more trees is likely to help.
+
+What is the (approximate) overall OOB error? What is it for the positive outcome class only? The negative outcome class only?
+\end{mdframed}

@@ -1,0 +1,10 @@
+\chapter{Lasso, Ridge, and Elastic Net {\color{red} DRAFT} \label{chapter:lassoridge}}
+
+Sometimes when building regression models, you run into issues like the following:
+
+\begin{itemize}
+\item You have more predictors, $p$, than you have samples, $n$.
+\item Your predictors are highly correlated.
+\end{itemize}
+
+Both of these conditions can lead to models that are highly unstable. Maybe they fit your training data well, but if you change your training set even a tiny bit, the coefficients shift wildly. It becomes very hard to trust the coefficient values under these circumstances. One way to combat this is to introduce a \textbf{penalty} on the values of the coefficients. There are different types of penalty (see slides) that do different things. Relevant terms include: \textbf{ridge regression}, \textbf{Lasso}, and \textbf{elastic net}.

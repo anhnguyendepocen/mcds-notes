@@ -1,0 +1,129 @@
+\chapter{Hypothesis Testing {\color{red} DRAFT} \label{chapter:hypothesistesting}}
+
+Hypothesis testing is the central idea underpinning most of the analysis you'll find in the clinical and biomedical research literature\footnote{I should state that there is still a lot of controversy around the whole idea of hypothesis testing and whether $p$-values should be used at all, etc.}. There are multiple types of hypothesis testing, but the most common type is \textbf{null hypothesis testing}, most of the theory of which originated from the statistician R.A. Fisher. In null hypothesis testing, you create a model of how your data should look under default conditions, and then you look to see whether your data deviate appreciably from the model. You quantify your data's deviation from the model by calculating a \textbf{test statistic}. One can view this type of hypothesis testing as a form of \textbf{anomaly detection}. 
+
+The statisticians Jerzy Neyman and Karl Pearson instead favored the use of hypothesis testing as a \textbf{model comparison} tool. In their view, you would set up multiple different models and then quantify each model's fit to your data to choose the best one. Fisher hated this approach because it meant accepting one or more models as truth, when in reality it's impossible to account for all potential scenarios.
+
+Most of the hypothesis tests we use today (T-tests, chi-squared tests, etc.) follow Fisher's approach. Likelihood ratio tests and Bayesian methods adhere more to the Neyman-Pearson philosophy. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Basic Steps of a Hypothesis Test}
+
+\begin{enumerate}
+\item \textit{Create an initial \textbf{research hypothesis}}. A hypothesis is an assertion that is capable of being proved false, such as, ``If the subject has this genetic mutation, his risk of developing cancer will increase.''
+\item \textit{State the \textbf{null hypothesis}}. The null hypothesis corresponds to the default, or baseline, position; for our example, the null hypothesis might be, ``The events `has mutation' and `has cancer' are statistically independent.'' For some techniques, you also need to state an \textbf{alternative hypothesis}, which is the hypothesis that is contrary to the null\footnote{The alternative hypothesis is the hypothesis that is contrary to the null hypothesis. It is usually taken to be that the observations are the result of a real effect (with some amount of chance variation superposed). As mentioned above, there was a huge controversy between R.A. Fisher and Jerzy Neyman/Karl Pearson over the use of alternative hypotheses. Fisher said you shouldn't use them because rejecting the null doesn't mean accepting that there's a true effect. Neyman and Pearson thought you should use them because it gave statistical tests more power. Most of hypothesis testing ended up following Fisher's approach.}. 
+\item \textit{List statistical {assumptions}}. E.g. in \textbf{parametric} hypothesis testing methods, we assume the data follow some particular probability distribution under the null. \textbf{Nonparametric} methods do not make this assumption.
+\item \textit{Decide on an appropriate test and test statistic}. The \textbf{test statistic} quantifies the degree of deviation of your observed data from what you would expect under the null hypothesis\footnote{Some definitions: A \textbf{statistic} is just some quantity that summarizes a set of data, or gives some information about the value of a parameter. A \textbf{sufficient statistic} is a statistic that gives the maximum amount of information about a parameter that can possibly be obtained from the sample data.}. 
+\item \textit{Derive the distribution of the test statistic under the null}. This is called the \textbf{null distribution}.
+\item \textit{Select a {significance level} under which you'll reject the null}. The \textbf{significance level}, usually written as $\alpha$, is the probability of a type I error, which is when you reject the null even if it is true (false positive result). 
+\item \textit{Compute the observed value of the test statistic from the data.}
+\item \textit{Decide whether or not to reject the null hypothesis.}
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Definitions}
+
+\begin{itemize}
+\item \textbf{Type I Error:} When a hypothesis test rejects the null even though the null is true (also called a \textbf{false positive}). The type I error rate is usually denoted by $\alpha$.
+\item \textbf{Type II Error:} When a hypothesis test fails to reject the null even though it is false (also called a \textbf{false negative}). The type II error rate is usually denoted by $\beta$.
+\item \textbf{P-value:} The probability of obtaining a test statistic at least as extreme as the one that was actually obtained, assuming the null is true. A $p$-value can be \textbf{one-sided} or \textbf{two-sided}. The difference lies in the definition of ``extreme''. In a one-sided test, we find the probability that the test statistic is at least as extreme \emph{in the same direction} as the one we observed. In a two-sided test, we find the probability that the test statistic is at least as extreme \emph{in either direction} (positive or negative deviation). In most cases, this has the practical effect of doubling the $p$-value.
+\item \textbf{Power:} The probability that a hypothesis test will reject the null when the null is false (that the test will detect a true effect if the effect is there). Usually denoted $1 - \beta$.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{The Z-Test}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Student's T-tests}
+
+The $T$-test (actually a family of tests) deals with situations where you have data that are assumed to be normally distributed, and you want to draw a conclusion about the mean of that distribution.
+
+\subsection{One Sample T-test}
+
+Assume you have a dataset $x^{(1)}, \dots, x^{(n)}$, of real numbers that you can plausibly assume are normally distributed. You want to test whether the mean of your data is equal to a fixed value, $\mu_0$. You can do this using a test statistic
+$$ T = \frac{\overline{x} - \mu_0}{s/\sqrt{n}} $$
+which follows a T-distribution with $n-1$ degrees of freedom under the null hypothesis that the means are the same. Here $\overline{x}$ refers to the sample mean, and $s$ refers to the sample standard deviation, which is the square root of the sample variance, $s^2$:
+$$ s = \sqrt{\frac{1}{n-1} \sum_{i=1}^n (x^{(i)} - \overline{x})^2} $$
+
+\subsection{One-Sample T-test vs. Z-test}
+
+A one-sample T-test looks a lot like a Z-test (example from slides). Here is the difference:
+\begin{itemize}
+\item A Z-test assumes that the population standard deviation, $\sigma$, is fixed and known with 100\% certainty so that the test statistic follows a normal distribution.
+\item The T-test estimates the population standard deviation from the data. The sample variance follows a chi-squared distribution with $n-1$ degrees of freedom, where $n$ is the sample size. In this case, the test statistic follows a Student's T-distribution with $n-1$ degrees of freedom.
+\end{itemize}
+
+If you have enough samples, the sample standard deviation approaches the population standard deviation and the T-test becomes a Z-test. But when $n$ is small, the T-test is quite a bit more conservative.
+
+\subsection{Two Independent Samples, Equal Variance}
+
+Assume you have a dataset $x^{(1)}, \dots, x^{(n)}$ and another dataset $y^{(1)}, \dots, y^{(m)}$. You assume that both are drawn from normal distributions with equal variance but potentially different means. You want to test whether the means are equal.
+
+The test statistic
+$$ T = \frac{\overline{x} - \overline{y}}{s_p \sqrt{\cfrac{1}{n} + \cfrac{1}{m}}} $$
+where
+\begin{align*} s_p^2 &= \frac{(n-1) s_x^2 + (m-1) s_y^2}{m + n - 2} \\
+s_x^2 &= \frac{1}{n-1} \sum_{i=1}^n (x^{(i)} - \overline{x})^2 \\
+s_y^2 &= \frac{1}{m-1} \sum_{i=1}^m (y^{(i)} - \overline{y})^2 \end{align*}
+follows a $t$-distribution with $m + n - 2$ degrees of freedom.
+
+\subsection{Two Independent Samples, Unequal Variance}
+
+Sometimes you have two independent samples but cannot assume the variances are equal. In this case, you can use \textbf{Welch's T-test}, which uses the test statistic
+$$ T = \frac{\overline{x} - \overline{y}}{s_{xy}} $$
+where 
+$$ s_{xy} = \sqrt{\frac{s_x^2}{n} + \frac{s_y^2}{m}}. $$
+This test statistic approximately follows a $t$-distribution with degrees of freedom given by the {Welch-Sattherwaite Equation}
+$$ \text{d.f.} = \frac{\left(\cfrac{s_x^2}{n} + \cfrac{s_y^2}{m} \right)^2}{\cfrac{(s_x^2/n)^2}{n-1} + \cfrac{(s_y^2/m)^2}{m-1}} $$ 
+
+\subsection{Matched Pairs}
+
+Assume you have a data set of matched pairs. This could be a set of measurements of the same individuals taken at two different points in time, for example. You want to test whether the second set of values have changed relative to the first set of values.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Mann-Whitney Test}
+
+All of these variants of the T-test make assumptions about the normality of the data. Sometimes you want to compare the means of two groups but you aren't sure whether the normal assumption holds. In this case, you might want to try a \textbf{nonparametric} alternative to the two-sample T-test called the \textbf{Mann-Whitney Test}, or Wilcoxon Rank Sum Test. 
+
+Some interesting points about nonparametric tests:
+\begin{itemize}
+\item There are no distributional assumptions.
+\item Most nonparametric methods replace data by their ranks, which are invariant to any monotonic transformation of the data.
+\item Compare this to the T-test: If you use the log-transform of the data instead of the original values and do a T-test on them, the $p$-value can change. But with ranks that doesn't happen.
+\item Replacing the data by ranks also makes the test less sensitive to outliers.
+\item But remember, there is no free lunch: You will always lose power relative to a parametric test if you use the nonparametric alternative in a case where the distributional assumptions of the parametric test are true.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Pearson's Chi-Squared Test}
+
+Imagine you have data on two discrete covariates for a number of different subjects. You want to test whether the value of one covariate depends on the value of the other. \textbf{Pearson's chi-squared test} is used to assess the independence of row and column values in contingency tables, provided the cell counts are high enough.
+
+We make some assumptions:
+\begin{itemize}
+\item The data are sampled randomly from a fixed population where each member of the population has an equal probability of selection.
+\item Expected counts for each cell must be sufficiently high. A common rule is 5 or more in all cells of a $2\times 2$ table, and 5 or more in 80\% of cells in larger tables, but no cells with zero counts.
+\item The observations are independent of each other. One observation should not be influenced in any way by the other observations taken before or after it.
+\end{itemize}
+
+The chi-squared test works by calculating expected counts in all $r \times c$ cells of the table ($r$ = number of rows, $c$ = number of columns) and then measuring the data's deviation from those expected counts. The \textbf{chi-squared test statistic} has the form
+$$ X^2 = \sum_{i=1}^r \sum_{j=1}^c \frac{(O_{ij} - E_{ij})^2}{E_{ij}} $$
+where $O$ refers to ``observed count'' and $E$ to ``expected count''. This test statistic follows a chi-squared distribution with $(r-1)(c-1)$ degrees of freedom.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Fisher's Exact Test}
+
+For small sample sizes, the assumptions underlying Pearson's chi-squared test are no longer true. In these cases, it is common to replace the chi-squared test with something called \textbf{Fisher's Exact Test}, which calculates an exact $p$-value directly by considering every possible outcome. 
+
+
+
+
