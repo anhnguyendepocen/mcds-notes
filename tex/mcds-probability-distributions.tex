@@ -18,11 +18,11 @@ Also called the \textbf{Gaussian distribution}, the normal distribution is proba
 \begin{equation*} p(x | \mu, \sigma) = \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{(x-\mu)^2}{2 \sigma^2}} \qquad  E[x| \mu, \sigma] = \mu \qquad \text{var}(x | \mu, \sigma) = \sigma^2 \end{equation*}
 where $x \in \mathbb{R}$. We will abbreviate the normal distribution as $\mathcal{N}(\mu, \sigma)$.  The value of $\mu$ changes the position of the center of the normal distribution.
 \begin{center}
-\includegraphics[width=0.7\textwidth]{img/l01-figure1a-normal-mean-change.png}
+\includegraphics[width=0.9\textwidth]{img/l01-figure1a-normal-mean-change.png}
 \end{center}
 The value of $\sigma$ changes the width of the normal distribution.
 \begin{center}
-\includegraphics[width=0.7\textwidth]{img/l01-figure1b-normal-sd-change.png}
+\includegraphics[width=0.9\textwidth]{img/l01-figure1b-normal-sd-change.png}
 \end{center}
 
 \begin{question}{}
@@ -60,11 +60,11 @@ This notation denotes the number of ways it is possible to choose $x$ things out
 
 The shape of the binomial distribution is governed by the values of $n$ and $\mu$. Here, we vary $n$ but keep $\mu$ constant at $0.5$:
 \begin{center}
-\includegraphics[width=0.7\textwidth]{img/l01-figure3-binom-n-change.png}
+\includegraphics[width=0.9\textwidth]{img/l01-figure3-binom-n-change.png}
 \end{center}
 And here we vary $\mu$ but keep $n$ constant at $50$:
 \begin{center}
-\includegraphics[width=0.7\textwidth]{img/l01-figure4-binom-p-change.png}
+\includegraphics[width=0.9\textwidth]{img/l01-figure4-binom-p-change.png}
 \end{center}
 
 \begin{question}{}
@@ -79,7 +79,7 @@ $$ p(x | \lambda) = \frac{e^{-\lambda} \lambda^x}{x!} \qquad E[x|\lambda] = \lam
 where $x \in \left\{0, 1, 2, \dots \right\}$. Below are four examples of Poisson distributions. If events of a particular type occur continuously and independently at a constant rate (\textbf{Poisson process}), the number of events within a time window of fixed width will be distributed according to the Poisson distribution, with rate parameter $\lambda$ proportional to the width of the window.
 
 \begin{center}
-\includegraphics[width=0.7\textwidth]{img/l01-figure3a-poisson-lambda-change.png}
+\includegraphics[width=0.9\textwidth]{img/l01-figure3a-poisson-lambda-change.png}
 \end{center}
 
 \begin{question}{}
@@ -93,7 +93,7 @@ The \textbf{geometric distribution} models the number of failures in a sequence 
 $$ p(x|\mu) = (1-\mu)^x \mu \qquad E[x|\mu] = \frac{1-\mu}{\mu} \qquad \text{var}(x|\mu) = \frac{1-\mu}{\mu^2}  $$
 for $x \in \left\{0, 1, 2, \dots \right\}$, where $\mu$ refers to the probability (in the Bernoulli trial) that the trial is a success. Some examples of geometric distributions with different $\mu$ are shown below: 
 \begin{center}
-\includegraphics[width=0.7\textwidth]{img/l01-figure4-geometric-mu-change.png}
+\includegraphics[width=0.9\textwidth]{img/l01-figure4-geometric-mu-change.png}
 \end{center}
 
 \begin{question}{}
@@ -109,7 +109,7 @@ where $x \in \mathbb{R}^+$ ($x$ is a positive real number, or zero). The exponen
 
 Here are some different exponential distributions. Compare them to the geometric distribution, above.
 \begin{center}
-\includegraphics[width=0.7\textwidth]{img/l01-figure5-exponential-lambda-change.png}
+\includegraphics[width=0.9\textwidth]{img/l01-figure5-exponential-lambda-change.png}
 \end{center}
 
 \begin{question}{}
@@ -129,7 +129,7 @@ follows $\chi_k^2$, a chi-squared distribution with $k$ degrees of freedom.
 
 You'll often see the chi-squared distribution used as the sampling distribution for the sample variance in a variety of statistical hypothesis tests. It looks like this:
 \begin{center}
-\includegraphics[width=0.7\textwidth]{img/hyp-example-chisq-distribution.png}
+\includegraphics[width=0.9\textwidth]{img/hyp-example-chisq-distribution.png}
 \end{center}
 
 The parameter $k$, the \textbf{degrees of freedom}, controls the shape of the chi-squared distribution. The actual formula for the chi-squared distribution looks a bit intimidating, but I'm including it here so you can compare it to the other distributions we've seen:
@@ -146,7 +146,7 @@ $$ T = \frac{Z}{\sqrt{U/k}} \sim t_k $$
 or in words, the statistic $T$ follows a $t$-distribution with $k$ degrees of freedom. The T distribution plays an important role in a family of statistical hypothesis tests called T-tests. 
 
 \begin{center}
-\includegraphics[width=0.7\textwidth]{img/hyp-example-t-distribution.png}
+\includegraphics[width=0.9\textwidth]{img/hyp-example-t-distribution.png}
 \end{center}
 
 Again, the functional form of the T distribution is a bit intimidating, but I'm including it for completeness:
@@ -163,7 +163,7 @@ If $U$ and $V$ are independent $\chi^2$ random variables with $m$ and $n$ degree
 $$ W = \frac{U/m}{V/n} \sim F_{m, n} $$
 or in words, the statistic $W$ follows an $F$ distribution with $m$ and $n$ degrees of freedom. I'm not writing out the functional form of the F distribution here because it's too awful-looking, but graphically it looks like this:
 \begin{center}
-\includegraphics[width=0.7\textwidth]{img/hyp-example-f-distribution.png}
+\includegraphics[width=0.9\textwidth]{img/hyp-example-f-distribution.png}
 \end{center}
 
 Note that if $T \sim t_k$, then $T^2 \sim F_{1,k}$. The $F$-distribution plays an important role in a class of statistical analysis techniques called \textbf{ANalysis Of VAriance}, or \textbf{ANOVA}.
