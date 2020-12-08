@@ -57,3 +57,19 @@ So far we've also assumed that our predictors are discrete. But decision trees c
 
 If you have a large dataset, the second option is probably not practical, but you can downsample your dataset first and then look for the optimal cut point(s).
 
+What if the outcome is numeric? In that case, we can use \textbf{standard deviation reduction} instead of information gain to decide which variables to split on. The sample standard deviation of an outcome, $y$, is defined as:
+$$ S(Y) = \sqrt{\frac{\sum_i(y^{(i)} - \overline{y})^2}{n-1}} $$
+where $\overline{y}$ is the overall mean of the outcome. The procedure is identical to the ID3 algorithm (see Chapter~\ref{chapter:decisiontrees}) except you use conditional standard deviation instead of information gain to decide on features. We define
+$$ S(Y, X) = \sum_{x \in \text{Values(X)}} \frac{|Y(X=x)|}{|Y|}~ S(Y(X=x)) $$
+and at each current leaf node, we split on the variable where the reduction in standard deviation, $S(Y) - S(Y,X)$, is the highest.
+
+For example, imagine you had a dataset similar in structure to our example, but instead of two real-valued predictors, you have two binary predictors, $x_1$ and $x_2$. The decision tree algorithm could choose either one of them to split on first. Here are the distributions of outcome values associated with $x_1$ and $x_2$. 
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{img/esl-reg-decision-tree-varsplit.png}
+\end{center}
+
+\begin{question}{}
+Which of these two variables, $x_1$ or $x_2$, would make the most sense for a decision tree to split on? What would such a split look like and what would the output value of the tree (the predicted value of $y$) be for each side of the split?
+\end{question}
+

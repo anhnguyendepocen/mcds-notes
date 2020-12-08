@@ -17,10 +17,9 @@ Again, we have data on two predictors: a disease severity score ($x_1$), which c
 This is a plot of the data in a single plane. The color represents the value of the recurrence biomarker -- the height of the point above the plane. The goal of regression is to predict the value of the biomarker ($y$) based on the values of the two predictors, $x_1$ and $x_2$.
 \vspace{5mm} 
 
-\begin{question}{}
+\begin{question}{question:influence}
 Just looking at the two predictors, which one appears to more highly influence the value of the recurrence biomarker? Why?
 \end{question}
-\vspace{2mm}
 
 \begin{question}{}
 Think about the three algorithms we discussed in Chapter~\ref{chapter:classification}. Now think about our new task, which is to predict the \emph{numeric value} of the recurrence biomarker as a function of the two predictors, $x_1$ and $x_2$. 
@@ -35,51 +34,39 @@ Think about the three algorithms we discussed in Chapter~\ref{chapter:classifica
 
 \section{Three Regression Algorithms}
 
+\subsection{Linear Regression}
+
+The regression analogue of logistic regression is \textbf{linear regression}\footnote{The terminology here is confusing. When we learn about generalized linear models in Chapter~\ref{chapter:glms}, you'll see why logistic regression has the word ``regression'' in its name even though it's a classification algorithm.}. Linear regression creates a hyperplane that slices through the cloud of training datapoints such that it passes as close as possible, on average, to the data. This is, of course, easiest to see when the feature space is two-dimensional, as it is here:
+
+\begin{center}
+\includegraphics[width=0.7\textwidth]{img/esl-reg-linear.png}
+\end{center}
+The three lines shown here sit on the hyperplane learned by the linear regression model. They are located at heights corresponding to the 25th, 50th, and 75th percentiles of the outcome, $y$ (the biomarker value). The plane tilts downward toward the upper left corner of the $x_1 \times x_2$ grid and upward toward the bottom right corner. It may be helpful to visualize grabbing the $x_1 \times x_2$ plane and rotating/translating it so that it passes through the middle of the training data.   
+
 \subsection{K Nearest Neighbors (KNN)}
 
-Regression using KNN works very similarly to KNN for classification. In classification, we allow the nearest $K$ points to vote on the label of a new test point. In regression, we interpolate between the values of the surrounding points to come up with the value of $y$ for a test point. Typically this is done just by averaging the $y$ values of the nearest $K$ points, but you can also do something more sophisticated, like weight their contributions by distance to the test point. 
-
-Here is a \textbf{contour plot} of the regression surface produced by KNN ($K=15$) for our example:
+Regression using KNN works very similarly to KNN for classification. In classification, we allow the nearest $K$ points to vote on the label of a new test point. In regression, we \textbf{interpolate} between the values of the surrounding points to come up with the value of $y$ for a test point. Typically this is done just by averaging the $y$ values of the nearest $K$ points, but you can also do something more sophisticated, like weight their contributions by distance to the test point. Here is a contour plot of the regression surface produced by KNN ($K=15$) for our example:
 
 \begin{center}
 \includegraphics[width=0.7\textwidth]{img/esl-reg-knn-15.png}
 \end{center}
 
-\noindent The contours are at the 25th, 50th, and 75th percentiles of height of the regression surface. Basically this is a topographical map. Its construction is identical to the classification boundaries I drew in Chapter~\ref{chapter:classification}; it's just that instead of a single boundary, I've drawn several contours at different heights. This looks like a bit of a mess, but at the same time, the algorithm is able to capture arbitrarily complex relationships between $x_1$, $x_2$, and $y$ that can be missed by other regression algorithms.  
+\noindent The contours are again drawn at the 25th, 50th, and 75th percentiles of the outcome, $y$. This looks like a bit of a mess compared to the linear regression plot, but at the same time, the KNN algorithm is able to capture arbitrarily complex relationships between $x_1$, $x_2$, and $y$ that can be missed by other regression algorithms.  
 
 \subsection{Decision Tree}
 
-In Chapter~\ref{chapter:decisiontrees}, we built a decision tree for an example in which the outcome in question was binary: yes/no. But what if the outcome is numeric? In that case, we can use \textbf{standard deviation reduction} instead of information gain to decide which variables to split on. The sample standard deviation of an outcome, $y$, is defined as:
-$$ S(Y) = \sqrt{\frac{\sum_i(y^{(i)} - \overline{y})^2}{n-1}} $$
-where $\overline{y}$ is the overall mean of the outcome. The procedure is identical to the ID3 algorithm (see Chapter~\ref{chapter:decisiontrees}) except you use conditional standard deviation instead of information gain to decide on features. We define
-$$ S(Y, X) = \sum_{x \in \text{Values(X)}} \frac{|Y(X=x)|}{|Y|}~ S(Y(X=x)) $$
-and at each current leaf node, we split on the variable where the reduction in standard deviation, $S(Y) - S(Y,X)$, is the highest.
-
-For example, imagine you had a dataset similar in structure to our example, but instead of two real-valued predictors, you have two binary predictors, $x_1$ and $x_2$. The decision tree algorithm could choose either one of them to split on first. Here are the distributions of outcome values associated with $x_1$ and $x_2$. 
-
+Decision tree regression is similar to decision tree classification except that the output at each leaf is not a class label or the probability of membership in the positive training class (both of which are shown on the tree in Section~\ref{ssect:class_decision_tree}), but a numeric value. That value corresponds to the mean outcome value for the points in that leaf. 
 \begin{center}
-\includegraphics[width=0.9\textwidth]{img/esl-reg-decision-tree-varsplit.png}
+\includegraphics[width=0.6\textwidth]{img/esl-decision-tree-just-tree-reg.png}
 \end{center}
-
-\begin{question}{}
-Which of these two variables, $x_1$ or $x_2$, would make the most sense for a decision tree to split on? What would such a split look like and what would the output value of the tree (the predicted value of $y$) be for each side of the split?
-\end{question}
-
 The predicted biomarker values for a decision tree trained on this dataset (created using the \texttt{rpart} package in R with default parameters) are shown here:
-
 \begin{center}
 \includegraphics[width=0.7\textwidth]{img/esl-reg-decision-tree.png}
 \end{center}
-
-\subsection{Linear Regression}
-
-% TODO
-
-\begin{center}
-\includegraphics[width=0.7\textwidth]{img/esl-reg-linear.png}
-\end{center}
+You can see that the decision tree always chooses to split on $x_1$, the disease severity score, rather than $x_2$. Revisit Question~\ref{question:influence} to remind yourself of why this is. The regression surface produced by the decision tree looks like a set of stairs climbing higher and higher as one moves from left to right across the $x_1 \times x_2$ plane. Of course, it would be difficult to climb such stairs, because they are not evenly spaced!
+\vspace{5mm}
 
 \begin{question}{}
-What are the advantages and disadvantages of each regression algorithm?
+What are the advantages and disadvantages of each of these three regression algorithms?
 \end{question}
 

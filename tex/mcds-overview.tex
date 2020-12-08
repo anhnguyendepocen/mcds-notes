@@ -73,11 +73,19 @@ How do items $9-11$ differ from items $12-13$?
 
 \section{Terms and Contrasts}
 
-The basic ways in which clinical data science problems vary fall into a few broad categories. These categories encompass concepts from both traditional clinical disciplines, like epidemiology, and machine learning/statistics.
+The basic ways in which clinical data science problems vary can be characterized using a few broad conceptual distinctions. These draw from both traditional clinical disciplines, like epidemiology, as well as machine learning/statistics.
+
+\subsection{Guidance vs. Understanding}
+
+Before beginning any study, it is important to carefully consider the study's goal and how the findings from the study will be used. This will help guide you in choosing appropriate methods. For example, in some studies we care mainly about using data to provide \textbf{guidance} that will enable us to perform our jobs better in the future. We may want to predict whether a patient is likely to experience an adverse outcome, or we may want to learn the type of patient who is most likely to benefit from a particular treatment. In these cases, we want the data to guide us in making better choices.
+
+Now, contrast this with a study whose primary goal is scientific \textbf{understanding}. In this case, we care more about using data to improve our understanding of a phenomenon than in operationalizing those findings. For example, we may be interested in whether a particular genetic variant affects a phenotype, or we may want to establish a causal link between a particular treatment and an outcome. 
+
+The distinction is fuzzy and often imperfect, and the same kinds of methods can often be used in both cases. Depending on the goal, however, one may be willing to make certain compromises. For example, complex, ``black box'' predictive models (e.g. deep learning models) may be appropriate when the goal is guidance, but offer little in the way of understanding. Conversely, regression models have become the de facto standard for clinical trials and causal inference, but may not lead to optimal predictive ability. In situations where the primary goal is a rigorous understanding of causal relationships, that may not matter as much.
 
 \subsection{Observational Study vs. Experiment}
 
-Observational is where you observe certain variables and try to determine if there is any correlation. Experimental is where you control certain variables and try to determine if there is any causality.
+\textbf{TODO}
 
 Here is the NIH's definition of a \textbf{clinical trial}:
 \begin{quote}
@@ -87,7 +95,7 @@ We can think of a clinical trial, therefore, as an experiment in which we contro
 
 \subsection{Prospective vs. Retrospective}
 
-
+\textbf{TODO}
 
 \subsection{Supervised vs. Unsupervised Learning}
 

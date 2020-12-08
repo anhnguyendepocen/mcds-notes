@@ -132,6 +132,16 @@ print(p)
 ggsave(p, filename = "../img/esl-reg-decision-tree.png", height=4, width=4, units="in", dpi=300)
 ```
 
+Plot the tree!
+
+```{r}
+palette <- colorRampPalette(colors=c("#00BFC4", "#F8766D"))
+png(filename = "../img/esl-decision-tree-just-tree-reg.png", height=4, width=4, units="in", res=300)
+rpart.plot(m, box.palette=palette(20))
+dev.off()
+```
+
+
 Standard deviation reduction!
 
 ```{r}

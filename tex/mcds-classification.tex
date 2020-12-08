@@ -19,15 +19,13 @@ To learn an appropriate mapping, we feed \textbf{training data} to a \textbf{lea
 
 \section{Visualizing the Classification Problem \label{section:visualizingclass}}
 
-Imagine we want to predict whether a patient will be readmitted to the emergency room (ER) within $30$~days of discharge from the hospital. We gather data on two predictors: a disease severity score ($x_1$), which characterizes the severity of the illness for which the patient was treated during his/her admission, and a social determinants score ($x_2$), which characterizes a patient's socioeconomic status. We gather data on $200$~distinct patients.
-
-In the figure below, the color refers to whether a patient was admitted to the emergency room (ER) within 30 days of discharge (blue = ``no'', red = ``yes''). The location of each point is governed by the patient's disease severity score ($x_1$, horizontal axis) and social determinants score ($x_2$, vertical axis).
+Imagine we want to predict whether a patient will be readmitted to the emergency room (ER) within $30$~days of hospital discharge. We gather data on two predictors: a disease severity score ($x_1$), which characterizes the severity of illness, and a social determinants score ($x_2$), which characterizes the patient's socioeconomic status. We have data on $200$~patients.
 
 \begin{center}
 \includegraphics[width=0.7\textwidth]{img/esl-just-data.png}
 \end{center}
 
-Our goal in classification is to draw a \textbf{decision boundary}\index{decision boundary} through this space, on one side of which we will predict the patient to be readmitted, and on the other side of which we will predict the patient \emph{not} to be readmitted. The question in classification is: How do we draw a good boundary? How do we draw a boundary that will lead to accurate predictions on patients our model has never seen before?
+In this figure, the color refers to whether a patient was readmitted (blue = ``no'', red = ``yes''). The location of each point is governed by the patient's disease severity score ($x_1$, horizontal axis) and social determinants score ($x_2$, vertical axis). Our goal in classification is to draw a \textbf{decision boundary}\index{decision boundary} through this space, on one side of which we will predict that the patient is readmitted, and on the other side not.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -50,7 +48,7 @@ Another approach is to make no assumptions about the shape of the decision bound
 \includegraphics[width=0.7\textwidth]{img/esl-knn-15.png}
 \end{center}
 
-\subsection{Decision Tree}
+\subsection{Decision Tree \label{ssect:class_decision_tree}}
 
 Finally, we may choose to use our training data to build a decision tree\index{decision tree}, which will allow us to make predictions on new patients using a series of simple yes/no questions. There are different decision tree learning algorithms, but here is the tree produced by a famous one called CART:
 \begin{center}
@@ -62,12 +60,20 @@ And here is the decision boundary produced by this tree:
 \end{center}
 
 \begin{question}{}
+There are six rectangular regions in this picture corresponding to the six leaves of the tree. Identify all six and which leaves they correspond to on the decision tree, above.
+\end{question}
+
+\begin{question}{}
 What are the advantages and disadvantages of the decision boundaries produced by:
   \begin{enumerate}
   \item Logistic regression?
   \item KNN ($K=15$)?
   \item Decision tree?
   \end{enumerate}
+\end{question}
+
+\begin{question}{}
+What makes a good classification algorithm? Consider issues of accuracy, generalizability, and speed (both to train the algorithm and to use it to make predictions on new samples). 
 \end{question}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -81,32 +87,13 @@ For example, here is the feature space of the example we just saw, colored by th
 \includegraphics[width=0.7\textwidth]{img/esl-logistic-prob.png}
 \end{center}
 
-The solid line is the decision boundary, and the dashed lines indicate where the probability of a positive outcome (ER readmission) is 25\% (top line) and 75\% (bottom line). You can see that the color of the background gets purer red or purer blue the further you get from the decision boundary, but that near the decision boundary, the color is rather murky. That murkiness reflects the algorithm's uncertainty about the outcome. At the decision boundary, it is maximally uncertain. There the probability of a positive outcome is 50\%: a coin toss. 
-
-\noindent Now, here is a similar plot for KNN ($K=15$): 
+The solid line is the decision boundary, and the dashed lines indicate where the probability of a positive outcome (ER readmission) is 25\% (top line) and 75\% (bottom line). You can see that the color of the background gets purer red or purer blue the further you get from the decision boundary, but that near the decision boundary, the color is rather murky. That murkiness reflects the algorithm's uncertainty about the outcome. At the decision boundary, it is maximally uncertain. There the probability of a positive outcome is 50\%: a coin toss. Here is a similar plot for KNN ($K=15$): 
 \begin{center}
-\includegraphics[width=0.68\textwidth]{img/esl-knn-15-prob.png}
+\includegraphics[width=0.7\textwidth]{img/esl-knn-15-prob.png}
 \end{center}
 
-You can see that the shapes of the 25\% and 75\% probability lines have much more complex shapes than for logistic regression, but the story is the same: you have regions of pure blue or red, where the algorithm is certain, and you have a murky region near the decision boundary. 
-
-Finally, here is the same plot for the decision tree:
+You can see that the shapes of the 25\% and 75\% probability lines have much more complex shapes than for logistic regression, but the story is the same: you have regions of pure blue or red, where the algorithm is certain, and you have a murky region near the decision boundary. Now, finally, here is the same plot for the decision tree:
 \begin{center}
-\includegraphics[width=0.68\textwidth]{img/esl-decision-tree-prob.png}
+\includegraphics[width=0.7\textwidth]{img/esl-decision-tree-prob.png}
 \end{center}
 In this case, the color of the background in the different regions is relatively flat. The probability in each rectangular region (corresponding to each leaf of the tree) is constant. It equals the number of red dots in that region divided by the total number of dots. (Convince yourself of this.) 
-
-\vspace{5mm}
-
-\begin{question}{}
-There are six rectangular regions in this picture corresponding to the six leaves of the tree. Identify all six and which leaves they correspond to on the decision tree, above.
-\end{question}
-
-\begin{question}{}
-What makes a good classification algorithm? Consider issues of accuracy, generalizability, and speed (both to train the algorithm and to use it to make predictions on new samples). 
-\end{question}
-
-\begin{question}{}
-The logistic regression, KNN, and decision tree algorithms can all be applied to address multi-outcome (i.e. more than two categories) classification problems with only minor modifications. Describe how each could be modified to work in these situations. (Think through this yourself before you Google.)
-\end{question}
-

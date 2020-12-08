@@ -6,6 +6,10 @@
 \usepackage{mystyle}
 \makeindex[columns=1, title=Index]
 
+\usepackage[backend=biber,style=numeric-comp, firstinits=true,citestyle=verbose,maxnames=50,sorting=none,defernumbers=true]{biblatex}
+\addbibresource{mcdsrefs.bib}
+
+
 \begin{document}
 
 % \maketitle
@@ -14,17 +18,16 @@
 
 \include{tex/mcds-overview}
 \include{tex/mcds-classification}
-\include{tex/mcds-bias-variance}
 \include{tex/mcds-regression}
 \include{tex/mcds-probability-distributions}
 \include{tex/mcds-maximum-likelihood}
-\include{tex/mcds-hypothesis-testing}
-% \include{tex/mcds-supervised-learning}
 % \include{tex/mcds-logistic-regression}
 % \include{tex/mcds-central-limit-theorem}
 % \include{tex/mcds-linear-regression}
 \include{tex/mcds-generalized-linear-models}
 \include{tex/mcds-fitting-glms}
+\include{tex/mcds-hypothesis-testing}
+\include{tex/mcds-bias-variance}
 \include{tex/mcds-lasso-ridge-regression}
 % \include{tex/mcds-power-sample-size}
 \include{tex/mcds-decision-trees}
@@ -36,6 +39,8 @@
 % \include{tex/mcds-multiple-hypothesis-testing}
 
 \printindex
+
+\printbibliography
 
 \end{document}
  
