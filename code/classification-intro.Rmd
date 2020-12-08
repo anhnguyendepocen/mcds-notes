@@ -37,14 +37,15 @@ Figure 2.1 (just the dataset)
 xy.grid <- expand.grid(x.grid, y.grid)
 names(xy.grid) <- c("x1", "x2")
 p <- ggplot(df) + 
-  geom_point(aes(x = x1, y = x2, colour = y > 0.5), pch = 21, fill = NA) + 
+  geom_point(aes(x = x1, y = x2, colour = y > 0.5, fill = y > 0.5), pch = 21, alpha = 0.8) + 
   geom_point(aes(x = x1, y = x2), alpha = 0.5, data = xy.grid, colour = "gray50", size = 0.02) + 
   theme_minimal() + 
   xlab("Disease Severity Score (x1)") + 
   ylab("Social Determinants Score (x2)") + 
   theme(axis.text = element_blank()) + 
   theme(legend.position = "bottom", panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
-  scale_colour_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d"))
+  scale_colour_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d")) + 
+  scale_fill_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d"))
 ggsave(p, filename = "../img/esl-just-data.png", height=4.5, width=4, units="in", dpi=300)
 ```
 
@@ -56,12 +57,13 @@ xy.grid <- expand.grid(x.grid, y.grid)
 names(xy.grid) <- c("x1", "x2")
 xy.grid$yhat <- predict(m, xy.grid, type = "response")
 p <- ggplot(df) + 
-  geom_point(aes(x = x1, y = x2, colour = y > 0.5), pch = 21, fill = NA) + 
+  geom_point(aes(x = x1, y = x2, colour = y > 0.5, fill = y > 0.5), pch = 21, alpha = 0.8) + 
   geom_point(aes(x = x1, y = x2, colour = yhat > 0.5), alpha = 0.5, data = xy.grid, size = 0.02) + 
   theme_minimal() + 
   xlab("Disease Severity Score (x1)") + 
   ylab("Social Determinants Score (x2)") + theme(axis.text = element_blank()) + 
   scale_colour_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d")) +
+  scale_fill_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d")) + 
   stat_contour(aes(x = x1, y = x2, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray20") + 
   theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 ggsave(p, filename = "../img/esl-logistic.png", height=4, width=4, units="in", dpi=300)
@@ -75,14 +77,17 @@ xy.grid <- expand.grid(x.grid, y.grid)
 names(xy.grid) <- c("x1", "x2")
 xy.grid$yhat <- predict(m, xy.grid, type = "response")
 p <- ggplot(df) + 
-  geom_point(aes(x = x1, y = x2, colour = y), pch = 21, fill = NA) + 
+  geom_point(aes(x = x1, y = x2, colour = y, fill = y), pch = 21, alpha = 0.8) + 
   geom_point(aes(x = x1, y = x2, colour = yhat), alpha = 1.0, data = xy.grid, size = 0.02) + 
   scale_colour_gradient(low = "#00bfc4", high = "#f8766d") +
+  scale_fill_gradient(low = "#00bfc4", high = "#f8766d") +
   theme_minimal() + 
   xlab("Disease Severity Score (x1)") + 
   ylab("Social Determinants Score (x2)") + theme(axis.text = element_blank()) + 
-  stat_contour(aes(x = x1, y = x2, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray20", 
-               linetype = "dashed") + 
+  stat_contour(aes(x = x1, y = x2, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray30", 
+               linetype = "solid") + 
+  stat_contour(aes(x = x1, y = x2, z = yhat), breaks = c(0.25, 0.75), data = xy.grid, colour = "gray30", 
+               linetype = "dashed") +
   theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 ggsave(p, filename = "../img/esl-logistic-prob.png", height=4, width=4, units="in", dpi=300)
 ```
@@ -132,12 +137,13 @@ names(xy.grid) <- c("x1", "x2")
 m <- knn(df[,1:2], xy.grid, as.factor(df[,3]), k=15, prob=TRUE)
 xy.grid$yhat <- as.numeric(as.character(m))
 p <- ggplot(df) + 
-  geom_point(aes(x = x1, y = x2, colour = y > 0.5), pch = 21, fill = NA) + 
+  geom_point(aes(x = x1, y = x2, colour = y > 0.5, fill = y > 0.5), pch = 21, alpha = 0.8) + 
   geom_point(aes(x = x1, y = x2, colour = yhat > 0.5), alpha = 0.5, data = xy.grid, size = 0.02) + 
   theme_minimal() + 
   xlab("Disease Severity Score (x1)") + 
   ylab("Social Determinants Score (x2)") + theme(axis.text = element_blank()) + 
   scale_colour_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d")) +
+  scale_fill_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d")) +
   stat_contour(aes(x = x1, y = x2, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray20") + 
   theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
 ggsave(p, filename = "../img/esl-knn-15.png", height=4, width=4, units="in", dpi=300)
@@ -153,14 +159,17 @@ xy.grid$votes <- as.numeric(as.character(attr(m, "prob")))
 xy.grid$class <- as.numeric(as.character(m))
 xy.grid$yhat <- ifelse(xy.grid$class == 1, xy.grid$votes, 1 - xy.grid$votes)
 p <- ggplot(df) + 
-  geom_point(aes(x = x1, y = x2, colour = y), pch = 21, fill = NA) + 
+  geom_point(aes(x = x1, y = x2, colour = y, fill = y), pch = 21, alpha = 0.8) + 
   geom_point(aes(x = x1, y = x2, colour = yhat), alpha = 1.0, data = xy.grid, size = 0.02) + 
   scale_colour_gradient(low = "#00bfc4", high = "#f8766d") +
+  scale_fill_gradient(low = "#00bfc4", high = "#f8766d") +
   theme_minimal() + 
   xlab("Disease Severity Score (x1)") + 
   ylab("Social Determinants Score (x2)") + theme(axis.text = element_blank()) + 
   stat_contour(aes(x = x1, y = x2, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray20", 
-               linetype = "dashed") + 
+               linetype = "solid") + 
+  stat_contour(aes(x = x1, y = x2, z = yhat), breaks = c(0.25, 0.75), data = xy.grid, colour = "gray20", 
+               linetype = "dashed") +
   theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
 ggsave(p, filename = "../img/esl-knn-15-prob.png", height=4, width=4, units="in", dpi=300)
 ```
@@ -173,12 +182,13 @@ names(xy.grid) <- c("x1", "x2")
 m <- knn(df[,1:2], xy.grid, as.factor(df[,3]), k=3, prob=TRUE)
 xy.grid$yhat <- as.numeric(as.character(m))
 p <- ggplot(df) + 
-  geom_point(aes(x = x1, y = x2, colour = y > 0.5), pch = 21, fill = NA) + 
+  geom_point(aes(x = x1, y = x2, colour = y > 0.5, fill = y > 0.5), pch = 21, alpha = 0.8) + 
   geom_point(aes(x = x1, y = x2, colour = yhat > 0.5), alpha = 0.5, data = xy.grid, size = 0.02) + 
   theme_minimal() + 
   xlab("Disease Severity Score (x1)") + 
   ylab("Social Determinants Score (x2)") + theme(axis.text = element_blank()) + 
   scale_colour_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d")) +
+  scale_fill_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d")) +
   stat_contour(aes(x = x1, y = x2, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray20") + 
   theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
 ggsave(p, filename = "../img/esl-knn-3.png", height=4, width=4, units="in", dpi=300)
@@ -192,34 +202,16 @@ names(xy.grid) <- c("x1", "x2")
 m <- knn(df[,1:2], xy.grid, as.factor(df[,3]), k=50, prob=TRUE)
 xy.grid$yhat <- as.numeric(as.character(m))
 p <- ggplot(df) + 
-  geom_point(aes(x = x1, y = x2, colour = y > 0.5), pch = 21, fill = NA) + 
+  geom_point(aes(x = x1, y = x2, colour = y > 0.5, fill = y > 0.5), pch = 21, alpha = 0.8) + 
   geom_point(aes(x = x1, y = x2, colour = yhat > 0.5), alpha = 0.5, data = xy.grid, size = 0.02) + 
   theme_minimal() + 
   xlab("Disease Severity Score (x1)") + 
   ylab("Social Determinants Score (x2)") + theme(axis.text = element_blank()) + 
   scale_colour_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d")) +
+  scale_fill_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d")) +
   stat_contour(aes(x = x1, y = x2, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray20") + 
   theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
 ggsave(p, filename = "../img/esl-knn-50.png", height=4, width=4, units="in", dpi=300)
-```
-
-KNN with K=100
-
-```{r}
-xy.grid <- expand.grid(x.grid, y.grid)
-names(xy.grid) <- c("x1", "x2")
-m <- knn(df[,1:2], xy.grid, as.factor(df[,3]), k=100, prob=TRUE)
-xy.grid$yhat <- as.numeric(as.character(m))
-p <- ggplot(df) + 
-  geom_point(aes(x = x1, y = x2, colour = y > 0.5), pch = 21, fill = NA) + 
-  geom_point(aes(x = x1, y = x2, colour = yhat > 0.5), alpha = 0.5, data = xy.grid, size = 0.02) + 
-  theme_minimal() + 
-  xlab("Disease Severity Score (x1)") + 
-  ylab("Social Determinants Score (x2)") + theme(axis.text = element_blank()) + 
-  scale_colour_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d")) +
-  stat_contour(aes(x = x1, y = x2, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray20") + 
-  theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
-ggsave(p, filename = "../img/esl-knn-100.png", height=4, width=4, units="in", dpi=300)
 ```
 
 Decision tree
@@ -230,12 +222,13 @@ names(xy.grid) <- c("x1", "x2")
 m <- rpart(as.factor(y) ~ x1 + x2, data = df)
 xy.grid$yhat <- predict(m, xy.grid)[,2]
 p <- ggplot(df) + 
-  geom_point(aes(x = x1, y = x2, colour = y > 0.5), pch = 21, fill = NA) + 
+  geom_point(aes(x = x1, y = x2, colour = y > 0.5, fill = y > 0.5), pch = 21) + 
   geom_point(aes(x = x1, y = x2, colour = yhat > 0.5), alpha = 0.5, data = xy.grid, size = 0.02) + 
   theme_minimal() + 
   xlab("Disease Severity Score (x1)") + 
   ylab("Social Determinants Score (x2)") + theme(axis.text = element_blank()) +
   scale_colour_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d")) +
+  scale_fill_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d")) +
   stat_contour(aes(x = x1, y = x2, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray20") + 
   theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
 ggsave(p, filename = "../img/esl-decision-tree.png", height=4, width=4, units="in", dpi=300)
@@ -256,16 +249,19 @@ Decision tree with probabilities
 xy.grid <- expand.grid(x.grid, y.grid)
 names(xy.grid) <- c("x1", "x2")
 m <- rpart(as.factor(y) ~ x1 + x2, data = df)
-xy.grid$yhat <- predict(m, xy.grid)[,2]
+xy.grid$yhat <- predict(m, xy.grid, type = "prob")[,2]
 p <- ggplot(df) + 
-  geom_point(aes(x = x1, y = x2, colour = y), pch = 21, fill = NA) + 
+  geom_point(aes(x = x1, y = x2, colour = y, fill = y), pch = 21) + 
   geom_point(aes(x = x1, y = x2, colour = yhat), alpha = 1.0, data = xy.grid, size = 0.02) + 
   scale_colour_gradient(low = "#00bfc4", high = "#f8766d") +
+  scale_fill_gradient(low = "#00bfc4", high = "#f8766d") +
   theme_minimal() + 
   xlab("Disease Severity Score (x1)") + 
   ylab("Social Determinants Score (x2)") + theme(axis.text = element_blank()) + 
   stat_contour(aes(x = x1, y = x2, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray20", 
-               linetype = "dashed") + 
+               linetype = "solid") + 
+  stat_contour(aes(x = x1, y = x2, z = yhat), breaks = c(0.25, 0.75), data = xy.grid, colour = "gray20", 
+               linetype = "dashed") +
   theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
 ggsave(p, filename = "../img/esl-decision-tree-prob.png", height=4, width=4, units="in", dpi=300)
 ```

@@ -16,8 +16,8 @@
 
 %\setlength{\oddsidemargin}{0.0 in}
 %\setlength{\evensidemargin}{0.0 in}
-%\setlength{\topmargin}{-0.8 in}
-%\setlength{\textwidth}{6.5 in}
+%\setlength{\topmargin}{1.2 in}
+%\setlength{\textwidth}{5.5 in}
 %\setlength{\textheight}{8.5 in}
 %\setlength{\headsep}{0.75 in}
 % \setlength{\parindent}{0 in}
@@ -30,6 +30,7 @@
 \usepackage{palatino}
 \usepackage{lscape}
 % \usepackage{sfmath}
+\usepackage[letterpaper,margin=1.7in]{geometry}
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{amsmath, amssymb, amsfonts}
 \usepackage{graphicx}
@@ -48,13 +49,12 @@
 \usepackage{mathtools}
 \usepackage{subcaption}
 \usepackage[bottom]{footmisc}
-\usepackage{mdframed}
-\usepackage{xcolor}
+\usepackage[dvipsnames,usenames]{xcolor}
 \usepackage{multicol}
 \usepackage{imakeidx}
 \usepackage{makecell}
-
-% \renewcommand{\familydefault}{\sfdefault}
+\usepackage[framemethod=TikZ, ]{mdframed}
+\usepackage{amsthm}
 
 \usepackage{listings,relsize}
 \lstloadlanguages{R}
@@ -62,7 +62,9 @@
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{cadetblue}{rgb}{0.37, 0.62, 0.63}
 \definecolor{light-gray}{gray}{0.95}
+\definecolor{mediumtealblue}{rgb}{0.0, 0.33, 0.71}
 
 \lstset{ 
   language=R,                     % the language of the code
@@ -111,5 +113,31 @@
 	\end{quote}
 }
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Question boxes
+\newcounter{question}[chapter] \setcounter{question}{0}
+\renewcommand{\thequestion}{\arabic{question}}
+\newenvironment{question}[2][]{%
+\refstepcounter{question}%
+\ifstrempty{#1}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=5pt]
+\node[anchor=east,rectangle,fill=gray!30]
+{\strut Question~\thequestion};}}
+}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=5pt]
+\node[anchor=east,rectangle,fill=gray!30]
+{\strut Question~\thequestion:~#1};}}%
+}%
+\mdfsetup{innertopmargin=0pt,linecolor=gray!30,%
+linewidth=1pt,topline=true,%
+frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+}
+\begin{mdframed}[font=\small]\relax%
+\label{#2}}{\end{mdframed}}
 
 

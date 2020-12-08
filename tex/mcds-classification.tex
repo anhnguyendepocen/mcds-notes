@@ -1,18 +1,13 @@
 \chapter{Classification \label{chapter:classification}}
 
-Classification is a form of \textbf{supervised learning} in which our goal is to learn a mapping between some features, $x$, and an output, $y$. The general setup for supervised learning looks like this:
-\begin{center}
-\includegraphics[width=0.7\textwidth]{img/supervised-learning.png}
-\end{center}
-
-In classification, the output, $y$, is a category. In \textbf{binary classification} (by far the most common), there are only two categories: yes or no, usually represented as ``0'' (no) or ``1'' (yes). In \textbf{multi-class classification}, there are more than two categories.
+Classification is a form of supervised learning in which our goal is to learn a mapping between some features, $x$, and an output, $y$. In classification, the output, $y$, is a category. In \textbf{binary classification} (by far the most common), there are only two categories: yes or no, usually represented as ``0'' (no) or ``1'' (yes). In \textbf{multi-class classification}, there are more than two categories.
 
 To learn an appropriate mapping, we feed \textbf{training data} to a \textbf{learning algorithm}. Different algorithms learn different types of mappings.
 
 \section{Definitions}
 
 \begin{itemize}
-\item \textbf{Training data:} The data used, along with an appropriate learning algorithm, to create the mapping between input and output. It is composed of \textbf{samples}, each consisting of one or more input features and a single output.
+\item \textbf{Training data:} The data used, along with an appropriate learning algorithm, to create the mapping between input and output. It is composed of \textbf{training examples}, a.k.a. \textbf{samples}, each consisting of one or more input features and a single output.
 \item \textbf{Test data:} An independent dataset, not used in model training, on which the performance of a trained supervised learning model is evaluated. 
 \item \textbf{Feature:} Also known as a \textbf{predictor}, or \textbf{covariate}, one of the inputs to a supervised learning algorithm.
 \item \textbf{Output:} Also known as the \textbf{outcome}, or \textbf{label}, the thing you are trying to predict.
@@ -66,48 +61,52 @@ And here is the decision boundary produced by this tree:
 \includegraphics[width=0.7\textwidth]{img/esl-decision-tree.png}
 \end{center}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Classification with Probabilities}
-
-We can think of classification as simply drawing a decision boundary, but beneath each algorithm is a quantitative assessment of each point in the feature space. Each algorithm is, in its own way, able to provide a degree of certainty, or probability, that a point belongs to the positive or negative class. For example, here is the feature space of the example we just saw, colored by the probability (according to logistic regression) that a sample at each point should be classified as positive or negative: 
-
-\begin{center}
-\includegraphics[width=0.7\textwidth]{img/esl-logistic-prob.png}
-\end{center}
-
-\noindent Here is a plot of probabilities for KNN ($K=15$): 
-\begin{center}
-\includegraphics[width=0.68\textwidth]{img/esl-knn-15-prob.png}
-\end{center}
-
-\noindent And here is a plot of probabilities for the decision tree:
-\begin{center}
-\includegraphics[width=0.68\textwidth]{img/esl-decision-tree-prob.png}
-\end{center}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Discussion Questions}
-
-Logistic regression, KNN, and decision trees are three distinct types of classification algorithms. Fed the same training data, they produce three very different-looking decision boundaries.
-
-\begin{enumerate}
-\item What are the advantages and disadvantages of the decision boundaries produced by:
+\begin{question}{}
+What are the advantages and disadvantages of the decision boundaries produced by:
   \begin{enumerate}
   \item Logistic regression?
   \item KNN ($K=15$)?
   \item Decision tree?
   \end{enumerate}
-\item What are the advantages and disadvantages of KNN with low $K$ (e.g. $K=3$) vs. high $K$ (e.g. $K=50$)? The decision boundaries for the previous example with (left to right) $K=3, 15,$ and $50$ are shown below.
+\end{question}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Classification with Probabilities}
+
+We can think of classification as simply drawing a decision boundary, but underlying each algorithm is a quantitative assessment of each point in the feature space. Each algorithm is, in its own way, able to provide a degree of certainty, or \textbf{probability}\footnote{Pedantic footnote: this is a Bayesian definition of probability, as opposed to a frequentist definition. More on that later.}, that a point belongs to the positive outcome class. 
+
+For example, here is the feature space of the example we just saw, colored by the probability, according to logistic regression, that a sample at each point should be classified as positive (i.e. the patient will be readmitted to the ER): 
 \begin{center}
-\includegraphics[width=0.3\textwidth]{img/esl-knn-3.png}
-\includegraphics[width=0.3\textwidth]{img/esl-knn-15.png}
-\includegraphics[width=0.3\textwidth]{img/esl-knn-50.png}
+\includegraphics[width=0.7\textwidth]{img/esl-logistic-prob.png}
 \end{center}
-\item What makes a good classification algorithm?
-\item The logistic regression, KNN, and decision tree algorithms can all be applied to address multi-outcome (i.e. more than two categories) classification problems with only minor modifications. Describe how each could be modified to work in these situations. (Think through this yourself before you Google.)
-\end{enumerate}
 
+The solid line is the decision boundary, and the dashed lines indicate where the probability of a positive outcome (ER readmission) is 25\% (top line) and 75\% (bottom line). You can see that the color of the background gets purer red or purer blue the further you get from the decision boundary, but that near the decision boundary, the color is rather murky. That murkiness reflects the algorithm's uncertainty about the outcome. At the decision boundary, it is maximally uncertain. There the probability of a positive outcome is 50\%: a coin toss. 
 
+\noindent Now, here is a similar plot for KNN ($K=15$): 
+\begin{center}
+\includegraphics[width=0.68\textwidth]{img/esl-knn-15-prob.png}
+\end{center}
+
+You can see that the shapes of the 25\% and 75\% probability lines have much more complex shapes than for logistic regression, but the story is the same: you have regions of pure blue or red, where the algorithm is certain, and you have a murky region near the decision boundary. 
+
+Finally, here is the same plot for the decision tree:
+\begin{center}
+\includegraphics[width=0.68\textwidth]{img/esl-decision-tree-prob.png}
+\end{center}
+In this case, the color of the background in the different regions is relatively flat. The probability in each rectangular region (corresponding to each leaf of the tree) is constant. It equals the number of red dots in that region divided by the total number of dots. (Convince yourself of this.) 
+
+\vspace{5mm}
+
+\begin{question}{}
+There are six rectangular regions in this picture corresponding to the six leaves of the tree. Identify all six and which leaves they correspond to on the decision tree, above.
+\end{question}
+
+\begin{question}{}
+What makes a good classification algorithm? Consider issues of accuracy, generalizability, and speed (both to train the algorithm and to use it to make predictions on new samples). 
+\end{question}
+
+\begin{question}{}
+The logistic regression, KNN, and decision tree algorithms can all be applied to address multi-outcome (i.e. more than two categories) classification problems with only minor modifications. Describe how each could be modified to work in these situations. (Think through this yourself before you Google.)
+\end{question}
 

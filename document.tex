@@ -1,4 +1,4 @@
-\documentclass[11pt,titlepage]{report}
+\documentclass[11pt,titlepage,letter]{report}
 
 \author{Bethany Percha}
 \title{{\Huge \bf Modern Clinical Data Science}\\[5mm]{\huge \bf Course Notes}}
@@ -8,20 +8,21 @@
 
 \begin{document}
 
-\maketitle
+% \maketitle
 
-\tableofcontents
+% \tableofcontents
 
+\include{tex/mcds-overview}
+\include{tex/mcds-classification}
+\include{tex/mcds-bias-variance}
+\include{tex/mcds-regression}
 \include{tex/mcds-probability-distributions}
 \include{tex/mcds-maximum-likelihood}
 \include{tex/mcds-hypothesis-testing}
 % \include{tex/mcds-supervised-learning}
-\include{tex/mcds-classification}
-\include{tex/mcds-logistic-regression}
+% \include{tex/mcds-logistic-regression}
 % \include{tex/mcds-central-limit-theorem}
-\include{tex/mcds-bias-variance}
-\include{tex/mcds-regression}
-\include{tex/mcds-linear-regression}
+% \include{tex/mcds-linear-regression}
 \include{tex/mcds-generalized-linear-models}
 \include{tex/mcds-fitting-glms}
 \include{tex/mcds-lasso-ridge-regression}
@@ -30,6 +31,7 @@
 \include{tex/mcds-random-forests}
 \include{tex/mcds-boosting}
 \include{tex/mcds-missing-data}
+\include{tex/acknowledgments}
 % \include{tex/mcds-naive-bayes}
 % \include{tex/mcds-multiple-hypothesis-testing}
 
