@@ -117,7 +117,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Question boxes
 \newcounter{question}[chapter] \setcounter{question}{0}
-\renewcommand{\thequestion}{\arabic{question}}
+\renewcommand{\thequestion}{\arabic{chapter}.\arabic{question}}
 \newenvironment{question}[2][]{%
 \refstepcounter{question}%
 \ifstrempty{#1}%

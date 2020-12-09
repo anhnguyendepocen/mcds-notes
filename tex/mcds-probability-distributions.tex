@@ -12,7 +12,7 @@ Probability distributions are grouped into families that are characterized by th
 
 We use the notation $E[x|\theta]$ to refer to the \textbf{expected value}, or mean, of a distribution, given its parameter(s), $\theta$. There can be more than one parameter, and it will not always be called $\theta$; this is just an example. We use the notation $\text{var}(x|\theta)$ to refer to the \textbf{variance}, or spread, of a distribution around its mean. 
 
-\section{Normal Distribution} 
+\section{Normal Distribution \label{sect:normal}} 
 
 Also called the \textbf{Gaussian distribution}, the normal distribution is probably the most well-known continuous probability distribution. It has the following properties:
 \begin{equation*} p(x | \mu, \sigma) = \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{(x-\mu)^2}{2 \sigma^2}} \qquad  E[x| \mu, \sigma] = \mu \qquad \text{var}(x | \mu, \sigma) = \sigma^2 \end{equation*}
@@ -25,12 +25,12 @@ The value of $\sigma$ changes the width of the normal distribution.
 \includegraphics[width=0.9\textwidth]{img/l01-figure1b-normal-sd-change.png}
 \end{center}
 
-\begin{question}{}
+\begin{question}{question:normalex}
 List 5 random variables from medicine or biology that should follow normal distributions.
 \end{question}
  
 
-\section{Bernoulli Distribution}
+\section{Bernoulli Distribution \label{sect:bernoulli}}
 
 The \textbf{Bernoulli distribution} is a discrete probability distribution with the following properties:
 $$ p(x|\mu) = \mu^x (1 - \mu) ^ {1-x} \qquad E[x| \mu] = \mu \qquad \text{var}(x | \mu) = \mu (1 - \mu) $$
@@ -50,7 +50,7 @@ List 5 random variables from medicine or biology that should follow Bernoulli di
 \end{question}
 
 
-\section{Binomial Distribution}
+\section{Binomial Distribution \label{sect:binomial}}
 
 The \textbf{binomial distribution} models the number of positive outcomes, $x$, out of $n$ independent\footnote{The word \textbf{independent} just means that the outcome of one trial does not influence the outcome of any other trial.} Bernoulli trials, each of which is positive with probability $\mu$. This distribution has the following properties, with $x \in \{0, \dots, n\}$:
 $$ p(x|n,\mu) = {n\choose x} \mu^x (1 - \mu) ^ {n-x} \qquad E[x| \mu] = n \mu \qquad \text{var}(x | \mu) = n \mu (1 - \mu) $$
@@ -67,12 +67,12 @@ And here we vary $\mu$ but keep $n$ constant at $50$:
 \includegraphics[width=0.9\textwidth]{img/l01-figure4-binom-p-change.png}
 \end{center}
 
-\begin{question}{}
+\begin{question}{question:binomialex}
 List 5 random variables from medicine or biology that should follow binomial distributions.
 \end{question}
 
 
-\section{Poisson Distribution}
+\section{Poisson Distribution \label{sect:poisson}}
 
 The \textbf{Poisson distribution} is a discrete probability distribution that is often used to model counts. It has the following properties:
 $$ p(x | \lambda) = \frac{e^{-\lambda} \lambda^x}{x!} \qquad E[x|\lambda] = \lambda \qquad \text{var}(x|\lambda) = \lambda $$
@@ -82,12 +82,12 @@ where $x \in \left\{0, 1, 2, \dots \right\}$. Below are four examples of Poisson
 \includegraphics[width=0.9\textwidth]{img/l01-figure3a-poisson-lambda-change.png}
 \end{center}
 
-\begin{question}{}
+\begin{question}{question:poissonex}
 List 5 random variables from medicine or biology that should follow Poisson distributions.
 \end{question}
 
 
-\section{Geometric}
+\section{Geometric \label{sect:geometric}}
 
 The \textbf{geometric distribution} models the number of failures in a sequence of Bernoulli trials before the first success. It has the following properties:
 $$ p(x|\mu) = (1-\mu)^x \mu \qquad E[x|\mu] = \frac{1-\mu}{\mu} \qquad \text{var}(x|\mu) = \frac{1-\mu}{\mu^2}  $$
@@ -96,12 +96,12 @@ for $x \in \left\{0, 1, 2, \dots \right\}$, where $\mu$ refers to the probabilit
 \includegraphics[width=0.9\textwidth]{img/l01-figure4-geometric-mu-change.png}
 \end{center}
 
-\begin{question}{}
+\begin{question}{question:geometricex}
 List 5 random variables from medicine or biology that should follow Poisson distributions.
 \end{question}
 
 
-\section{Exponential}
+\section{Exponential \label{sect:exponential}}
 
 The \textbf{exponential distribution} is a continuous probability distribution that models waiting times between events that happen independently and continuously at a constant rate (Poisson process), as well as many other random variables\footnote{For example, in an epidemiologic model of an infectious process like COVID-19 community spread, exponential waiting times are often used to model transitions between the susceptible, exposed, infectious, and recovered compartments in the model.}. It has the following properties:
 $$ p(x|\lambda) = \lambda e^{-\lambda x} \qquad E[x|\lambda] = \frac{1}{\lambda} \qquad \text{var}(x|\lambda) = \frac{1}{\lambda^2} $$
@@ -112,7 +112,7 @@ Here are some different exponential distributions. Compare them to the geometric
 \includegraphics[width=0.9\textwidth]{img/l01-figure5-exponential-lambda-change.png}
 \end{center}
 
-\begin{question}{}
+\begin{question}{question:exponentialex}
 List 5 random variables from medicine or biology that should follow exponential distributions.
 \end{question}
 
@@ -170,7 +170,7 @@ Note that if $T \sim t_k$, then $T^2 \sim F_{1,k}$. The $F$-distribution plays a
 
 \vspace{2mm}
 
-\begin{question}{}
+\begin{question}{question:likexamples}
 For each of the following experimental conditions, which distribution (from those listed above) provides the best model for how the data $x^{(1)},\dots,x^{(n)}$ are generated?
     \begin{enumerate}
     \item[(a)] You are observing several patients' skin in a clinical study to see how long it takes them to develop a rash. You take a picture each day. Let $x^{(i)}$ be the number of days of \emph{no rash} before the rash occurs.
