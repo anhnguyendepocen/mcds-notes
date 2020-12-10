@@ -1,0 +1,735 @@
+---
+title: "Lecture 3: Logistic Regression"
+output: html_notebook
+---
+
+Libraries.
+
+```{r setup}
+library(tidyverse)
+library(wesanderson)
+library(MASS)
+library(lmtest)
+```
+
+## Part 0: ESL Example
+
+```{r}
+# note: most of the figures are produced using esl-figures.R
+load("/Users/beth/Documents/mssm/modern-clinical-data-science/code/mixture.example.RData")
+df <- data.frame(x1 = mixture.example$x[,1], x2 = mixture.example$x[,2], y = mixture.example$y)
+df$y <- 1 - df$y # fix issue of class labeling
+x.grid <- seq(min(df$x1), max(df$x1), 0.1)
+y.grid <- seq(min(df$x2), max(df$x2), 0.1)
+```
+
+Show the steps of Fisher scoring (IRLS).
+
+```{r}
+Fisher.it <- function(Y, X, pi0, niter=1, print=FALSE) {
+  pi <- pi0
+  for (i in 1:niter) {
+    W <- pi*(1-pi)
+    Z <- log(pi/(1-pi)) + (Y - pi)/(pi*(1-pi))
+    lmobj <- lm(Z ~ X - 1, weights=W)
+    beta <- lmobj$coef
+    names(beta) = c("beta_0", "beta_1", "beta_2")
+    eta <- X %*% beta
+    pi <- exp(eta) / (1 + exp(eta))
+    if (print) {
+      print(paste("Iteration", as.character(i)))
+      print(beta)
+    }
+    
+    # make figures of individual steps
+    xy.grid <- expand.grid(x.grid, y.grid)
+    names(xy.grid) <- c("x1", "x2")
+    xy.grid$intercept <- rep(1, dim(xy.grid)[1])
+    xy.grid <- xy.grid[,c(3,1,2)]  # reorder columns
+    beta <- as.matrix(beta)
+    yhat_grid <- exp(as.matrix(xy.grid) %*% beta) / (1 + exp(as.matrix(xy.grid) %*% beta))
+    xy.grid$yhat = yhat_grid
+    p <- ggplot(df) + 
+      geom_point(aes(x = x1, y = x2, colour = y), pch = 21, fill = NA) + 
+      geom_point(aes(x = x1, y = x2, colour = yhat), alpha = 1.0, data = xy.grid, size = 0.02) + 
+      scale_colour_gradient(low = "#00bfc4", high = "#f8766d") +
+      theme_minimal() + 
+      xlab("Disease Severity Score (x1)") + 
+      ylab("Social Determinants Score (x2)") + 
+      stat_contour(aes(x = x1, y = x2, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray20", 
+                   linetype = "dashed") + 
+      theme(legend.position = "none")
+    ggsave(p, filename = paste("/Users/beth/Documents/mssm/modern-clinical-data-science", 
+                               "/figures/esl-logistic-fisher-", i, ".png", sep = ""),
+           height=4, width=4, units="in", dpi=300)
+  }
+}
+
+Xmat <- as.matrix(cbind(rep(1, dim(df)[1]), df[,1:2]))
+pi0 <- if_else(df$y == 1, 0.6, 0.4)
+Fisher.it(df$y, Xmat, pi0, 5, print=TRUE)
+```
+
+Vary single parameter (beta_1).
+
+```{r}
+i = 1
+n_wrong <- {}
+for (beta_1 in seq(-3, 3, 0.1)) {
+  xy.grid <- expand.grid(x.grid, y.grid)
+  names(xy.grid) <- c("x1", "x2")
+  xy.grid$intercept <- rep(1, dim(xy.grid)[1])
+  xy.grid <- xy.grid[,c(3,1,2)]  # reorder columns
+  
+  beta <- as.matrix(c(0.9780417, beta_1, -1.3980688))
+  x <- as.matrix(data.frame(intercept = rep(1, dim(df)[1]), x1 = df$x1, x2 = df$x2))
+  betaTx <- t(beta) %*% t(x)
+  pred_prob <- 1/(1 + exp(-betaTx))
+  w <- pred_prob * (1 - pred_prob)
+  xwx_inv <- solve(t(x) %*% diag(as.vector(w), 200, 200) %*% x)
+  log_lik <- sum(df$y * log(pred_prob) + (1-df$y) * log(1-pred_prob))
+  n_wrong <- rbind(n_wrong, data.frame(beta_1, log_lik, x1_err = sqrt(xwx_inv[2,2]), 
+                                       x2_err = sqrt(xwx_inv[3,3])))
+  i = i + 1
+}
+
+p <- ggplot(n_wrong) + geom_point(aes(x = beta_1, y = log_lik), alpha = 0.3) + 
+  theme_minimal() + xlab("beta_1") + ylab("Log Likelihood") + 
+  geom_vline(xintercept = 0.134, linetype = "solid", colour = "#dc298d") + 
+  geom_vline(xintercept = 0.134 - 0.1372, linetype = "solid", alpha = 0.5, colour = "gray30") + 
+  geom_vline(xintercept = 0.134 + 0.1372, linetype = "solid", alpha = 0.5, colour = "gray30") + 
+  geom_vline(xintercept = 0.134 - 2 * 0.1372, linetype = "solid", alpha = 0.5, colour = "gray70") + 
+  geom_vline(xintercept = 0.134 + 2 * 0.1372, linetype = "solid", alpha = 0.5, colour = "gray70")
+ggsave(p, filename = "~/Documents/mssm/modern-clinical-data-science/figures/esl-logistic-beta1.png", 
+       height = 3.5, width = 6, units = "in", dpi = 300)
+```
+
+Vary single parameter (beta_2).
+
+```{r}
+i = 1
+n_wrong <- {}
+for (beta_2 in seq(-3, 3, 0.1)) {
+  xy.grid <- expand.grid(x.grid, y.grid)
+  names(xy.grid) <- c("x1", "x2")
+  xy.grid$intercept <- rep(1, dim(xy.grid)[1])
+  xy.grid <- xy.grid[,c(3,1,2)]  # reorder columns
+  
+  beta <- as.matrix(c(0.9780417, 0.1343739, beta_2))
+  x <- as.matrix(data.frame(intercept = rep(1, dim(df)[1]), x1 = df$x1, x2 = df$x2))
+  betaTx <- t(beta) %*% t(x)
+  pred_prob <- 1/(1 + exp(-betaTx))
+  w <- pred_prob * (1 - pred_prob)
+  xwx_inv <- solve(t(x) %*% diag(as.vector(w), 200, 200) %*% x)
+  log_lik <- sum(df$y * log(pred_prob) + (1-df$y) * log(1-pred_prob))
+  n_wrong <- rbind(n_wrong, data.frame(beta_2, log_lik, x1_err = sqrt(xwx_inv[2,2]), 
+                                       x2_err = sqrt(xwx_inv[3,3])))
+  i = i + 1
+}
+
+p <- ggplot(n_wrong) + geom_point(aes(x = beta_2, y = log_lik), alpha = 0.3) + 
+  theme_minimal() + xlab("beta_2") + ylab("Log Likelihood") + 
+  geom_vline(xintercept = -1.398, linetype = "solid", colour = "#06abeb") + 
+  geom_vline(xintercept = -1.398 - 0.232, linetype = "solid", alpha = 0.5, colour = "gray30") + 
+  geom_vline(xintercept = -1.398 + 0.232, linetype = "solid", alpha = 0.5, colour = "gray30") + 
+  geom_vline(xintercept = -1.398 - 2 * 0.232, linetype = "solid", alpha = 0.5, colour = "gray70") + 
+  geom_vline(xintercept = -1.398 + 2 * 0.232, linetype = "solid", alpha = 0.5, colour = "gray70") + 
+  ylim(-400, -100)
+ggsave(p, filename = "~/Documents/mssm/modern-clinical-data-science/figures/esl-logistic-beta2.png", 
+       height = 3.5, width = 6, units = "in", dpi = 300)
+```
+
+Covariance matrix.
+
+```{r}
+m <- glm(y ~ x1 + x2, family = "binomial", data = df)
+summary(m)
+vcov(m)
+```
+
+Normal distributions and p-values.
+
+```{r}
+beta_1 <- seq(-0.5, 0.5, 0.001)
+beta_2 <- seq(-2.5, 0.25, 0.001)
+mu_1 <- m$coefficients[2]
+mu_2 <- m$coefficients[3]
+se_1 <- sqrt(vcov(m)[2,2])
+se_2 <- sqrt(vcov(m)[3,3])
+
+beta1_norm <- dnorm(beta_1, mu_1, se_1)
+beta1_norm2 <- dnorm(beta_1, 0, se_1)
+beta2_norm <- dnorm(beta_2, mu_2, se_2)
+
+df_1 <- data.frame(beta_1, beta1_norm)
+df_2 <- data.frame(beta_2, beta2_norm)
+df_1_2 <- data.frame(beta_1, beta1_norm2)
+
+p <- ggplot() + geom_line(aes(x = beta_1, y = beta1_norm), alpha = 0.8, colour = "gray30") + 
+  theme_minimal() + xlab("beta_1 (at MLE)") + ylab("Normal Density") + 
+  geom_vline(xintercept = mu_1, linetype = "solid", colour = "gray70") + 
+  geom_vline(xintercept = 0, linetype = "solid", colour = "gray30") + 
+  geom_ribbon(aes(x = beta_1, ymin = 0, ymax = beta1_norm), fill = "#dc298d", 
+              data = subset(df_1, beta_1 <= 0)) 
+ggsave(p, filename = "~/Documents/mssm/modern-clinical-data-science/figures/esl-logistic-beta1-pval.png", 
+       height = 3.5, width = 6, units = "in", dpi = 300)
+
+p <- ggplot() + geom_line(aes(x = beta_1, y = beta1_norm2), alpha = 0.8, colour = "gray30") + 
+  theme_minimal() + xlab("beta_1 (under null)") + ylab("Normal Density") + 
+  geom_vline(xintercept = mu_1, linetype = "solid", colour = "gray70") + 
+  geom_vline(xintercept = 0, linetype = "solid", colour = "gray30") + 
+  geom_ribbon(aes(x = beta_1, ymin = 0, ymax = beta1_norm2), fill = "#dc298d", 
+              data = subset(df_1_2, beta_1 <= -mu_1)) + 
+  geom_ribbon(aes(x = beta_1, ymin = 0, ymax = beta1_norm2), fill = "#dc298d", 
+              data = subset(df_1_2, beta_1 >= mu_1)) 
+ggsave(p, filename = "~/Documents/mssm/modern-clinical-data-science/figures/esl-logistic-beta1-pval-v2.png", 
+       height = 3.5, width = 6, units = "in", dpi = 300)
+
+p <- ggplot() + geom_line(aes(x = beta_2, y = beta2_norm), alpha = 0.8, colour = "gray30") + 
+  theme_minimal() + xlab("beta_2") + ylab("Normal Density") + 
+  geom_vline(xintercept = mu_2, linetype = "solid", colour = "gray70") + 
+  geom_vline(xintercept = 0, linetype = "solid", colour = "gray30") + 
+  geom_ribbon(aes(x = beta_2, ymin = 0, ymax = beta2_norm), fill = "#06abeb", 
+              data = subset(df_2, beta_2 >= 0)) 
+ggsave(p, filename = "~/Documents/mssm/modern-clinical-data-science/figures/esl-logistic-beta2-pval.png", 
+       height = 3.5, width = 6, units = "in", dpi = 300)
+```
+
+What happens when you double the coefficients?
+
+```{r}
+xy.grid <- expand.grid(x.grid, y.grid)
+names(xy.grid) <- c("x1", "x2")
+xy.grid$intercept <- rep(1, dim(xy.grid)[1])
+xy.grid <- xy.grid[,c(3,1,2)]  # reorder columns
+beta <- as.matrix(c(0.978, 0.134, -1.398) * 0.5)
+yhat_grid <- exp(as.matrix(xy.grid) %*% beta) / (1 + exp(as.matrix(xy.grid) %*% beta))
+xy.grid$yhat = yhat_grid
+p <- ggplot(df) + 
+  geom_point(aes(x = x1, y = x2, colour = y), pch = 21, fill = NA) + 
+  geom_point(aes(x = x1, y = x2, colour = yhat), alpha = 1.0, data = xy.grid, size = 0.02) + 
+  scale_colour_gradient(low = "#00bfc4", high = "#f8766d") +
+  theme_minimal() + 
+  xlab("Disease Severity Score (x1)") + 
+  ylab("Social Determinants Score (x2)") + 
+  stat_contour(aes(x = x1, y = x2, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray20", 
+               linetype = "dashed") + 
+  theme(legend.position = "none")
+ggsave(p, filename = paste("/Users/beth/Documents/mssm/modern-clinical-data-science", 
+                           "/figures/esl-logistic-boundary-3", ".png", sep = ""),
+       height=4, width=4, units="in", dpi=300)
+```
+
+What happens when you shrink the range of one of the predictors?
+
+```{r}
+df2 <- data.frame(x1 = mixture.example$x[,1]*0.1, x2 = mixture.example$x[,2], y = mixture.example$y)
+df2$y <- 1 - df2$y # fix issue of class labeling
+x.grid2 <- seq(min(df2$x1), max(df2$x1), 0.01)
+y.grid2 <- seq(min(df2$x2), max(df2$x2), 0.1)
+xy.grid2 <- expand.grid(x.grid2, y.grid2)
+names(xy.grid2) <- c("x1", "x2")
+xy.grid2$intercept <- rep(1, dim(xy.grid2)[1])
+xy.grid2 <- xy.grid2[,c(3,1,2)]  # reorder columns
+m <- glm(y ~ x1 + x2, data = df2, family = "binomial")
+yhat_grid = predict(m, xy.grid2, type = "response")
+xy.grid2$yhat = yhat_grid
+p <- ggplot(df) + 
+  geom_point(aes(x = x1, y = x2, colour = y), pch = 21, fill = NA) + 
+  geom_point(aes(x = x1, y = x2, colour = yhat), alpha = 1.0, data = xy.grid2, size = 0.02) + 
+  scale_colour_gradient(low = "#00bfc4", high = "#f8766d") +
+  theme_minimal() + 
+  xlab("Disease Severity Score (x1)") + 
+  ylab("Social Determinants Score (x2)") + 
+  stat_contour(aes(x = x1, y = x2, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray20", 
+               linetype = "dashed") + 
+  theme(legend.position = "none")
+ggsave(p, filename = paste("/Users/beth/Documents/mssm/modern-clinical-data-science", 
+                           "/figures/esl-logistic-boundary-4", ".png", sep = ""),
+       height=4, width=4, units="in", dpi=300)
+summary(m)
+```
+
+Breaking the model via separation.
+
+```{r}
+two_mvn_samples <- function(N, mean.0, mean.1) {
+  cov.0 <- matrix(c(1, 0.6, 0.6, 2), nrow=2)
+  cov.1 <- matrix(c(2, 0.4, 0.4, 1), nrow=2)
+  
+  rand.samples = {}
+  rand.samples <- rbind(rand.samples, mvrnorm(N, mean.0, cov.0))
+  rand.samples <- rbind(rand.samples, mvrnorm(N, mean.1, cov.1))
+  rand.samples <- as.data.frame(rand.samples)
+  names(rand.samples) <- c("x1", "x2")
+  rand.samples$y <- as.factor(c(rep(0, N), rep(1, N)))
+  return(rand.samples)
+}
+df <- two_mvn_samples(100, c(0,4), c(4,0))
+p <- ggplot(df) + 
+  geom_point(aes(x = x1, y = x2, colour = y), pch = 21, fill = NA) + 
+  theme_minimal() + 
+  xlab("Disease Severity Score (x1)") + 
+  ylab("Social Determinants Score (x2)") + 
+  theme(legend.position = "none") + 
+  scale_colour_manual(name = "ER Admission?", labels = c("no", "yes"), values = c("#00bfc4", "#f8766d"))
+ggsave(p, filename = "~/Documents/mssm/modern-clinical-data-science/figures/esl-logistic-break-1.png", 
+       height = 4, width = 4, units = "in", dpi = 300)
+m <- glm(y ~ x1 + x2, family = "binomial", data = df, maxit = 200)
+summary(m)
+```
+
+## Part I: Univariate Analyses (Low Birthweight Example)
+
+Read in dataset.
+
+```{r}
+d <- read.delim("logistic-lowbwt-data.tsv")
+d$RACE <- as.factor(d$RACE)  # <- ensure RACE is coded as factor, not number
+```
+
+Summarize covariates. First, the outcome plots.
+
+```{r}
+p_low <- ggplot(d) + 
+  geom_bar(aes(x = as.factor(LOW)), fill = "gray80") + 
+  xlab("LOW") + 
+  ylab("Count") + 
+  theme_minimal()
+print(p_low)
+ggsave(p_low, filename = "../figures/lecture_3_lowbwt_LOW.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+
+p_bwt <- ggplot(d) + 
+  geom_histogram(aes(x = BWT), fill = "gray80") + 
+  xlab("BWT") + 
+  ylab("Count") + 
+  theme_minimal() + 
+  geom_vline(xintercept = 2500, linetype = "dashed", colour = "gray30")
+print(p_bwt)
+ggsave(p_bwt, filename = "../figures/lecture_3_lowbwt_BWT.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+```
+
+Then, the predictor plots.
+
+```{r}
+p_age <- ggplot(d) + 
+  geom_histogram(aes(x = AGE), fill = "gray80") + 
+  xlab("AGE") + 
+  ylab("Count") + 
+  theme_minimal()
+print(p_age)
+ggsave(p_age, filename = "../figures/lecture_3_lowbwt_AGE.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+
+p_age_low <- ggplot(d) + 
+  geom_jitter(aes(x = AGE, y = LOW), fill = "gray70", 
+              alpha = 0.5, colour = "gray60", height = 0.02, pch = 21) + 
+  xlab("AGE") + 
+  ylab("LOW") + 
+  theme_minimal() 
+print(p_age_low)
+ggsave(p_age_low, filename = "../figures/lecture_3_lowbwt_AGE_LOW.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p_lwt <- ggplot(d) + 
+  geom_histogram(aes(x = LWT), fill = "gray80") + 
+  xlab("LWT") + 
+  ylab("Count") + 
+  theme_minimal()
+ggsave(p_lwt, filename = "../figures/lecture_3_lowbwt_LWT.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+
+p_lwt_low <- ggplot(d) + 
+  geom_jitter(aes(x = LWT, y = LOW), fill = "gray70", 
+              alpha = 0.5, colour = "gray60", height = 0.02, pch = 21) + 
+  xlab("LWT") + 
+  ylab("LOW") + 
+  theme_minimal() 
+print(p_lwt_low)
+ggsave(p_lwt_low, filename = "../figures/lecture_3_lowbwt_LWT_LOW.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p_race <- ggplot(d) + 
+  geom_bar(aes(x = as.factor(RACE)), fill = "gray80") + 
+  xlab("RACE") + 
+  ylab("Count") + 
+  theme_minimal()
+ggsave(p_race, filename = "../figures/lecture_3_lowbwt_RACE.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+
+d_summary <- d %>%
+  group_by(RACE, LOW) %>%
+  summarize(count = n(), .groups = "drop") %>%
+  mutate(RACE = as.factor(RACE), LOW = as.factor(LOW))
+p_race_low <- ggplot(d_summary) + 
+  geom_bar(aes(y = count, x = RACE, fill = LOW), stat = "identity", 
+           position = "stack", 
+           alpha = 0.5, colour = "gray60") + 
+  xlab("RACE") + 
+  ylab("Count") + 
+  theme_minimal() + 
+  scale_fill_manual(name = "LOW", breaks = c(0, 1), values = c("gray80", "gray40"))
+print(p_race_low)
+ggsave(p_race_low, filename = "../figures/lecture_3_lowbwt_RACE_LOW.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+d_summary <- d %>%
+  mutate(RACE_1 = if_else(RACE == 1, 1, 0),
+         RACE_2 = if_else(RACE == 2, 1, 0)) %>%
+  group_by(RACE_1, LOW) %>%
+  summarize(count = n(), .groups = "drop") %>%
+  mutate(RACE_1 = as.factor(RACE_1), LOW = as.factor(LOW))
+
+p_race_low <- ggplot(d_summary) + 
+  geom_bar(aes(y = count, x = RACE_1, fill = LOW), stat = "identity", 
+           position = "stack", 
+           alpha = 0.5, colour = "gray60") + 
+  xlab("RACE_1") + 
+  ylab("Count") + 
+  theme_minimal() + 
+  scale_fill_manual(name = "LOW", breaks = c(0, 1), values = c("gray80", "gray40"))
+print(p_race_low)
+ggsave(p_race_low, filename = "../figures/lecture_3_lowbwt_RACE_1_LOW.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+
+d_summary <- d %>%
+  mutate(RACE_1 = if_else(RACE == 1, 1, 0),
+         RACE_2 = if_else(RACE == 2, 1, 0)) %>%
+  group_by(RACE_2, LOW) %>%
+  summarize(count = n(), .groups = "drop") %>%
+  mutate(RACE_2 = as.factor(RACE_2), LOW = as.factor(LOW))
+
+p_race_low <- ggplot(d_summary) + 
+  geom_bar(aes(y = count, x = RACE_2, fill = LOW), stat = "identity", 
+           position = "stack", 
+           alpha = 0.5, colour = "gray60") + 
+  xlab("RACE_2") + 
+  ylab("Count") + 
+  theme_minimal() + 
+  scale_fill_manual(name = "LOW", breaks = c(0, 1), values = c("gray80", "gray40"))
+print(p_race_low)
+ggsave(p_race_low, filename = "../figures/lecture_3_lowbwt_RACE_2_LOW.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+
+d_summary <- d %>%
+  mutate(RACE_1 = if_else(RACE == 1, 1, 0),
+         RACE_2 = if_else(RACE == 2, 1, 0)) %>%
+  group_by(RACE_1, RACE_2, LOW) %>%
+  summarize(count = n(), .groups = "drop") %>%
+  mutate(RACE_1 = as.factor(RACE_1), 
+         RACE_2 = as.factor(RACE_2), 
+         LOW = as.factor(LOW), 
+         RACE_COMBO = paste(RACE_1, RACE_2))
+
+p_race_low <- ggplot(d_summary) + 
+  geom_bar(aes(y = count, x = RACE_COMBO, fill = LOW), stat = "identity", 
+           position = "stack", 
+           alpha = 0.5, colour = "gray60") + 
+  xlab("RACE_COMBO") + 
+  ylab("Count") + 
+  theme_minimal() + 
+  scale_fill_manual(name = "LOW", breaks = c(0, 1), values = c("gray80", "gray40"))
+print(p_race_low)
+ggsave(p_race_low, filename = "../figures/lecture_3_lowbwt_RACE_COMBO_LOW.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+
+d_wrace <- d %>%
+  mutate(RACE_1 = if_else(RACE == 1, 1, 0),
+         RACE_2 = if_else(RACE == 2, 1, 0))
+p_race_low <- ggplot(d_wrace) + 
+  geom_jitter(aes(x = RACE_2, y = LOW), fill = "gray70", 
+              alpha = 0.5, colour = "gray60", height = 0.1, width = 0.1, pch = 21) + 
+  xlab("RACE_2") + 
+  ylab("LOW") + 
+  theme_minimal() 
+print(p_race_low)
+ggsave(p_race_low, filename = "../figures/lecture_3_lowbwt_RACE_2_LOW_points.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p_smoke <- ggplot(d) + 
+  geom_bar(aes(x = as.factor(SMOKE)), fill = "gray80") + 
+  xlab("SMOKE") + 
+  ylab("Count") + 
+  theme_minimal()
+print(p_smoke)
+ggsave(p_smoke, filename = "../figures/lecture_3_lowbwt_SMOKE.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+
+d_summary <- d %>%
+  group_by(SMOKE, LOW) %>%
+  summarize(count = n(), .groups = "drop") %>%
+  mutate(SMOKE = as.factor(SMOKE), LOW = as.factor(LOW))
+p_smoke_low <- ggplot(d_summary) + 
+  geom_bar(aes(y = count, x = SMOKE, fill = LOW), stat = "identity", 
+           position = "stack", 
+           alpha = 0.5, colour = "gray60") + 
+  xlab("SMOKE") + 
+  ylab("Count") + 
+  theme_minimal() + 
+  scale_fill_manual(name = "LOW", breaks = c(0, 1), values = c("gray80", "gray40"))
+print(p_smoke_low)
+ggsave(p_smoke_low, filename = "../figures/lecture_3_lowbwt_SMOKE_LOW.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p_ptl <- ggplot(d) + 
+  geom_bar(aes(x = as.factor(PTL)), fill = "gray80") + 
+  xlab("PTL") + 
+  ylab("Count") + 
+  theme_minimal()
+print(p_ptl)
+ggsave(p_ptl, filename = "../figures/lecture_3_lowbwt_PTL.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+
+d_summary <- d %>%
+  group_by(PTL, LOW) %>%
+  summarize(count = n(), .groups = "drop") %>%
+  mutate(PTL = as.factor(PTL), LOW = as.factor(LOW))
+p_ptl_low <- ggplot(d_summary) + 
+  geom_bar(aes(y = count, x = PTL, fill = LOW), stat = "identity", 
+           position = "stack", 
+           alpha = 0.5, colour = "gray60") + 
+  xlab("PTL") + 
+  ylab("Count") + 
+  theme_minimal() + 
+  scale_fill_manual(name = "LOW", breaks = c(0, 1), values = c("gray80", "gray40"))
+print(p_ptl_low)
+ggsave(p_ptl_low, filename = "../figures/lecture_3_lowbwt_PTL_LOW.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p_ht <- ggplot(d) + 
+  geom_bar(aes(x = as.factor(HT)), fill = "gray80") + 
+  xlab("HT") + 
+  ylab("Count") + 
+  theme_minimal()
+print(p_ht)
+ggsave(p_ht, filename = "../figures/lecture_3_lowbwt_HT.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+
+d_summary <- d %>%
+  group_by(HT, LOW) %>%
+  summarize(count = n(), .groups = "drop") %>%
+  mutate(HT = as.factor(HT), LOW = as.factor(LOW))
+p_ht_low <- ggplot(d_summary) + 
+  geom_bar(aes(y = count, x = HT, fill = LOW), stat = "identity", 
+           position = "stack", 
+           alpha = 0.5, colour = "gray60") + 
+  xlab("HT") + 
+  ylab("Count") + 
+  theme_minimal() + 
+  scale_fill_manual(name = "LOW", breaks = c(0, 1), values = c("gray80", "gray40"))
+print(p_ht_low)
+ggsave(p_ht_low, filename = "../figures/lecture_3_lowbwt_HT_LOW.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p_ui <- ggplot(d) + 
+  geom_bar(aes(x = as.factor(UI)), fill = "gray80") + 
+  xlab("UI") + 
+  ylab("Count") + 
+  theme_minimal()
+print(p_ui)
+ggsave(p_ui, filename = "../figures/lecture_3_lowbwt_UI.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+
+d_summary <- d %>%
+  group_by(UI, LOW) %>%
+  summarize(count = n(), .groups = "drop") %>%
+  mutate(UI = as.factor(UI), LOW = as.factor(LOW))
+p_ui_low <- ggplot(d_summary) + 
+  geom_bar(aes(y = count, x = UI, fill = LOW), stat = "identity", 
+           position = "stack", 
+           alpha = 0.5, colour = "gray60") + 
+  xlab("UI") + 
+  ylab("Count") + 
+  theme_minimal() + 
+  scale_fill_manual(name = "LOW", breaks = c(0, 1), values = c("gray80", "gray40"))
+print(p_ui_low)
+ggsave(p_ui_low, filename = "../figures/lecture_3_lowbwt_UI_LOW.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p_ftv <- ggplot(d) + 
+  geom_bar(aes(x = as.factor(FTV)), fill = "gray80") + 
+  xlab("FTV") + 
+  ylab("Count") + 
+  theme_minimal()
+print(p_ftv)
+ggsave(p_ftv, filename = "../figures/lecture_3_lowbwt_FTV.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+
+d_summary <- d %>%
+  group_by(FTV, LOW) %>%
+  summarize(count = n(), .groups = "drop") %>%
+  mutate(FTV = as.factor(FTV), LOW = as.factor(LOW))
+p_ftv_low <- ggplot(d_summary) + 
+  geom_bar(aes(y = count, x = FTV, fill = LOW), stat = "identity", 
+           position = "stack", 
+           alpha = 0.5, colour = "gray60") + 
+  xlab("FTV") + 
+  ylab("Count") + 
+  theme_minimal() + 
+  scale_fill_manual(name = "LOW", breaks = c(0, 1), values = c("gray80", "gray40"))
+print(p_ftv_low)
+ggsave(p_ftv_low, filename = "../figures/lecture_3_lowbwt_FTV_LOW.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+```
+
+
+## Part II: Fit Univariate and Multivariate Models
+
+```{r}
+m <- glm(LOW ~ AGE + LWT + RACE + SMOKE + PTL + HT + UI + FTV, family = "binomial", data = d)
+summary(m)
+```
+
+Univariate model for AGE.
+
+```{r}
+m <- glm(LOW ~ AGE, family = "binomial", data = d)
+summary(m)
+df_new <- data.frame(AGE = seq(-100, 100, 1))
+df_new$yhat <- predict(m, df_new, type = "response")
+p <- ggplot() + geom_line(aes(x = AGE, y = yhat), colour = "gray60", data = df_new) + theme_minimal() + 
+  xlab("AGE") + ylab("LOW") + geom_point(aes(x = AGE, y = LOW), data = d, alpha = 0.3, colour = "gray40") + 
+  geom_vline(xintercept = 7.6, linetype = "dashed")
+print(p)
+ggsave(p, filename = "../figures/lecture_3_lowbwt_AGE_predLOW.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+```
+
+Decision boundaries for AGE and AGE + HT.
+
+```{r}
+m <- glm(LOW ~ AGE + LWT, data = d, family = "binomial")
+x.grid <- seq(min(d$AGE), max(d$AGE), 1)
+y.grid <- seq(min(d$LWT), max(d$LWT), 10)
+xy.grid <- expand.grid(x.grid, y.grid)
+names(xy.grid) <- c("AGE", "LWT")
+xy.grid$yhat <- predict(m, xy.grid, type = "response")
+p <- ggplot(d) + 
+  geom_point(aes(x = AGE, y = LWT, colour = LOW), pch = 21, fill = NA) + 
+  geom_point(aes(x = AGE, y = LWT, colour = yhat), alpha = 1.0, data = xy.grid, size = 0.02) + 
+  scale_colour_gradient(low = "#00bfc4", high = "#f8766d") +
+  theme_minimal() + 
+  xlab("AGE") + 
+  ylab("LWT") + 
+  stat_contour(aes(x = AGE, y = LWT, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray20", 
+               linetype = "dashed") + 
+  theme(legend.position = "none")
+ggsave(p, filename = "/Users/beth/Documents/mssm/modern-clinical-data-science/figures/lecture_3_lowbwt_AGE_HT.png", 
+       height=4, width=4, units="in", dpi=300)
+```
+
+Univariate model for HT.
+
+```{r}
+m <- glm(LOW ~ HT, family = "binomial", data = d)
+summary(m)
+df_new <- data.frame(HT = seq(-3, 4, 0.1))
+df_new$yhat <- predict(m, df_new, type = "response")
+p <- ggplot() + geom_line(aes(x = HT, y = yhat), colour = "gray60", data = df_new) + theme_minimal() + 
+  xlab("HT") + ylab("LOW") + 
+  geom_jitter(aes(x = HT, y = LOW), data = d, alpha = 0.3, colour = "gray40", height = 0.03, width = 0.1) + 
+  geom_vline(xintercept = 0.72, linetype = "dashed")
+print(p)
+ggsave(p, filename = "../figures/lecture_3_lowbwt_HT_predLOW.png", 
+       height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+m1 <- glm(LOW ~ AGE + LWT + RACE + SMOKE + PTL + HT + UI + FTV, family = "binomial", data = d)
+m2 <- glm(LOW ~ AGE + LWT + SMOKE + PTL + HT + UI + FTV, family = "binomial", data = d)
+
+lrtest(m1, m2)
+```
+
+## Correlated vs. Uncorrelated Variables
+
+What happens when you have correlations?
+
+```{r}
+print_cor_graph <- function(cor_mat, graph_1_name, graph_2_name) {
+  df <- mvrnorm(200, c(1, 2), cor_mat)
+  df <- as.data.frame(df)
+  names(df) <- c("x1", "x2")
+  
+  df$link <- 0.20 + 0.5 * df$x1 - 0.2 * df$x2 + rnorm(200, 0, 0.5)
+  df$y <- exp(df$link) / (1 + exp(df$link))
+  df$y <- ifelse(df$y > 0.5, 1, 0)
+  
+  m <- glm(y ~ x1 + x2, family = "binomial", data = df)
+  print(summary(m))
+  
+  m1 <- glm(y ~ x1, family = "binomial", data = df)
+  print(summary(m1))
+  m2 <- glm(y ~ x2, family = "binomial", data = df)
+  print(summary(m2))
+  
+  x.grid <- seq(min(df$x1), max(df$x1), 0.1)
+  y.grid <- seq(min(df$x2), max(df$x2), 0.1)
+  xy.grid <- expand.grid(x.grid, y.grid)
+  names(xy.grid) <- c("x1", "x2")
+  xy.grid$yhat <- predict(m, xy.grid, type = "response")
+  xy.grid$yhat_m1 <- predict(m1, xy.grid, type = "response")
+  xy.grid$yhat_m2 <- predict(m2, xy.grid, type = "response")
+  
+  p <- ggplot(df) + 
+    geom_point(aes(x = x1, y = x2, colour = y), pch = 21, fill = NA) +   
+    geom_point(aes(x = x1, y = x2, colour = yhat), alpha = 1.0, data = xy.grid, size = 0.02) + 
+    stat_contour(aes(x = x1, y = x2, z = yhat), breaks = 0.5, data = xy.grid, colour = "gray20", 
+                 linetype = "dashed") + 
+    scale_colour_gradient(low = "#00bfc4", high = "#f8766d") +
+    theme_minimal() + 
+    xlab("Disease Severity Score (x1)") + 
+    ylab("Social Determinants Score (x2)") + 
+    theme(legend.position = "none")
+  ggsave(p, filename = graph_1_name, height = 4, width = 4, units = "in", dpi = 300)
+  
+  p <- ggplot(df) + 
+    geom_point(aes(x = x1, y = x2, colour = y), pch = 21, fill = NA) +   
+    geom_point(aes(x = x1, y = x2, colour = yhat), alpha = 1.0, data = xy.grid, size = 0.02) + 
+    stat_contour(aes(x = x1, y = x2, z = yhat_m1), breaks = 0.5, data = xy.grid, colour = "gray20", 
+                 linetype = "dashed") + 
+    stat_contour(aes(x = x1, y = x2, z = yhat_m2), breaks = 0.5, data = xy.grid, colour = "gray20", 
+                 linetype = "dashed") + 
+    scale_colour_gradient(low = "#00bfc4", high = "#f8766d") +
+    theme_minimal() + 
+    xlab("Disease Severity Score (x1)") + 
+    ylab("Social Determinants Score (x2)") + 
+    theme(legend.position = "none")
+  ggsave(p, filename = graph_2_name, height = 4, width = 4, units = "in", dpi = 300)
+}
+```
+
+
+```{r}
+print_cor_graph(matrix(c(1, -0.6*sqrt(2), -0.6*sqrt(2), 2), nrow=2), 
+                "~/Documents/mssm/modern-clinical-data-science/figures/esl-logistic-example-cor-1.png",
+                "~/Documents/mssm/modern-clinical-data-science/figures/esl-logistic-example-cor-1b.png")
+
+print_cor_graph(matrix(c(1, 0.6*sqrt(2), 0.6*sqrt(2), 2), nrow=2), 
+                "~/Documents/mssm/modern-clinical-data-science/figures/esl-logistic-example-cor-2.png",
+                "~/Documents/mssm/modern-clinical-data-science/figures/esl-logistic-example-cor-2b.png")
+
+print_cor_graph(matrix(c(1, 0, 0, 2), nrow=2), 
+                "~/Documents/mssm/modern-clinical-data-science/figures/esl-logistic-example-cor-3.png",
+                "~/Documents/mssm/modern-clinical-data-science/figures/esl-logistic-example-cor-3b.png")
+```
+
+

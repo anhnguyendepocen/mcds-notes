@@ -116,7 +116,7 @@ which is the standard form of the Poisson regression model. We say we use the \t
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Fitting GLMs}
+\section{Maximum Likelihood for GLMs}
 
 GLMs are typically fit using maximum likelihood estimation (see Chapter~\ref{chapter:mlebasics}). A full treatment of MLE for GLMs is outside the scope of these notes, but I've put the start of the calculations for each type of model below.    
 
@@ -149,5 +149,4 @@ $$ \mathcal{L}(\beta) = \prod_{i=1}^n \frac{\exp{(y^{(i)} \beta^T x^{(i)})} e^{-
 Taking the log, we obtain the log-likelihood:
 $$ \log \mathcal{L}(\beta) = \sum_{i=1}^n \left[ y^{(i)} \beta^T x^{(i)} - \exp(\beta^T x^{(i)}) - \log (y^{(i)}!) \right] $$
 As with logistic regression, we cannot solve for the optimal $\beta$s analytically; numerical optimization methods are used. 
-
 

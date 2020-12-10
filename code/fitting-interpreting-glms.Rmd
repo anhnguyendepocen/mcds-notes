@@ -1,0 +1,68 @@
+---
+title: "Fitting and Interpreting GLMs"
+output: html_notebook
+---
+
+## Libraries
+
+```{r setup}
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(survival)
+library(survminer)
+library(lubridate)
+library(tidyr)
+library(stringr)
+library(forcats)
+library(wesanderson)
+library(class)
+library(rpart)
+library(rpart.plot)
+```
+
+## Linear regression
+
+Data for linear regression case study.
+
+```{r}
+load("../data/mixture.example.RData")
+intercept = 50.0
+coef_x1 = 10.0
+coef_x2 = -2.0
+set.seed(1000)
+df <- data.frame(x1 = mixture.example$x[,1], x2 = mixture.example$x[,2]) %>%
+  mutate(y = intercept + coef_x1 * x1 + coef_x2 * x2 + rnorm(length(x1), 0, 5))
+x.grid <- seq(min(df$x1), max(df$x1), 0.1)
+y.grid <- seq(min(df$x2), max(df$x2), 0.1)
+```
+
+Fit linear regression model two ways.
+
+```{r}
+m1 <- lm(y ~ x1 + x2, data = df)
+summary(m1)
+```
+
+```{r}
+m2 <- glm(y ~ x1 + x2, data = df, family = "gaussian")
+summary(m2)
+```
+
+Data for logistic regression case study. 
+
+```{r}
+load("../data/mixture.example.RData")
+df <- data.frame(x1 = mixture.example$x[,1], x2 = mixture.example$x[,2], y = mixture.example$y)
+x.grid <- seq(min(df$x1), max(df$x1), 0.1)
+y.grid <- seq(min(df$x2), max(df$x2), 0.1)
+df$y <- 1 - df$y # fix issue of class labeling
+```
+
+Fit logistic regression model.
+
+```{r}
+m3 <- glm(y ~ x1 + x2, data = df, family = "binomial")
+summary(m3)
+```
+
