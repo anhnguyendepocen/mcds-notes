@@ -115,7 +115,7 @@ For example, here is what happens to the ``diabetes pedigree function'' predicto
 In the log transformation shown here, we simply replace each value, $x$, by $\log_{10}(x)$. Every unit increase on a $\log_{10}$ scale corresponds to a 10-fold multiplication on the usual scale of the predictor. If you put the log-transformed predictor into a regression model in place of the original (linear is the easiest to understand, but you could also consider logistic, Poisson, etc.), how would that change your interpretation of the model? 
 \end{question}
 
-Political science, economics, sociology, and related disciplines, which are heavily dependent on the use of linear regression models and hypothesis tests, rely extensively on transformations. In my experience, machine learning folks spend almost no time on them because their primary concern is predictive accuracy, not model interpretation. Machine learning practitioners, however, very frequently \textbf{scale and center} their predictors (see footnote in Section~\ref{section:sehyp}), which is another type of transformation. We will get into much more detail on transformations in Chapter~\ref{chapter:linreg}. 
+Political science, economics, sociology, and related disciplines, which are heavily dependent on the use of linear regression models and hypothesis tests, rely extensively on transformations. In my experience, machine learning folks spend almost no time on them because their primary concern is predictive accuracy, not model interpretation. Machine learning practitioners, however, very frequently \textbf{scale and center} their predictors (see footnote in Section~\ref{section:sehyp}), which is another type of transformation. We will get into more detail on transformations as we continue to learn about regression models. 
 
 \subsection{Correlations and Redundancy \label{section:redund}}
 
@@ -204,7 +204,7 @@ Why might the coefficient and p-value for SkinThickness change so much in the sh
 
 \section{Feature Selection}
 
-The process of feature selection is largely about eliminating redundancies in an effort to come up with the most parsimonious model possible. In many cases, it is also about increasing the accuracy of model interpretation. There are three basic approaches to feature selection: filters, wrappers, and embedded methods. 
+The process of feature selection is largely about eliminating redundancies and useless predictors in an effort to come up with the most parsimonious model possible. In many cases, it is also about increasing the accuracy of model interpretation. There are three basic approaches to feature selection: filters, wrappers, and embedded methods. 
 
 \subsection{Filters}
 
@@ -398,26 +398,47 @@ What does the final model look like? How does it compare to the model obtained t
 
 \textbf{Embedded methods} perform feature selection during the process of model training. They are usually specific to a particular type of model. 
 
-\begin{question}{}
-Here is the raw model output from the multivariate logistic regression model discussed in Section~\ref{section:redund}:
-\begin{center}
-\includegraphics[width=0.8\textwidth]{img/cor-example-multivar.png}
-\end{center}
-\end{question}
+One example of an embedded method is a decision tree (see Chapter~\ref{chapter:decisiontrees}), which implicitly performs feature selection by placing the most informative predictors at the top of the tree and ignoring those that are unassociated with the outcome. 
+
+\vspace{2mm}
 
 \begin{question}{}
 Here is the decision tree produced by CART, using information gain/mutual information as the splitting criterion as usual:
 \begin{center}
 \includegraphics[width=\textwidth]{img/pima-decision-tree.png}
 \end{center}
+Which features were selected for this tree and which were ignored? How were the features transformed from their original forms in the dataset?
 \end{question}
 
+Another example of an embedded method is \textbf{regularization}. The easiest way to understand regularization is through our discussion of maximum likelihood estimation for GLMs in Chapter~\ref{chapter:glms}. The goal of maximum likelihood estimation is to find the set of model coefficients, $\beta$s, that maximize the joint probability (likelihood) of our observed data given the model. The trouble with this is that more complex models, with more parameters, will generally fit the data better: i.e. produce a higher likelihood.
+
+Regularization addresses this by introducing a penalty term on the likelihood that is proportional to the size of the parameters. In $L_1$ regularization, a.k.a. \textbf{Lasso}, the penalty term is proportional to the absolute values of the coefficients. It looks like this:
+$$ \lambda \sum_{j=1}^p \vert \beta_j \vert $$
+where $p$ is the number of predictors. This creates a tradeoff in the model between the likelihood and the number of parameters. During optimization, the model will set the coefficients on predictors to zero if including those predictors does not sufficiently improve the likelihood. The relative importance of the penalty term and likelihood is adjusted using the parameter $\lambda$. We will see regularized regression methods in much greater detail in Chapter~\ref{chapter:lassoridge}. 
+
 \begin{question}{}
-Here is the \emph{glmnet} output for this model:
+Here is the raw model output from the multivariate logistic regression model that includes all eight predictors:
+\begin{center}
+\includegraphics[width=0.7\textwidth]{img/cor-example-multivar.png}
+\end{center}
+Now let's consider what happens when we use a $L_1$ regularized logistic regression model, produced using the R package \emph{glmnet}. Here is what happens to the model's error (assessed using $10$-fold cross validation; measured using a metric called \textbf{binomial deviance}) when we vary $\lambda$:
 \begin{center}
 \includegraphics[width=0.8\textwidth]{img/pima-glmnet-plot.png}
+{\small
+\begin{verbatim}
+Measure: Binomial Deviance 
+
+      Lambda Measure      SE Nonzero
+min 0.004468  0.9686 0.02647       7
+1se 0.028723  0.9922 0.02118       5
+\end{verbatim}
+}
+\end{center}
+We choose $\lambda$ to be equal to the value that produces the minimum deviance. Here are the coefficients of the final model:
+\begin{center}
 \includegraphics[width=0.6\textwidth]{img/pima-glmnet-output.png}
 \end{center}
+Compare this output to the results of models obtained through forward and backward selection methods, as well as to the full (unregularized) logistic regression model. What are the advantages and disadvantages of the regularization approach vs. wrappers and filters?
 \end{question}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
