@@ -134,8 +134,10 @@ Lasso-penalized logistic regression.
 
 ```{r}
 X <- model.matrix(Outcome ~ . - 1, data=d)
+y <- as.factor(d$Outcome)
 c <- cv.glmnet(X, y, family = "binomial")
 plot(c)
 predict(c, type = "coef", s = "lambda.min")
+c
 ```
 

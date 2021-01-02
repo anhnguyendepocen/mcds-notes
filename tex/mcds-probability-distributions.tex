@@ -74,9 +74,11 @@ List 5 random variables from medicine or biology that should follow binomial dis
 
 \section{Poisson Distribution \label{sect:poisson}}
 
-The \textbf{Poisson distribution} is a discrete probability distribution that is often used to model counts. It has the following properties:
+The \textbf{Poisson distribution} is a probability distribution that is often used to model discrete quantitative data, such as counts. It has the following properties:
 $$ p(x | \lambda) = \frac{e^{-\lambda} \lambda^x}{x!} \qquad E[x|\lambda] = \lambda \qquad \text{var}(x|\lambda) = \lambda $$
 where $x \in \left\{0, 1, 2, \dots \right\}$. Below are four examples of Poisson distributions. If events of a particular type occur continuously and independently at a constant rate (\textbf{Poisson process}), the number of events within a time window of fixed width will be distributed according to the Poisson distribution, with rate parameter $\lambda$ proportional to the width of the window.
+
+Situations where the population size, $n$, is large, the probability of an individual event, $p$, is small, but the expected number of events, $np$, is moderate (say five or more) can generally be modeled using a Poisson distribution with $\lambda = np$. 
 
 \begin{center}
 \includegraphics[width=0.9\textwidth]{img/l01-figure3a-poisson-lambda-change.png}

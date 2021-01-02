@@ -1,4 +1,4 @@
-\chapter{Overview of Clinical Data Science {\color{red} DRAFT} \label{chapter:overview}}
+\chapter{Overview of Clinical Data Science \label{chapter:overview}}
 
 The term ``data science'' has been overused in recent years, and it has become something of a buzzword as a result\footnote{See also: ``artificial intelligence'', ``machine learning'', ``deep learning''.}. However, I think it can best be described as: 
 \begin{quote}
@@ -6,9 +6,9 @@ The term ``data science'' has been overused in recent years, and it has become s
 \end{quote}
 Data science is about using the machinery of statistics and computer science to solve real-world problems. In the clinical domain, that means incorporating methods from epidemiology, biostatistics, computer science, and machine learning with insights gained from the clinical research literature and the practical experiences of physicians, nurses, hospital administrators, operational teams, and biomedical researchers.
 
-So why is data science considered its own thing, and why am I creating a separate course about it instead of pointing you to Khan Academy, Coursera, etc., all of which have excellent courses on these various technical domains? Because (a) if you tried to learn data science that way, you'd never get anywhere; there are simply too many different subjects you'd have to master, and (b) clinical data has issues that are domain-specific, and that rarely come up in general courses on machine learning and related topics. Many times I will think I know what method to use to solve a particular problem, but then when it comes time to gather the data, unusual and unforeseen problems arise. This happens all the time to all of the biomedical and clinical data science researchers I know, and it is particularly problematic for people who are encountering data analysis and statistical/machine learning methods for the first time. Many assume the problem is them and give up, when in reality they are encountering a genuine difficulty with the data they're working with that the folks doing ad recommendations at Google never have to face.
+So why is data science considered its own thing, and why am I creating a separate course about it instead of pointing you to Khan Academy, Coursera, etc., all of which have excellent courses on these various technical domains? Because (a) if you tried to learn data science that way, you'd never get anywhere; there are simply too many different subjects you'd have to master, and (b) clinical data has issues that are domain-specific, and that rarely come up in general courses on machine learning and related topics. Many times I will think I know what method to use to solve a particular problem, but then when it comes time to gather the data, unusual and unforeseen problems arise. This happens all the time to biomedical and clinical data science researchers, and it is particularly problematic for people who are encountering data analysis and statistical/machine learning methods for the first time. Many assume the problem is them and give up, when in reality they are encountering a genuine difficulty with the data they're working with that the folks doing ad recommendations at Google never have to face.
 
-However, my main reason for doing this is that I believe clinical and operational teams will increasingly come to rely on data, and that the people on those teams who can confidently interact with data will be our future leaders.
+However, my main reason for doing this is that I believe that in healthcare, clinical and operational teams will increasingly come to rely on data. People who have mastered at least the basic vocabulary of data science will be best positioned to think creatively about how we can improve healthcare using data and analytics, and will be assets to their teams. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -85,29 +85,22 @@ The distinction is fuzzy and often imperfect, and the same kinds of methods can 
 
 \subsection{Observational Study vs. Experiment}
 
-\textbf{TODO}
-
-Here is the NIH's definition of a \textbf{clinical trial}:
+In \textbf{experimental studies}, the investigator manipulates some aspect of the subjects' experience and studies its effect on the outcome of interest. For example, here is the NIH's definition of a \textbf{clinical trial}:
 \begin{quote}
 A research study in which one or more human subjects are prospectively assigned to one or more interventions (which may include placebo or other control) to evaluate the effects of those interventions on health-related biomedical or behavioral outcomes.
 \end{quote}
-We can think of a clinical trial, therefore, as an experiment in which we control the intervention. 
+A clinical trial, therefore, is an experiment, because we control the intervention and monitor the effect of that intervention on one or more outcomes. Usually experimental studies employ some type of \textbf{randomization} to ensure that comparisons between different intervention groups are fair. 
 
-\subsection{Prospective vs. Retrospective}
+An \textbf{observational study}, in contrast, makes no attempt to interfere with its subjects. Instead, these individuals are simply observed, and inferences are made about the associations between different parameters and the outcome(s). Observational study designs and analytic plans are carefully designed to minimize the effects of different sources of bias that can creep in due to lack of randomization. Although they're not usually referred to using this terminology, virtually all ``big data'' and machine learning oriented studies in healthcare are observational studies, because they use large datasets that were collected for other purposes.
 
-\textbf{TODO}
-
-\subsection{Supervised vs. Unsupervised Learning}
+\subsection{Types of Machine Learning}
 
 This distinction, most often found in discussions of machine learning, refers to the way in which training data is applied to solve a problem. In \textbf{supervised learning}, the training data consist of pairs of input features and labels, and the algorithm learns to predict the value of the label from the input features. The general setup for supervised learning looks like this:
 \begin{center}
 \includegraphics[width=0.7\textwidth]{img/supervised-learning.png}
 \end{center}
 
-In \textbf{unsupervised learning}, only the input features are present and the algorithm learns to recognize patterns or structure in the inputs. The general setup for unsupervised learning looks like this:
-\begin{center}
-\includegraphics[width=0.7\textwidth]{img/unsupervised-learning-diagram.png}
-\end{center}
+In \textbf{unsupervised learning}, only the input features are present (i.e. no \emph{y}) and the algorithm learns to recognize patterns, clusters, or other structure in the inputs. Although they're almost never referred to using this terminology, clinical studies that examine the effect between one or more exposures and an outcome are examples of supervised learning. Studies that attempt to uncover groups, or clusters, of similar patients or samples are examples of unsupervised learning.
 
 There are also two other types of machine learning. In \textbf{semi-supervised learning}, a small amount of labeled data is used to create a much larger, weakly-labeled set of training data that is then fed to a supervised learning algorithm. In \textbf{reinforcement learning}, an algorithm is trained with a reward system which provides feedback on the quality of the action the system performs in a given situation instead of (as in supervised learning) simply providing the ``right answer''. 
 
