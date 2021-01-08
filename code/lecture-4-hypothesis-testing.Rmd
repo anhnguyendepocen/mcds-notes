@@ -1,0 +1,505 @@
+---
+title: "Workshop 4: Hypothesis Testing"
+output: html_notebook
+---
+
+```{r libraries - run this first}
+library(ggplot2)
+```
+
+```{r z-test}
+xbar <- 125.45
+mu <- 139.75
+sigma <- 21.40
+n <- 20
+
+x <- rnorm(10000, mu, sigma)
+
+x.mean <- {}
+for (i in 1:10000) {
+  x.mean <- c(x.mean, mean(rnorm(n, mu, 21.40)))
+}
+
+z = seq(50, 250, 1)
+p <- ggplot() + geom_line(aes(x = z, y = dnorm(z, mu, sigma)), colour = "gray30") + 
+  xlab("Systolic Blood Pressure (mmHg)") + theme_minimal() + ylab("Density") + 
+  geom_vline(xintercept = mu, linetype = "dashed", colour = "gray60")
+ggsave(p, filename = "../img/hyp-z-test-example-00.png", height=3, width=4, units="in", dpi=300)
+
+p <- ggplot() + geom_histogram(aes(x=x), alpha=0.5, binwidth=2) + xlab("") + theme_minimal() + 
+  xlab("Systolic Blood Pressure (mmHg)") + ylab("Count")
+ggsave(p, filename = "../img/hyp-z-test-example-0.png", height=3, width=4, units="in", dpi=300)
+
+p <- ggplot() + geom_histogram(aes(x=x), alpha=0.5, binwidth=2) + xlab("") + theme_minimal() + 
+  geom_vline(xintercept = xbar, color = "red", linetype = "dashed") + 
+  xlab("Systolic Blood Pressure (mmHg)") + ylab("Count")
+ggsave(p, filename = "../img/hyp-z-test-example-1.png", height=3, width=4, units="in", dpi=300)
+
+p <- ggplot() + geom_histogram(aes(x=x), alpha=0.5, binwidth=2) + 
+  geom_histogram(aes(x=x.mean), alpha=0.5, fill="blue", binwidth=2) + xlab("") + theme_minimal() + 
+  xlab("Systolic Blood Pressure (mmHg)") + ylab("Count")
+ggsave(p, filename = "../img/hyp-z-test-example.png", height=3, width=4, units="in", dpi=300)
+
+p <- ggplot() + geom_histogram(aes(x=x), alpha=0.5, binwidth=2) + 
+  geom_histogram(aes(x=x.mean), alpha=0.5, fill="blue", binwidth=2) + xlab("") + theme_minimal() + 
+  geom_vline(xintercept = xbar, color = "red", linetype = "dashed") + 
+  xlab("Systolic Blood Pressure (mmHg)") + ylab("Count")
+ggsave(p, filename = "../img/hyp-z-test-example-2.png", height=3, width=4, units="in", dpi=300)
+
+x <- seq(100, 170, 0.1)
+dens <- dnorm(x, mu, sigma/sqrt(n))
+l1 <- qnorm(0.975, mu, sigma/sqrt(n))
+l2 <- qnorm(0.025, mu, sigma/sqrt(n))
+p <- ggplot() + geom_density(aes(x=x, y = dens), stat = "identity", 
+                             fill = "blue", colour = NA, alpha = 0.6) + 
+  geom_vline(xintercept = l1, color = "black", linetype = "dotted") + 
+  geom_vline(xintercept = l2, color = "black", linetype = "dotted") + theme_minimal() + ylab("Density") + 
+  xlab(paste("Sample Mean (n = ", n, ")", sep=""))
+ggsave(p, filename = "../img/hyp-z-test-example-3.png", height=3, width=4, units="in", dpi=300)
+
+
+p <- ggplot() + geom_density(aes(x=x, y = dens), stat = "identity", 
+                             fill = "blue", colour = NA, alpha = 0.6) + 
+    geom_vline(xintercept = xbar, color = "red", linetype = "dashed") + 
+  geom_vline(xintercept = l1, color = "black", linetype = "dotted") + 
+  geom_vline(xintercept = l2, color = "black", linetype = "dotted") + theme_minimal() + ylab("Density") + 
+  xlab(paste("Sample Mean (n = ", n, ")", sep=""))
+ggsave(p, filename = "../img/hyp-z-test-example-4.png", height=3, width=4, units="in", dpi=300)
+
+p <- ggplot() + geom_density(aes(x=x, y = dens), stat = "identity", 
+                             fill = "blue", colour = NA, alpha = 0.6) + 
+    geom_vline(xintercept = xbar, color = "red", linetype = "dashed") + 
+  theme_minimal() + ylab("Density") + 
+  xlab(paste("Sample Mean (n = ", n, ")", sep=""))
+ggsave(p, filename = "../img/hyp-z-test-example-5.png", height=3, width=4, units="in", dpi=300)
+```
+
+```{r example with low bp}
+p.one.sided <- pnorm(xbar, mu, sigma/sqrt(n))
+p.two.sided <- p.one.sided * 2
+```
+
+## Statistical Power
+
+Two normal distributions overlapping.
+
+```{r}
+xbar <- 125.45
+mu <- 139.75
+sigma <- 21.40
+n <- 20
+z = seq(100, 160, 0.1)
+l1 <- qnorm(0.025, mu, sigma/sqrt(n))
+
+df_z_mu <- data.frame(z, y0 = dnorm(z, mu, sigma/sqrt(n)), y1 = dnorm(z, xbar, sigma/sqrt(n)))
+p <- ggplot(df_z_mu) + 
+  geom_line(aes(x = z, y = y0), colour = "gray70") + 
+  geom_line(aes(x = z, y = y1), colour = "gray30") + 
+  xlab(paste("Sample Mean SBP (n = ", n, ")", sep="")) + 
+  theme_minimal() + ylab("Density") + 
+  geom_vline(xintercept = mu, linetype = "dashed", colour = "gray70") + 
+  geom_vline(xintercept = xbar, linetype = "dashed", colour = "gray30") + 
+  geom_ribbon(aes(x = z, ymin = 0, ymax = y0), fill = "#06abeb", 
+              data = subset(df_z_mu, z < l1)) +
+  geom_ribbon(aes(x = z, ymin = 0, ymax = y1), fill = "#dc298d", 
+              data = subset(df_z_mu, z > l1))
+ggsave(p, filename = "../figures/hyp-z-test-example-6.png", height=3, width=6, units="in", dpi=300)
+```
+
+```{r}
+xbar <- 125.45
+mu <- 139.75
+sigma <- 21.40
+n <- 20
+z = seq(100, 160, 0.1)
+l1 <- qnorm(0.025, mu, sigma/sqrt(n))
+
+df_z_mu <- data.frame(z, y0 = dnorm(z, mu, sigma/sqrt(n)), y1 = dnorm(z, xbar, sigma/sqrt(n)))
+p <- ggplot(df_z_mu) + 
+  geom_line(aes(x = z, y = y0), colour = "gray70") + 
+  geom_line(aes(x = z, y = y1), colour = "gray30") + 
+  xlab(paste("Test Statistic", sep="")) + 
+  geom_vline(xintercept = mu, linetype = "dashed", colour = "gray70") + 
+  geom_vline(xintercept = xbar, linetype = "dashed", colour = "gray30") + 
+  geom_ribbon(aes(x = z, ymin = 0, ymax = y0), fill = "#06abeb", 
+              data = subset(df_z_mu, z < l1)) +
+  geom_ribbon(aes(x = z, ymin = 0, ymax = y1), fill = "#dc298d", 
+              data = subset(df_z_mu, z > l1)) + 
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) + 
+  ylab("Density")
+ggsave(p, filename = "../figures/hyp-z-test-example-6a.png", height=3, width=6, units="in", dpi=300)
+```
+
+Shrink sigma (or increase sample size).
+
+```{r}
+sigma = 15.0
+z = seq(100, 160, 0.1)
+l1 <- qnorm(0.025, mu, sigma/sqrt(n))
+
+df_z_mu <- data.frame(z, y0 = dnorm(z, mu, sigma/sqrt(n)), y1 = dnorm(z, xbar, sigma/sqrt(n)))
+p <- ggplot(df_z_mu) + 
+  geom_line(aes(x = z, y = y0), colour = "gray70") + 
+  geom_line(aes(x = z, y = y1), colour = "gray30") + 
+  xlab(paste("Test Statistic", sep="")) + 
+  geom_vline(xintercept = mu, linetype = "dashed", colour = "gray70") + 
+  geom_vline(xintercept = xbar, linetype = "dashed", colour = "gray30") + 
+  geom_ribbon(aes(x = z, ymin = 0, ymax = y0), fill = "#06abeb", 
+              data = subset(df_z_mu, z < l1)) +
+  geom_ribbon(aes(x = z, ymin = 0, ymax = y1), fill = "#dc298d", 
+              data = subset(df_z_mu, z > l1)) + 
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) + 
+  ylab("Density")
+  
+ggsave(p, filename = "../figures/hyp-z-test-example-6b.png", height=3, width=6, units="in", dpi=300)
+```
+
+Increase effect size.
+
+```{r}
+sigma = 21.4
+xbar = 122.0
+z = seq(100, 160, 0.1)
+l1 <- qnorm(0.025, mu, sigma/sqrt(n))
+
+df_z_mu <- data.frame(z, y0 = dnorm(z, mu, sigma/sqrt(n)), y1 = dnorm(z, xbar, sigma/sqrt(n)))
+p <- ggplot(df_z_mu) + 
+  geom_line(aes(x = z, y = y0), colour = "gray70") + 
+  geom_line(aes(x = z, y = y1), colour = "gray30") + 
+  xlab(paste("Test Statistic", sep="")) + 
+  geom_vline(xintercept = mu, linetype = "dashed", colour = "gray70") + 
+  geom_vline(xintercept = xbar, linetype = "dashed", colour = "gray30") + 
+  geom_ribbon(aes(x = z, ymin = 0, ymax = y0), fill = "#06abeb", 
+              data = subset(df_z_mu, z < l1)) +
+  geom_ribbon(aes(x = z, ymin = 0, ymax = y1), fill = "#dc298d", 
+              data = subset(df_z_mu, z > l1)) + 
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) + 
+  ylab("Density")
+  
+ggsave(p, filename = "../figures/hyp-z-test-example-6c.png", height=3, width=6, units="in", dpi=300)
+```
+
+
+## Question 2.1: One-sample T-test by hand
+
+We will perform several tests on the data from our rat experiment. 
+
+```{r reading in the rat data}
+d <- read.delim("../hda-workbook-copy/data/rats.tsv", col.names = c("group", "weight_gain"), header = FALSE)
+
+# calculate sample means, variances, and counts
+aggregate(d$weight_gain, list(d$group), mean)
+aggregate(d$weight_gain, list(d$group), sd)
+table(d$group)
+```
+
+Make a histogram.
+
+```{r}
+
+```
+
+
+
+```{r performing a one-sided, one-sample t-test by hand}
+xbar = 22.4
+s = sqrt(116.1)
+mu0 = 20
+n = 23
+
+T.statistic = (xbar - mu0) / (s / sqrt(n))
+1 - pt(T.statistic, df = 22)
+```
+
+## Question 2.2: One-sample T-test in R
+
+```{r performing a one-sided, one-sample t-test in R}
+t.test(d$weight_gain[d$group == "control"], mu = 20, alternative = "greater")
+```
+
+```{r performing a two-sided, one-sample t-test in R}
+t.test(d$weight_gain[d$group == "control"], mu = 20, alternative = "two.sided")
+```
+
+## Question 2.3: Two-sample t-test
+
+```{r performing a two-sample t-test w/equal variances}
+t.test(weight_gain ~ group, data = d, var.equal = TRUE)
+```
+
+```{r performing a two-sample t-test w/unequal variances}
+t.test(weight_gain ~ group, data = d, var.equal = FALSE)
+```
+
+```{r test of independence: gwas}
+d <- matrix(c(52, 67, 43, 27, 5, 6), ncol = 3)
+d
+c <- chisq.test(d, correct = FALSE)
+c
+c$expected
+```
+
+```{r chi squared with 2 d.f.}
+x <- seq(0, 10, 0.1)
+dens <- dchisq(x, 2)
+p <- ggplot() + geom_density(aes(x=x, y = dens), stat = "identity", 
+                             fill = "blue", colour = NA, alpha = 0.6) + theme_minimal() + 
+                             ylab("Density") + xlab("X2 Statistic")
+ggsave(p, filename = "../img/hyp-chisq-test-example-1.png", height=3, width=4, units="in", dpi=300)
+```
+
+```{r chi squared significance level for rejecting null}
+x <- seq(0, 10, 0.1)
+dens <- dchisq(x, 2)
+p <- ggplot() + geom_density(aes(x=x, y = dens), stat = "identity", 
+                             fill = "blue", colour = NA, alpha = 0.6) + theme_minimal() + 
+                             ylab("Density") + xlab("X2 Statistic") + 
+  geom_vline(aes(xintercept=qchisq(0.95, 2)), colour = "turquoise4", linetype = "dotted") + 
+  annotate("text", x = 7, y = 0.35, label = paste(expression(alpha), "==", "0.05", sep=""), parse = TRUE, 
+           colour = "turquoise4") + 
+  geom_vline(aes(xintercept=qchisq(0.90, 2)), colour = "black", linetype = "dotted") + 
+  annotate("text", x = 3.75, y = 0.45, label = paste(expression(alpha), "==0.10", sep=""), parse = TRUE, 
+           colour = "black")
+ggsave(p, filename = "../img/hyp-chisq-test-example-2.png", height=3, width=4, units="in", dpi=300)
+
+p <- ggplot() + geom_density(aes(x=x, y = dens), stat = "identity", 
+                             fill = "blue", colour = NA, alpha = 0.6) + theme_minimal() + 
+                             ylab("Density") + xlab("X2 Statistic") + 
+  geom_vline(aes(xintercept=qchisq(0.95, 2)), colour = "turquoise4", linetype = "dotted") + 
+  annotate("text", x = 7, y = 0.35, label = paste(expression(alpha), "==", "0.05", sep=""), parse = TRUE, 
+           colour = "turquoise4") + 
+  geom_vline(aes(xintercept=qchisq(0.90, 2)), colour = "black", linetype = "dotted") + 
+  annotate("text", x = 3.75, y = 0.45, label = paste(expression(alpha), "==0.10", sep=""), parse = TRUE, 
+           colour = "black") + 
+  geom_vline(aes(xintercept=5.6388), colour = "red", linetype = "dashed")
+ggsave(p, filename = "../img/hyp-chisq-test-example-3.png", height=3, width=4, units="in", dpi=300)
+```
+
+## Question 2.5: chi-squared for aspirin and heart attacks
+
+```{r chi squared example}
+d <- matrix(c(28, 18, 656, 658), ncol = 2)
+d
+c <- chisq.test(d, correct = FALSE)
+c
+c$expected
+```
+
+## Question 2.7: fisher test
+
+```{r fishers exact test}
+d <- matrix(c(28, 18, 656, 658), ncol = 2)
+d
+fisher.test(d)
+```
+
+## Question 2.8: increasing power of a test
+
+```{r power calculations}
+xbar <- 125.45
+mu <- 139.75
+sigma <- 21.40
+
+alpha <- seq(0.001, 0.20, 0.001)
+n <- ((-qnorm(alpha/2, 0, 1)) * sigma / (xbar - mu))^2
+p1 <- ggplot() + geom_line(aes(x=alpha, y=n)) + 
+  geom_vline(xintercept=0.1, colour="darkorange") + 
+  geom_vline(xintercept=0.05, colour="blue", linetype="dotted") + 
+  geom_vline(xintercept=0.01, colour="turquoise4", linetype="dashed") + 
+  theme_minimal() + 
+  xlab("Significance Level") + ylab("Number of Samples Required")
+
+x <- seq(130, 150, 0.01)
+n1 <- ((-qnorm(0.05, 0, 1)) * sigma / (x-mu))^2
+n2 <- ((-qnorm(0.025, 0, 1)) * sigma / (x-mu))^2
+n3 <- ((-qnorm(0.005, 0, 1)) * sigma / (x-mu))^2
+p2 <- ggplot() + geom_line(aes(x=x, y=n1), linetype="solid") +
+  geom_line(aes(x=x, y=n2), linetype="dotted") +
+  geom_line(aes(x=x, y=n3), linetype="dashed") +
+  xlab("Sample Mean") + ylab("Number of Samples Required") + theme_minimal() + ylim(0, 500)
+```
+
+```{r plots, echo=FALSE}
+ggsave(p1, filename = "../img/hyp-z-test-power-curve-1.png", height=3, width=4, units="in", dpi=300)
+ggsave(p2, filename = "../img/hyp-z-test-power-curve-2.png", height=3, width=4, units="in", dpi=300)
+```
+
+## Question 2.9: multiple hypothesis testing
+
+```{r multiple hypothesis testing}
+generate_samples_two_normals <- function(n_1, n_2, mean_1, sd_1, mean_2, sd_2) {
+  d1 <- rnorm(n_1, mean_1, sd_1)
+  d2 <- rnorm(n_2, mean_2, sd_2)
+  d <- data.frame(group = c(rep("g1", length(d1)), rep("g2", length(d2))), 
+                  value = c(d1, d2))
+  return(d)
+}
+
+# perform hypothesis tests for situation where there is no difference
+p_values_neg <- {}
+for (trial in 1:10000) {
+  dat <- generate_samples_two_normals(20, 20, 1, 1, 1, 1)
+  t_test <- t.test(value ~ group, data = dat)
+  p_values_neg <- c(p_values_neg, t_test$p.value)
+}
+
+# perform hypothesis tests for situation where group 2 has a mean of 1.25 (effect size = 0.25)
+p_values_pos <- {}
+for (trial in 1:10000) {
+  dat <- generate_samples_two_normals(20, 20, 1, 1, 1.25, 1)
+  t_test <- t.test(value ~ group, data = dat)
+  p_values_pos <- c(p_values_pos, t_test$p.value)
+}
+
+# perform hypothesis tests for situation where group 2 has a mean of 1.5 (effect size = 0.5)
+p_values_pos_2 <- {}
+for (trial in 1:10000) {
+  dat <- generate_samples_two_normals(20, 20, 1, 1, 1.5, 1)
+  t_test <- t.test(value ~ group, data = dat)
+  p_values_pos_2 <- c(p_values_pos_2, t_test$p.value)
+}
+
+# get distribution of q-values
+fdr_data <- {}
+for (alpha in seq(0.001, 0.1, 0.001)) {
+  false_positives <- sum(p_values_neg < alpha)
+  true_positives_2 <- sum(p_values_pos_2 < alpha)
+  true_positives <- sum(p_values_pos < alpha)
+  fdr <- false_positives / (false_positives + true_positives)
+  fdr2 <- false_positives / (false_positives + true_positives_2)
+  fdr_data <- rbind(fdr_data, data.frame(alpha, fdr, fdr2))
+}
+
+```
+
+## COVID Dataset: Different Hypothesis Tests
+
+Read in the data. Reconfigure final outcome.
+
+```{r}
+d <- read.csv("~/Desktop/covid-risk-score-project/risk_score_final_dataset_new_sofa.csv")
+```
+
+Add vasopressor, smoking, race, and ethnicity covariates.
+
+```{r}
+d$vasopressor_admin = (d$dopamine_admin | d$dobutamine_admin | d$epinephrine_admin | d$norepinephrine_admin)
+d$current_smoker = d$Smoking == "Current"
+d$history_smoking = d$Smoking %in% c("Current", "Former")
+d$black_race = d$Race == "Black"
+d$hispanic = d$Ethnicity == "Hispanic"
+```
+
+Get baseline characteristics for patients.
+
+```{r}
+d_baseline <- d %>%
+  group_by(PrimaryMrn) %>%
+  arrange(tstart) %>%
+  slice(1) %>%
+  ungroup()
+```
+
+Z-test to see if BMI for men different from population mean. 
+
+```{r}
+e <- subset(d_baseline, Sex == "Male" & !is.na(bmi) & bmi < 90)
+e <- e[1:50,]
+mean_bmi <- mean(e$bmi)
+p <- ggplot(e) + geom_histogram(aes(x = bmi), fill = "gray60", bins=50) + theme_minimal() + 
+  xlab("BMI") + ylab("Count") + 
+  geom_vline(xintercept = 29.1, linetype = "dashed") + 
+  geom_vline(xintercept = mean_bmi, linetype = "dotted") +
+  annotate("text", x = 29.1 - 1, y = 4.5, label = paste(expression(mu[0])), parse = TRUE) + 
+  annotate("text", x = mean_bmi + 1, y = 4.5, label = paste(expression(bar(x))), parse = TRUE)
+ggsave(p, filename = "../figures/hyp-example-t-test-one-sample.png", height=3, width=4, units="in", dpi=300)
+print(p)
+
+Z = (mean_bmi - 29.1) / (5 / sqrt(dim(e)[1]))
+x = seq(-4, 4, 0.01)
+y = dnorm(x, 0, 1)
+p <- ggplot() + geom_line(aes(x = x, y = y), colour = "gray60") + theme_minimal() + 
+  xlab("Z") + ylab("Density of Sampling Distribution") + 
+  geom_vline(xintercept = Z, linetype = "dashed")
+ggsave(p, filename = "../figures/hyp-example-z-test-sampling.png", height=3, width=4, units="in", dpi=300)
+print(p)
+
+t_stat = (mean_bmi - 29.1) / (sd(e$bmi, na.rm = TRUE) / sqrt(dim(e)[1]))
+x = seq(-4, 4, 0.01)
+y = dt(x, df = dim(e)[1] - 1)
+p <- ggplot() + geom_line(aes(x = x, y = y), colour = "gray60") + theme_minimal() + 
+  xlab(paste("T")) + ylab("Density of Sampling Distribution") + 
+  geom_vline(xintercept = Z, linetype = "dashed")
+ggsave(p, filename = "../figures/hyp-example-t-test-sampling.png", height=3, width=4, units="in", dpi=300)
+print(p)
+t.test(e$bmi, mu = 29.1)
+```
+
+Chi-square distribution.
+
+```{r}
+x = seq(0, 10, 0.01)
+df = c(1, 2, 3, 4, 6, 9)
+dat = data.frame(t = rep(x, length(df)), 
+                 p = dchisq(x, rep(df, each = length(x))), 
+                 dfr = as.factor(c(rep(df, each = length(x)))))
+head(dat)
+p <- ggplot(dat) + 
+  geom_line(aes(x = t, y = p, color = dfr), size = 0.4) + 
+  theme_minimal() + xlab(expression("\u03C7"^2)) + ylab("Density") + 
+  scale_colour_discrete(name = "Degrees of Freedom") + ylim(0, 0.5)
+print(p)
+ggsave(p, filename = "../figures/hyp-example-chisq-distribution.png", height=3, width=6, units="in", dpi=300)
+```
+
+T distribution.
+
+```{r}
+x = seq(-4, 4, 0.01)
+df = c(1, 5, 10, 50)
+dat = data.frame(t = rep(x, 4), 
+                 p = dt(x, rep(df, each = length(x))), 
+                 dfr = as.factor(c(rep(df, each = length(x)))))
+head(dat)
+p <- ggplot(dat) + 
+  geom_line(aes(x = t, y = p, color = dfr), size = 0.4) + 
+  theme_minimal() + xlab("T") + ylab("Density") + 
+  scale_colour_discrete(name = "Degrees of Freedom")
+print(p)
+ggsave(p, filename = "../figures/hyp-example-t-distribution.png", height=3, width=6, units="in", dpi=300)
+```
+
+Two-sample T-test for COVID patients.
+
+```{r}
+e <- subset(d_baseline, Sex == "Male" & !is.na(hemoglobin))
+e <- e[1:100,]
+e_sum <- e %>%
+  group_by(CardiovascularDisease) %>%
+  summarise(mean_hgb = mean(hemoglobin))
+p <- ggplot(e) + 
+  geom_histogram(aes(x = hemoglobin), fill = "#06abeb", alpha = 0.5, 
+                 data = subset(e, CardiovascularDisease == 1), bins=50) + theme_minimal() + 
+  geom_histogram(aes(x = hemoglobin), fill = "#dc298d", alpha = 0.5, 
+                 data = subset(e, CardiovascularDisease == 0), bins=50) + 
+  geom_vline(xintercept = e_sum$mean_hgb[e_sum$CardiovascularDisease == 1], linetype = "dashed", 
+             colour = "#06abeb") + 
+  geom_vline(xintercept = e_sum$mean_hgb[e_sum$CardiovascularDisease == 0], linetype = "dashed", 
+             colour = "#dc298d") +
+  xlab("Hemoglobin (g/dL)") + ylab("Count")
+ggsave(p, filename = "../figures/hyp-example-t-test-two-sample.png", height=3, width=4, units="in", dpi=300)
+print(p) 
+
+t.test(hemoglobin ~ CardiovascularDisease, data = e, var.equal = TRUE)
+wilcox.test(hemoglobin ~ CardiovascularDisease, data = e)
+```
+
+Mann-Whitney test by hand.
+
+```{r}
+
+```
+

@@ -1,0 +1,273 @@
+---
+title: "Workshop 4: Hypothesis Testing"
+output: html_notebook
+---
+
+Central limit theorem.
+
+```{r central limit theorem}
+library(ggplot2)
+
+x <- rnorm(10000, 0, 4.0)
+
+x.mean <- {}
+for (i in 1:10000) {
+  x.mean <- c(x.mean, mean(rnorm(20, 0, 4)))
+}
+
+p <- ggplot() + geom_histogram(aes(x=x), alpha=0.5, binwidth=0.5) + xlab("x")  + 
+  geom_histogram(aes(x=x.mean), alpha=0.5, fill="blue", binwidth=0.5) + xlab("") + theme_minimal()
+ggsave(p, filename = "/Users/beth/Documents/mssm/statistics-club/img/hyp-norm-mean.png", height=3, width=4, units="in", dpi=300)
+
+x <- rpois(10000, 6.0)
+
+x.mean <- {}
+for (i in 1:10000) {
+  x.mean <- c(x.mean, mean(rpois(20, 6.0)))
+}
+
+p <- ggplot() + geom_histogram(aes(x=x), alpha=0.5, binwidth=0.5) + xlab("x")  + 
+  geom_histogram(aes(x=x.mean), alpha=0.5, fill="blue", binwidth=0.5) + xlab("") + theme_minimal()
+ggsave(p, filename = "/Users/beth/Documents/mssm/statistics-club/img/hyp-pois-mean.png", height=3, width=4, units="in", dpi=300)
+
+x <- rexp(10000, 0.2)
+
+x.mean <- {}
+for (i in 1:10000) {
+  x.mean <- c(x.mean, mean(rexp(20, 0.2)))
+}
+
+p <- ggplot() + geom_histogram(aes(x=x), alpha=0.5, binwidth=0.5) + xlab("x")  + 
+  geom_histogram(aes(x=x.mean), alpha=0.5, fill="blue", binwidth=0.5) + xlab("") + theme_minimal()
+ggsave(p, filename = "/Users/beth/Documents/mssm/statistics-club/img/hyp-exp-mean.png", height=3, width=4, units="in", dpi=300)
+
+x <- rbinom(10000, 1, 0.5)
+
+x.mean <- {}
+for (i in 1:10000) {
+  x.mean <- c(x.mean, mean(rbinom(20, 1, 0.5)))
+}
+
+p <- ggplot() + geom_histogram(aes(x=x), alpha=0.5, binwidth=0.05) + xlab("x")  + 
+  geom_histogram(aes(x=x.mean), alpha=0.5, fill="blue", binwidth=0.05) + xlab("") + theme_minimal()
+ggsave(p, filename = "/Users/beth/Documents/mssm/statistics-club/img/hyp-sum-mean.png", height=3, width=4, units="in", dpi=300)
+
+```
+
+
+First test: Z-test in R.
+
+```{r z-test}
+x <- rnorm(10000, 139.75, 21.40)
+
+x.mean <- {}
+for (i in 1:10000) {
+  x.mean <- c(x.mean, mean(rnorm(20, 139.75, 21.40)))
+}
+
+p <- ggplot() + geom_histogram(aes(x=x), alpha=0.5, binwidth=2) + xlab("") + theme_minimal() 
+ggsave(p, filename = "/Users/beth/Documents/mssm/statistics-club/img/hyp-z-test-example-0.png", height=3, width=4, units="in", dpi=300)
+
+p <- ggplot() + geom_histogram(aes(x=x), alpha=0.5, binwidth=2) + xlab("") + theme_minimal() + 
+  geom_vline(xintercept = 125.45, color = "red", linetype = "dashed")
+ggsave(p, filename = "/Users/beth/Documents/mssm/statistics-club/img/hyp-z-test-example-1.png", height=3, width=4, units="in", dpi=300)
+
+p <- ggplot() + geom_histogram(aes(x=x), alpha=0.5, binwidth=2) + 
+  geom_histogram(aes(x=x.mean), alpha=0.5, fill="blue", binwidth=2) + xlab("") + theme_minimal()
+ggsave(p, filename = "/Users/beth/Documents/mssm/statistics-club/img/hyp-z-test-example.png", height=3, width=4, units="in", dpi=300)
+
+p <- ggplot() + geom_histogram(aes(x=x), alpha=0.5, binwidth=2) + 
+  geom_histogram(aes(x=x.mean), alpha=0.5, fill="blue", binwidth=2) + xlab("") + theme_minimal() + 
+    geom_vline(xintercept = 125.45, color = "red", linetype = "dashed")
+ggsave(p, filename = "/Users/beth/Documents/mssm/statistics-club/img/hyp-z-test-example-2.png", height=3, width=4, units="in", dpi=300)
+
+x <- seq(100, 170, 0.1)
+dens <- dnorm(x, 139.75, 21.40/sqrt(20))
+l1 <- qnorm(0.975, 139.75, 21.40/sqrt(20))
+l2 <- qnorm(0.025, 139.75, 21.40/sqrt(20))
+p <- ggplot() + geom_density(aes(x=x, y = dens), stat = "identity", 
+                             fill = "blue", colour = NA, alpha = 0.6) + 
+  geom_vline(xintercept = l1, color = "black", linetype = "dotted") + 
+  geom_vline(xintercept = l2, color = "black", linetype = "dotted") + theme_minimal() + ylab("Density") + 
+  xlab("Sample Mean (n = 20)")
+ggsave(p, filename = "/Users/beth/Documents/mssm/statistics-club/img/hyp-z-test-example-3.png", height=3, width=4, units="in", dpi=300)
+
+
+p <- ggplot() + geom_density(aes(x=x, y = dens), stat = "identity", 
+                             fill = "blue", colour = NA, alpha = 0.6) + 
+    geom_vline(xintercept = 125.45, color = "red", linetype = "dashed") + 
+  geom_vline(xintercept = l1, color = "black", linetype = "dotted") + 
+  geom_vline(xintercept = l2, color = "black", linetype = "dotted") + theme_minimal() + ylab("Density") + 
+  xlab("Sample Mean (n = 20)")
+ggsave(p, filename = "/Users/beth/Documents/mssm/statistics-club/img/hyp-z-test-example-4.png", height=3, width=4, units="in", dpi=300)
+
+p <- ggplot() + geom_density(aes(x=x, y = dens), stat = "identity", 
+                             fill = "blue", colour = NA, alpha = 0.6) + 
+    geom_vline(xintercept = 125.45, color = "red", linetype = "dashed") + 
+  theme_minimal() + ylab("Density") + 
+  xlab("Sample Mean (n = 20)")
+ggsave(p, filename = "/Users/beth/Documents/mssm/statistics-club/img/hyp-z-test-example-5.png", height=3, width=4, units="in", dpi=300)
+```
+
+```{r example with low bp}
+p.one.sided <- pnorm(125.45, 139.75, 21.40/sqrt(20))
+p.two.sided <- p.one.sided * 2
+```
+
+
+```{r z-score calculations}
+z = (148.29-139.75)/21.40
+zbar = (148.29-139.75)/(21.40/sqrt(20))
+1 - pnorm(z,0,1)
+1 - pnorm(zbar,0,1)
+```
+
+```{r power calculations}
+# One-sided
+-qnorm(0.1, 0, 1)
+-qnorm(0.05, 0, 1)
+-qnorm(0.01, 0, 1)
+
+# Two-sided
+-qnorm(0.05, 0, 1)
+-qnorm(0.025, 0, 1)
+-qnorm(0.005, 0, 1)
+
+alpha <- seq(0.001, 0.20, 0.001)
+n <- ((-qnorm(alpha/2, 0, 1)) * 21.40 / (148.29-139.75))^2
+p1 <- ggplot() + geom_line(aes(x=alpha, y=n)) + 
+  geom_vline(xintercept=0.1, colour="darkorange") + 
+  geom_vline(xintercept=0.05, colour="blue", linetype="dotted") + 
+  geom_vline(xintercept=0.01, colour="turquoise4", linetype="dashed") + 
+  theme_minimal() + 
+  xlab("Significance Level") + ylab("Number of Samples Required")
+
+x <- seq(130, 150, 0.01)
+n1 <- ((-qnorm(0.05, 0, 1)) * 21.40 / (x-139.75))^2
+n2 <- ((-qnorm(0.025, 0, 1)) * 21.40 / (x-139.75))^2
+n3 <- ((-qnorm(0.005, 0, 1)) * 21.40 / (x-139.75))^2
+p2 <- ggplot() + geom_line(aes(x=x, y=n1), linetype="solid") +
+  geom_line(aes(x=x, y=n2), linetype="dotted") +
+  geom_line(aes(x=x, y=n3), linetype="dashed") +
+  xlab("Sample Mean") + ylab("Number of Samples Required") + theme_minimal() + ylim(0, 500)
+```
+
+```{r plots, echo=FALSE}
+ggsave(p1, filename = "/Users/beth/Documents/mssm/statistics-club/img/hyp-z-test-power-curve-1.png", height=3, width=4, units="in", dpi=300)
+ggsave(p2, filename = "/Users/beth/Documents/mssm/statistics-club/img/hyp-z-test-power-curve-2.png", height=3, width=4, units="in", dpi=300)
+```
+
+```{r a couple more calculations}
+((-qnorm(0.1, 0, 1)) * 21.40 / (148.29-139.75))^2
+((-qnorm(0.05, 0, 1)) * 21.40 / (148.29-139.75))^2
+((-qnorm(0.01, 0, 1)) * 21.40 / (148.29-139.75))^2
+
+((-qnorm(0.1/2, 0, 1)) * 21.40 / (148.29-139.75))^2
+((-qnorm(0.05/2, 0, 1)) * 21.40 / (148.29-139.75))^2
+((-qnorm(0.01/2, 0, 1)) * 21.40 / (148.29-139.75))^2
+```
+
+```{r z score calculations a different way}
+x <- seq(-4, 4, 0.01)
+dens <- dnorm(x, 0, 1)
+l1 <- qnorm(0.975, 0, 1)
+l2 <- qnorm(0.025, 0, 1)
+p <- ggplot() + geom_density(aes(x=x, y = dens), stat = "identity", 
+                             fill = "blue", colour = NA, alpha = 0.6) + 
+  geom_vline(xintercept = l1, color = "black", linetype = "dotted") + 
+  geom_vline(xintercept = l2, color = "black", linetype = "dotted") + theme_minimal() + ylab("Density") + 
+  xlab("Z-Statistic (n = 20)")
+ggsave(p, filename = "/Users/beth/Documents/mssm/modern-clinical-data-science/figures/hyp-z-test-example-3-z.png",
+       height=3, width=4, units="in", dpi=300)
+
+p <- ggplot() + geom_density(aes(x=x, y = dens), stat = "identity", 
+                             fill = "blue", colour = NA, alpha = 0.6) + 
+    geom_vline(xintercept = (125.45 - 139.75)/(21.40/sqrt(20)), color = "red", linetype = "dashed") + 
+  geom_vline(xintercept = l1, color = "black", linetype = "dotted") + 
+  geom_vline(xintercept = l2, color = "black", linetype = "dotted") + theme_minimal() + ylab("Density") + 
+  xlab("Z-Statistic (n = 20)")
+ggsave(p, filename = "/Users/beth/Documents/mssm/modern-clinical-data-science/figures/hyp-z-test-example-4-z.png",
+       height=3, width=4, units="in", dpi=300)
+
+p <- ggplot() + geom_density(aes(x=x, y = dens), stat = "identity", 
+                             fill = "blue", colour = NA, alpha = 0.6) + 
+  geom_vline(xintercept = (125.45 - 139.75)/(21.40/sqrt(20)), color = "red", linetype = "dashed") + 
+  theme_minimal() + ylab("Density") + xlab("Z-Statistic (n = 20)")
+ggsave(p, filename = "/Users/beth/Documents/mssm/modern-clinical-data-science/figures/hyp-z-test-example-5-z.png",
+       height=3, width=4, units="in", dpi=300)
+```
+
+```{r new p-values}
+p.one.sided <- pnorm(-2.99, 0, 1)
+p.two.sided <- p.one.sided * 2
+```
+
+
+```{r t-tests}
+t1 <- rnorm(25, 100)
+
+t = (22.4 - 20) / sqrt(116.1/23)
+2 * pt(-1.068, 22)
+2 * pnorm(-1.068)
+
+sx2 = 116.1
+sy2 = 361.7
+n = 23
+m = 22
+
+sp2 = ((n-1)*sx2 + (m-1)*sy2)/(m+n-2)
+tnew = (22.4-11.0) / (sqrt(sp2) * sqrt(1/23 + 1/22))
+
+pt()
+```
+
+```{r power curves}
+mu.0 <- 100.0
+mu.1 <- 100.1
+sd.0 <- 25.0
+sd.1 <- 25.0
+n <- 3
+sdsm.0 <- sd.0/sqrt(n)
+sdsm.1 <- sd.1/sqrt(n)
+
+x <- seq(0, 200, 0.1)
+sd.0 <- dnorm(x, mu.0, sd.0)
+sd.1 <- dnorm(x, mu.1, sd.1)
+sd.0.mean <- dnorm(x, mu.0, sdsm.0)
+sd.1.mean <- dnorm(x, mu.1, sdsm.1)
+
+p.values.null <- c()
+p.values.alt <- c()
+for (i in 1:100) {
+  sample.null <- rnorm(n, mu.0, sd.0)
+  sample.2.null <- rnorm(n, mu.0, sd.0)
+  sample.alt <- rnorm(n, mu.1, sd.1)
+  t.null <- t.test(sample.null, sample.2.null)
+  t.alt <- t.test(sample.null, sample.alt)
+  p.values.null <- c(p.values.null, t.null$p.value)
+  p.values.alt <- c(p.values.alt, t.alt$p.value)
+}
+```
+
+
+```{r power plots, echo=FALSE}
+p1 <- ggplot() + geom_line(aes(x=x, y=sd.0), colour = "red") + 
+  geom_line(aes(x=x, y=sd.1), colour = "blue") + xlab("x") + ylab("Frequency")
+ggsave(p1, 
+       filename="/Users/beth/Documents/mssm/statistics-club/img/power-original-distributions.png",
+       height = 3, width = 5, units = "in", dpi=300)
+
+p2 <- ggplot() + geom_line(aes(x=x, y=sd.0.mean), colour = "red") + 
+  geom_line(aes(x=x, y=sd.1.mean), colour = "blue") + xlab("Sample Mean") + ylab("Frequency")
+ggsave(p2, 
+       filename="/Users/beth/Documents/mssm/statistics-club/img/power-sampling-distributions.png",
+       height = 3, width = 5, units = "in", dpi=300)
+
+p3 <- ggplot() + geom_histogram(aes(x=p.values.null), alpha = 0.5, fill = "gray50") + 
+  geom_histogram(aes(x=p.values.alt), alpha = 0.5, fill = "blue") + xlab("P Value") + 
+  ylab("Frequency")
+ggsave(p3, 
+       filename="/Users/beth/Documents/mssm/statistics-club/img/power-hist-pvalues.png",
+       height = 3, width = 5, units = "in", dpi=300)
+```
+

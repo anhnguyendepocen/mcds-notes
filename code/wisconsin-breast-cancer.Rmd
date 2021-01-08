@@ -1,0 +1,19 @@
+---
+title: "Case Study: Wisconsin Breast Cancer Dataset"
+output: html_notebook
+---
+
+```{r libraries, setup}
+library(ggplot2)
+library(xtable)
+library(dplyr)
+```
+
+Read in the dataset.
+
+```{r}
+d <- read.csv("../data/breast-cancer-wisconsin-data.csv")
+```
+
+
+
