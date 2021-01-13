@@ -18,11 +18,11 @@ Also called the \textbf{Gaussian distribution}, the normal distribution is proba
 \begin{equation*} p(x | \mu, \sigma) = \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{(x-\mu)^2}{2 \sigma^2}} \qquad  E[x| \mu, \sigma] = \mu \qquad \text{var}(x | \mu, \sigma) = \sigma^2 \end{equation*}
 where $x \in \mathbb{R}$. We will abbreviate the normal distribution as $\mathcal{N}(\mu, \sigma)$.  The value of $\mu$ changes the position of the center of the normal distribution.
 \begin{center}
-\includegraphics[width=0.9\textwidth]{img/l01-figure1a-normal-mean-change.png}
+\includegraphics[width=0.9\textwidth]{img/l01-figure1-normal-mean-change.png}
 \end{center}
 The value of $\sigma$ changes the width of the normal distribution.
 \begin{center}
-\includegraphics[width=0.9\textwidth]{img/l01-figure1b-normal-sd-change.png}
+\includegraphics[width=0.9\textwidth]{img/l01-figure2-normal-sd-change.png}
 \end{center}
 
 \begin{question}{question:normalex}
@@ -99,7 +99,7 @@ for $x \in \left\{0, 1, 2, \dots \right\}$, where $\mu$ refers to the probabilit
 \end{center}
 
 \begin{question}{question:geometricex}
-List 5 random variables from medicine or biology that should follow Poisson distributions.
+List 5 random variables from medicine or biology that should follow geometric distributions.
 \end{question}
 
 
@@ -119,7 +119,7 @@ List 5 random variables from medicine or biology that should follow exponential 
 \end{question}
 
 
-\section{Chi-Squared Distribution}
+\section{Chi-Squared Distribution \label{sect:chisqdist}}
 
 How this distribution arises:
 \begin{enumerate}
@@ -141,7 +141,7 @@ The gamma function shown in the denominator of the probability density,
 $$ \Gamma(z) = \int_0^{\infty} x^{z-1} e^{-x} dx, $$
 is a generalization of the factorial function to complex numbers. For any positive integer $n$, $\Gamma(n) = (n-1)!$. 
 
-\section{Student's T Distribution}
+\section{Student's T Distribution \label{sect:tdist}}
 
 If $Z \sim \mathcal{N}(0, 1)$ and $U \sim \chi_k^2$ and $Z$ and $U$ are independent, 
 $$ T = \frac{Z}{\sqrt{U/k}} \sim t_k $$

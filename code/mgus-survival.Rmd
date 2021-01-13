@@ -1,5 +1,5 @@
 ---
-title: "Case Study: Wisconsin Breast Cancer Dataset"
+title: "Case Study: Monoclonal Gammopathy Dataset"
 output: html_notebook
 ---
 
@@ -7,12 +7,13 @@ output: html_notebook
 library(ggplot2)
 library(xtable)
 library(dplyr)
+library(survival)
 ```
 
 Read in the dataset.
 
 ```{r}
-d <- read.csv("../data/breast-cancer-wisconsin-data.csv")
+d <- survival::mgus
 ```
 
 

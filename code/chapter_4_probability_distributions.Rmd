@@ -1,0 +1,202 @@
+---
+title: "Probability Distributions"
+output: html_notebook
+---
+
+## Libraries
+
+```{r setup}
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(survival)
+library(survminer)
+library(lubridate)
+library(tidyr)
+library(stringr)
+library(forcats)
+library(wesanderson)
+```
+
+
+## Probability Distribution Examples
+
+```{r Normal distribution}
+x <- seq(-10, 10, 0.1)
+
+y1a <- dnorm(x, 0, 2.0)
+y1b <- dnorm(x, 1, 2.0)
+y1c <- dnorm(x, 3, 2.0)
+
+y2a <- dnorm(x, 0.0, 0.5)
+y2b <- dnorm(x, 0.0, 1.0)
+y2c <- dnorm(x, 0.0, 2.0)
+
+d1 <- data.frame(x = rep(x, 3), 
+                 y = c(y1a, y1b, y1c),
+                 c = c(rep(0, length(x)), rep(1, length(x)), rep(3, length(x))))
+d2 <- data.frame(x = rep(x, 3), 
+                 y = c(y2a, y2b, y2c),
+                 c = c(rep(0.5, length(x)), rep(1.0, length(x)), rep(2.0, length(x))))
+
+p1 <- ggplot(d1) + geom_line(aes(x=x, y=y, colour=as.factor(c))) + theme_minimal() + 
+  scale_colour_discrete(name=expression(mu)) + xlab("") + ylab("")
+ggsave(p1, filename="../img/l01-figure1-normal-mean-change.png", height=3, width=6, units="in", dpi=300)
+
+p2 <- ggplot(d2) + geom_line(aes(x=x, y=y, colour=as.factor(c))) + theme_minimal() + 
+  scale_colour_discrete(name=expression(sigma)) + xlab("") + ylab("")
+ggsave(p2, filename="../img/l01-figure2-normal-sd-change.png", height=3, width=6, units="in", dpi=300)
+
+```
+
+And now for the binomial distribution...
+
+```{r Binomial distribution}
+x <- seq(0, 60, 1)
+
+y3a <- dbinom(x, 10, 0.5)
+y3b <- dbinom(x, 50, 0.5)
+y3c <- dbinom(x, 80, 0.5)
+
+y4a <- dbinom(x, 50, 0.2)
+y4b <- dbinom(x, 50, 0.5)
+y4c <- dbinom(x, 50, 0.9)
+
+d3 <- data.frame(x = rep(x, 3), 
+                 y = c(y3a, y3b, y3c),
+                 c = c(rep(10, length(x)), rep(50, length(x)), rep(80, length(x))))
+d4 <- data.frame(x = rep(x, 3), 
+                 y = c(y4a, y4b, y4c),
+                 c = c(rep(0.2, length(x)), rep(0.5, length(x)), rep(0.9, length(x))))
+
+p3 <- ggplot(d3, aes(x=x, y=y, fill=as.factor(c))) + 
+  geom_bar(data = subset(d3, c==10), stat = "identity", colour=NA, alpha=0.5) +
+  geom_bar(data = subset(d3, c==50), stat = "identity", colour=NA, alpha=0.5) +
+  geom_bar(data = subset(d3, c==80), stat = "identity", colour=NA, alpha=0.5) +
+  theme_minimal() + scale_fill_discrete(name="n") + xlab("") + ylab("") + xlim(0, 60)
+ggsave(p3, filename="../img/l01-figure3-binom-n-change.png", height=3, width=6, units="in", dpi=300)
+
+p4 <- ggplot(d4, aes(x=x, y=y, fill=as.factor(c))) + 
+  geom_bar(data = subset(d4, c==0.2), stat = "identity", colour=NA, alpha=0.5) +
+  geom_bar(data = subset(d4, c==0.5), stat = "identity", colour=NA, alpha=0.5) +
+  geom_bar(data = subset(d4, c==0.9), stat = "identity", colour=NA, alpha=0.5) +
+  theme_minimal() + scale_fill_discrete(name=expression(mu)) + xlab("") + ylab("") + xlim(0, 52)
+ggsave(p4, filename="../img/l01-figure4-binom-p-change.png", height=3, width=6, units="in", dpi=300)
+
+n <- 100
+p <- seq(0.0, 1.0, 0.01)
+
+d5 <- data.frame(mean.binom = n*p, var.binom = n*p*(1-p))
+
+p5 <- ggplot(d5) + geom_point(aes(x=mean.binom, y=var.binom), pch=21, 
+                              colour="gray50", fill="gray30", alpha=0.6, size=1.0) +
+  xlab("Mean (Binomial)") + ylab("Variance (Binomial)") + theme_minimal()
+ggsave(p5, filename="../img/l01-figure5-mean-var-binomial.png", height=3, width=3.5, units="in", dpi=300)
+
+```
+
+```{r Poisson distribution}
+x <- seq(0, 25, 1)
+
+y1d <- dpois(x, 1)
+y1a <- dpois(x, 3)
+y1b <- dpois(x, 7)
+y1c <- dpois(x, 15)
+
+d6 <- data.frame(x = rep(x, 4), 
+                 y = c(y1d, y1a, y1b, y1c),
+                 c = c(rep(1, length(x)), rep(3, length(x)), rep(7, length(x)), rep(15, length(x))))
+
+p6 <- ggplot(d6, aes(x=x, y=y, colour=as.factor(c))) + geom_line() + geom_point() + 
+  theme_minimal() + scale_colour_discrete(name=expression(lambda)) + xlab("") + ylab("")
+ggsave(p6, filename="../img/l01-figure3a-poisson-lambda-change.png", height=3, width=6, units="in", dpi=300)
+```
+
+```{r Geometric distribution}
+x <- seq(0, 15, 1)
+
+y1d <- dgeom(x, 0.1)
+y1a <- dgeom(x, 0.3)
+y1b <- dgeom(x, 0.5)
+
+d7 <- data.frame(x = rep(x, 3), 
+                 y = c(y1d, y1a, y1b),
+                 c = c(rep(0.1, length(x)), rep(0.3, length(x)), rep(0.5, length(x))))
+
+p7 <- ggplot(d7, aes(x=x, y=y, colour=as.factor(c))) + geom_line() + geom_point() + 
+  theme_minimal() + scale_colour_discrete(name=expression(mu)) + xlab("") + ylab("")
+ggsave(p7, filename="../img/l01-figure4-geometric-mu-change.png", height=3, width=6, units="in", dpi=300)
+```
+
+```{r Exponential distribution}
+x <- seq(0, 15, 0.1)
+
+y1d <- dexp(x, 0.1)
+y1a <- dexp(x, 0.3)
+y1b <- dexp(x, 0.5)
+
+d7 <- data.frame(x = rep(x, 3), 
+                 y = c(y1d, y1a, y1b),
+                 c = c(rep(0.1, length(x)), rep(0.3, length(x)), rep(0.5, length(x))))
+
+p7 <- ggplot(d7, aes(x=x, y=y, colour=as.factor(c))) + geom_line() + 
+  theme_minimal() + scale_colour_discrete(name=expression(lambda)) + xlab("") + ylab("")
+ggsave(p7, filename="../img/l01-figure5-exponential-lambda-change.png", height=3, width=6, units="in", dpi=300)
+```
+
+Chi-square distribution.
+
+```{r}
+x = seq(0, 10, 0.01)
+df = c(1, 2, 3, 4, 6, 9)
+dat = data.frame(t = rep(x, length(df)), 
+                 p = dchisq(x, rep(df, each = length(x))), 
+                 dfr = as.factor(c(rep(df, each = length(x)))))
+head(dat)
+p <- ggplot(dat) + 
+  geom_line(aes(x = t, y = p, color = dfr), size = 0.4) + 
+  theme_minimal() + xlab("") + ylab("Density") + 
+  scale_colour_discrete(name = "Degrees of Freedom") + ylim(0, 0.5)
+print(p)
+ggsave(p, filename = "../img/hyp-example-chisq-distribution.png", height=3, width=6, units="in", dpi=300)
+```
+
+T distribution.
+
+```{r}
+x = seq(-4, 4, 0.01)
+df = c(1, 5, 10, 50)
+dat = data.frame(t = rep(x, 4), 
+                 p = dt(x, rep(df, each = length(x))), 
+                 dfr = as.factor(c(rep(df, each = length(x)))))
+head(dat)
+p <- ggplot(dat) + 
+  geom_line(aes(x = t, y = p, color = dfr), size = 0.4) + 
+  theme_minimal() + xlab("") + ylab("Density") + 
+  scale_colour_discrete(name = "Degrees of Freedom")
+print(p)
+ggsave(p, filename = "../img/hyp-example-t-distribution.png", height=3, width=6, units="in", dpi=300)
+```
+
+F distribution.
+
+```{r}
+x = seq(0, 5, 0.01)
+dfa = c(1, 2, 5, 50, 50)
+dfb = c(1, 1, 2, 1, 50)
+dat = data.frame(t = rep(x, 5), 
+                 df1 = rep(dfa, each = length(x)),
+                 df2 = rep(dfb, each = length(x)))
+dat <- dat %>% mutate(p = df(t, df1, df2), 
+                      dfr = paste("m=", df1, ", n=", df2, sep = ""))
+                 
+head(dat)
+p <- ggplot(dat) + 
+  geom_line(aes(x = t, y = p, color = dfr), size = 0.4) + 
+  theme_minimal() + xlab("") + ylab("Density") + 
+  scale_colour_discrete(name = "Degrees of Freedom")
+print(p)
+ggsave(p, filename = "../img/hyp-example-f-distribution.png", height=3, width=6, units="in", dpi=300)
+```
+
+

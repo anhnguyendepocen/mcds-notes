@@ -1,0 +1,7 @@
+pdflatex -jobname=pdf/all "\input{document}"
+pdflatex -jobname=pdf/ch1 "\includeonly{tex/mcds-overview}\input{document}"
+pdflatex -jobname=pdf/ch2 "\includeonly{tex/mcds-classification}\input{document}"
+pdflatex -jobname=pdf/ch3 "\includeonly{tex/mcds-regression}\input{document}"
+pdflatex -jobname=pdf/ch4 "\includeonly{tex/mcds-probability-distributions}\input{document}"
+pdflatex -jobname=pdf/ch5 "\includeonly{tex/mcds-maximum-likelihood}\input{document}"
+pdflatex -jobname=pdf/ch6 "\includeonly{tex/mcds-hypothesis-testing}\input{document}"

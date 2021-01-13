@@ -1,4 +1,4 @@
-\chapter{Maximum Likelihood Estimation* \label{chapter:mlebasics}}
+\chapter{The Basics of Maximum Likelihood Estimation \label{chapter:mlebasics}}
 
 Beneath our discussions of classification, regression, and probability distributions in Chapters~\ref{chapter:classification}, \ref{chapter:regression}, and \ref{chapter:probabilitydistributions} lies the tricky problem of \textbf{model fitting}. We've seen what classification and regression models look like, but we still haven't addressed how to fit these models using training data.
 
@@ -19,10 +19,43 @@ The higher the joint probability of the data (the more ``likely'' the data are) 
 $$ \log \mathcal{L}(\theta) = \sum_{i=1}^n \log p(x^{(i)}|\theta). $$
 
 In maximum likelihood estimation, we seek to find the $\theta$ for which the likelihood (or log-likelihood) is maximized. We do this by taking derivatives of the log-likelihood with respect to the various parameters and setting them equal to zero. The best-fit parameter estimates obtained in this way are called the \textbf{maximum likelihood estimates (MLEs)}. 
+\vspace{5mm}
+
+\begin{question}{}
+What are some reasons why we might want to fit data to a probability distribution?
+% Data summarization (don't need to keep entire dataset around)
+% Sampling
+% Many common models and hypothesis tests rely on parametric assumptions (T-tests, etc.)
+% We are less likely to overfit to particularities of our own datasets, such as outliers (KNN, etc.)
+% Detecting outliers or faulty assumptions
+\end{question}
+
+\section{Example: Fitting Data to a Normal Distribution}
+
+Imagine you have some data from a lab test that measures the concentration of a particular biomarker. You have data from $100$ different subjects. A histogram of the raw data looks like this:
+\begin{center}
+\includegraphics[width=0.7\textwidth]{img/normal-likelihood-example-data.png}
+\end{center}
+
+You want to find the normal distribution that best describes these data so you can create a reference distribution for this lab test. To do this, think about trying out several distributions with different values of $\mu$ and $\sigma$ and choosing the one that maximizes the log-likelihood. For example, here are three different normal distributions with different values of $\mu$ and $\sigma=0.7$: 
+\begin{center}
+\includegraphics[width=0.7\textwidth]{img/normal-likelihood-example-data-normal.png}
+\end{center}
+Here is what happens to the log-likelihood as you vary $\mu$. The log-likelihoods of the three distributions shown in the plot above are shown as dots with their corresponding colors, and the maximum likelihood estimate is shown as a vertical dotted line.
+\begin{center}
+\includegraphics[width=0.7\textwidth]{img/normal-likelihood-example-vary-mu.png}
+\end{center}
+Now, here's what happens to the log-likelihood when we vary $\sigma$, keeping $\mu$ fixed at its maximum likelihood estimate from the graph above. Again, the maximum likelihood estimate is shown as a vertical dotted line. 
+\begin{center}
+\includegraphics[width=0.7\textwidth]{img/normal-likelihood-example-vary-sigma.png}
+\end{center}
+For the record, I simulated these data from a normal distribution with $\mu=2.5$ and $\sigma=0.75$. The maximum likelihood estimates obtained from this dataset are $\hat{\mu} = 2.45$ and $\hat{\sigma} = 0.74$. 
+
+\section{Analytical Calculations of MLEs}
 
 In some simple cases, the MLEs can be calculated analytically. We will now go through a bunch of examples of how to find the MLEs of the probability distributions we saw in Chapter~\ref{chapter:probabilitydistributions}. 
 
-\section{Bernoulli MLE}
+\subsection{Bernoulli Distribution}
 
 The Bernoulli distribution is described in Section~\ref{sect:bernoulli}. Our goal is to find the parameter, $\mu$, of this distribution, given some observed data, $x^{(1)}, \dots, x^{(n)}$. The data will consist of a list of 1s and 0s, since Bernoulli random variables can only take the values 0 or 1.
 
@@ -42,7 +75,7 @@ We see that the MLE, $\hat{\mu}$, is simply the sum of our data -- i.e. the numb
 
 This makes sense: if you want to know the probability that a coin will come up heads, a good way to estimate it is to flip the coin a bunch of times and calculate the fraction of observations in which the coin comes up heads. 
 
-\section{Binomial MLE}
+\subsection{Binomial Distribution}
 
 The binomial distribution is described in Section~\ref{sect:binomial}. We will make one notational change from that section, which is to call the number of Bernoulli trials $m$ instead of $n$, since we are using $n$ to refer to the number of data samples. To keep things simple, we will assume that $m$ is a known quantity. As before, we first write down the log-likelihood:
 \begin{align*}
@@ -58,10 +91,10 @@ We set this equal to zero and solve for $\hat{\mu}$ (the maximum likelihood esti
 & \implies \boxed{\hat{\mu} = \frac{1}{nm} \sum_{i=1}^n x^{(i)}} \end{align*}
 
 \begin{question}{}
-Interpret this finding. Does the MLE for $\mu$ make intuitive sense to you? Think through a few of your examples from Question~\ref{question:binomialex}. 
+Interpret the MLE for the parameter, $\mu$, of a binomial distribution, assuming fixed $m$ (number of trials). Does the MLE for $\mu$ make intuitive sense to you? Think through a few of your examples from Question~\ref{question:binomialex}. 
 \end{question}
 
-\section{Normal MLE}
+\subsection{Normal Distribution \label{sect:mlenormal}}
 
 The normal distribution is described in Section~\ref{sect:normal}. We will follow the same procedure as in the previous two sections, except that now we have two parameters to solve for, $\mu$ and $\sigma$, instead of one. First, we write down the log-likelihood:
 \begin{align*}
@@ -84,10 +117,10 @@ We set this equal to zero and solve for $\hat{\sigma}$ (the maximum likelihood e
 \end{align*}
 
 \begin{question}{}
-Interpret these findings. Do the MLEs for $\mu$ and $\sigma$ make intuitive sense to you? Think through a few of your examples from Question~\ref{question:normalex}. 
+Interpret the MLEs for the parameters, $\mu$ and $\sigma$, of a normal distribution. Do these results make intuitive sense to you? Think through a few of your examples from Question~\ref{question:normalex}. 
 \end{question}
 
-\section{Poisson MLE}
+\subsection{Poisson Distribution}
 
 The Poisson distribution is described in Section~\ref{sect:poisson}. To find the MLE for $\lambda$, its mean, we first (as usual) write down the log-likelihood:
 \begin{align*}
@@ -102,10 +135,10 @@ We set this equal to zero and solve for $\hat{\lambda}$ (the maximum likelihood 
 \begin{align*} \sum_{i=1}^n \left[ -1 + \frac{x^{(i)}}{\hat{\lambda}} \right] = 0 & \implies \boxed{\hat{\lambda} = \frac{1}{n} \sum_{i=1}^n x^{(i)}} \end{align*}
 
 \begin{question}{}
-Interpret this finding. Does the MLE for $\lambda$ make intuitive sense to you? Think through a few of your examples from Question~\ref{question:poissonex}. 
+Interpret the MLE for the parameter, $\lambda$, of a Poisson distribution. Does this result make intuitive sense to you? Think through a few of your examples from Question~\ref{question:poissonex}. 
 \end{question}
 
-\section{Geometric MLE}
+\subsection{Geometric Distribution}
 
 The geometric distribution is described in Section~\ref{sect:geometric}. To find the MLE for $\mu$, we first write down the log-likelihood:
 \begin{align*}
@@ -121,10 +154,10 @@ We set this equal to zero and solve for $\hat{\mu}$ (the maximum likelihood esti
 & \implies \boxed{\hat{\mu} = \frac{n}{\sum_{i=1}^n (x^{(i)}+1)} }\end{align*}
 
 \begin{question}{}
-Interpret this finding. Does the MLE for $\mu$ make intuitive sense to you? Think through a few of your examples from Question~\ref{question:geometricex}. 
+Interpret the MLE for the parameter, $\mu$, of a geometric distribution. Does this result make intuitive sense to you? Think through a few of your examples from Question~\ref{question:geometricex}. 
 \end{question}
 
-\section{Exponential MLE}
+\subsection{Exponential Distribution}
 
 The exponential distribution is described in Section~\ref{sect:exponential}. To find the MLE for $\lambda$, we first write down the log-likelihood:
 \begin{align*}
@@ -139,10 +172,10 @@ We set this equal to zero and solve for $\hat{\lambda}$ (the maximum likelihood 
 \begin{align*} \sum_{i=1}^n \left[ \frac{1}{\hat{\lambda}} - x^{(i)} \right] = 0 & \implies \boxed{\hat{\lambda} = \frac{n}{\sum_{i=1}^n x^{(i)}}} \end{align*}
 
 \begin{question}{}
-Interpret this finding. Does the MLE for $\lambda$ make intuitive sense to you? Think through a few of your examples from Question~\ref{question:exponentialex}. 
+Interpret the MLE for the parameter, $\lambda$, of an exponential distribution. Does this result make intuitive sense to you? Think through a few of your examples from Question~\ref{question:exponentialex}. 
 \end{question}
 
-\section{Summary}
+\section{Summary of MLEs for Common Distributions}
 
 The table below contains a summary of the MLEs of various parameters from some common probability distributions.
 

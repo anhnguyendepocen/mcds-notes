@@ -1,4 +1,4 @@
-\chapter{Classification \label{chapter:classification}}
+\chapter{The Basics of Classification \label{chapter:classification}}
 
 Classification is a form of supervised learning in which our goal is to learn a mapping between some features, $x$, and an output, $y$. In classification, the output, $y$, is a category. In \textbf{binary classification} (by far the most common), there are only two categories: yes or no, usually represented as ``0'' (no) or ``1'' (yes). In \textbf{multi-class classification}, there are more than two categories.
 
@@ -39,9 +39,27 @@ The simplest decision boundary is, arguably, a line. The logistic regression\ind
 \includegraphics[width=0.7\textwidth]{img/esl-logistic.png}
 \end{center}
 
+\noindent The output of a fitted logistic regression model from R looks like this:
+
+\begin{center}
+\includegraphics[width=0.7\textwidth]{img/glm-binomial-example.png}
+\end{center}
+
+\noindent The equation of the line (or, in higher dimensions, hyperplane) that forms the decision boundary in logistic regression can be obtained by setting the linear sum of coefficients of this model equal to zero. 
+\begin{align*} 
+0.9780 + 0.1344 x_1 - 1.3981 x_2 = 0 \\
+\implies x_2 = \frac{0.9780 + 0.1344 x_1}{1.3981}
+\end{align*}
+
+\noindent At any point, $(x_1, x_2)$, in the feature space, the model's predicted probability of a positive outcome (i.e. probability of an ER readmission) is related to the coefficients by this equation
+$$ \log \frac{P[Y=1]}{1 - P[Y=1]} = 0.9780 + 0.1344 x_1 - 1.3981 x_2 $$
+The decision boundary occurs when $P[Y=1] = 0.5$ (total uncertainty, e.g. a coin toss). Another way to write this equation is:
+$$ P[Y=1] = \frac{1}{1 + \exp(-(0.9780 + 0.1344 x_1 - 1.3981 x_2))} $$
+The functional form on the right, $1/(1 + \exp(-z))$, is called the \textbf{logistic function}; this is how logistic regression got its name. We will learn much more about the math behind logistic regression in subsequent chapters. 
+
 \subsection{K Nearest Neighbors (KNN)}
 
-Another approach is to make no assumptions about the shape of the decision boundary. To make a prediction about a new patient, we simply allow the $K$ nearest neighbors to vote. The parameter $K$ must be set independently and is called a \textbf{hyperparameter}. 
+Another -- completely different -- approach to classification is to start with no assumptions about the shape of the decision boundary. To make a prediction about a new patient, we simply identify the $K$ nearest neighbors to that patient from our training set and allow them to vote on whether or not the new patient will be readmitted. The parameter $K$ must be set independently and is called a \textbf{hyperparameter}. 
 
 \noindent Here is the decision boundary for KNN with $K=15$:
 \begin{center}
@@ -60,20 +78,11 @@ And here is the decision boundary produced by this tree:
 \end{center}
 
 \begin{question}{}
-There are six rectangular regions in this picture corresponding to the six leaves of the tree. Identify all six and which leaves they correspond to on the decision tree, above.
+How can you tell, just by looking at these images, which feature ($x_1$ or $x_2$) impacts the outcome the most? Which one is it?
 \end{question}
 
 \begin{question}{}
-What are the advantages and disadvantages of the decision boundaries produced by:
-  \begin{enumerate}
-  \item Logistic regression?
-  \item KNN ($K=15$)?
-  \item Decision tree?
-  \end{enumerate}
-\end{question}
-
-\begin{question}{}
-What makes a good classification algorithm? Consider issues of accuracy, generalizability, and speed (both to train the algorithm and to use it to make predictions on new samples). 
+There are six rectangular regions in the picture of the decision tree decision boundary. Each corresponds to one of the six leaves of the tree. Identify all six and which leaves they correspond to on the decision tree.
 \end{question}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -96,4 +105,18 @@ You can see that the shapes of the 25\% and 75\% probability lines have much mor
 \begin{center}
 \includegraphics[width=0.7\textwidth]{img/esl-decision-tree-prob.png}
 \end{center}
-In this case, the color of the background in the different regions is relatively flat. The probability in each rectangular region (corresponding to each leaf of the tree) is constant. It equals the number of red dots in that region divided by the total number of dots. (Convince yourself of this.) 
+The color of the background in the regions corresponding to the six leaves of the tree is the same throughout each region. That's because the probability in each rectangular region (corresponding to each leaf of the tree) is constant. It equals the number of red dots in that region divided by the total number of dots. 
+
+\begin{question}{}
+What are the advantages and disadvantages of each algorithm?
+  \begin{enumerate}
+  \item Logistic regression?
+  \item KNN ($K=15$)?
+  \item Decision tree?
+  \end{enumerate}
+\end{question}
+
+\begin{question}{}
+What makes a good classification algorithm? Consider issues of accuracy, generalizability, and speed (both to train the algorithm and to use it to make predictions on new samples). 
+\end{question}
+

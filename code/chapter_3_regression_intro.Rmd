@@ -1,0 +1,168 @@
+---
+title: "The Basics of Regression"
+output: html_notebook
+---
+
+## Libraries
+
+```{r setup}
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(survival)
+library(survminer)
+library(lubridate)
+library(tidyr)
+library(stringr)
+library(forcats)
+library(wesanderson)
+library(class)
+library(rpart)
+library(rpart.plot)
+library(plotly)
+```
+
+## ESL Dataset
+
+```{r}
+load("../data/mixture.example.RData")
+intercept = 50.0
+coef_x1 = 10.0
+coef_x2 = -2.0
+set.seed(1000)
+df <- data.frame(x1 = mixture.example$x[,1], 
+                 x2 = mixture.example$x[,2]) %>%
+  mutate(y = intercept + coef_x1 * x1 + coef_x2 * x2 + rnorm(length(x1), 0, 5))
+x.grid <- seq(min(df$x1), max(df$x1), 0.1)
+y.grid <- seq(min(df$x2), max(df$x2), 0.1)
+hist(df$y)
+```
+
+Figure (just the dataset)
+
+```{r}
+xy.grid <- expand.grid(x.grid, y.grid)
+names(xy.grid) <- c("x1", "x2")
+p <- ggplot(df) + 
+  geom_point(aes(x = x1, y = x2, colour = y, fill = y), pch = 21) + 
+  geom_point(aes(x = x1, y = x2), alpha = 0.5, data = xy.grid, colour = "gray50", size = 0.02) + 
+  theme_bw() + 
+  xlab("Disease Severity Score (x1)") + 
+  ylab("Social Determinants Score (x2)") + 
+  theme(legend.position = "bottom", panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
+  scale_colour_gradient(name = "Recurrence\nBiomarker (y)", low = "#00bfc4", high = "#f8766d") + 
+  scale_fill_gradient(name = "Recurrence\nBiomarker (y)", low = "#00bfc4", high = "#f8766d")
+print(p)
+ggsave(p, filename = "../img/esl-reg-just-data.png", height=4.5, width=4, units="in", dpi=300)
+```
+
+Linear regression
+
+```{r}
+x.grid <- seq(min(df$x1), max(df$x1), 0.05)
+y.grid <- seq(min(df$x2), max(df$x2), 0.05)
+xy.grid <- expand.grid(x.grid, y.grid)
+names(xy.grid) <- c("x1", "x2")
+m <- lm(y ~ x1 + x2, data = df)
+xy.grid$yhat <- predict(m, xy.grid)
+p <- ggplot(df) + 
+  geom_point(aes(x = x1, y = x2, colour = y, fill = y), pch = 21) + 
+  geom_point(aes(x = x1, y = x2, colour = yhat), alpha = 0.4, data = xy.grid, size = 0.5) + 
+  theme_bw() + 
+  xlab("Disease Severity Score (x1)") + 
+  ylab("Social Determinants Score (x2)") + 
+  scale_fill_gradient(name = "Recurrence\nBiomarker (y)", low = "#00bfc4", high = "#f8766d") +
+  stat_contour(aes(x = x1, y = x2, z = yhat), breaks = quantile(xy.grid$yhat, seq(0, 1, 0.25)), 
+               data = xy.grid, colour = "gray30") + 
+  scale_colour_gradient(name = "Recurrence\nBiomarker (y)", low = "#00bfc4", high = "#f8766d") + 
+  theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
+  coord_cartesian(xlim=c(min(xy.grid$x1),max(xy.grid$x1)), ylim=c(min(xy.grid$x2),max(xy.grid$x2)))
+print(p)
+ggsave(p, filename = "../img/esl-reg-linear.png", height=4, width=4, units="in", dpi=300)
+```
+
+Output from linear regression model.
+
+```{r}
+summary(m)
+```
+
+KNN with K=15
+
+```{r}
+x.grid <- seq(min(df$x1), max(df$x1), 0.05)
+y.grid <- seq(min(df$x2), max(df$x2), 0.05)
+xy.grid <- expand.grid(x.grid, y.grid)
+names(xy.grid) <- c("x1", "x2")
+m <- knn(df[,1:2], xy.grid, df[,3], k=15, prob=TRUE)
+xy.grid$yhat <- as.numeric(as.character(m))
+p <- ggplot(df) + 
+  geom_point(aes(x = x1, y = x2, colour = y, fill = y), pch = 21) + 
+  geom_point(aes(x = x1, y = x2, colour = yhat), alpha = 0.4, data = xy.grid, size = 0.5) + 
+  theme_bw() + 
+  xlab("Disease Severity Score (x1)") + 
+  ylab("Social Determinants Score (x2)") +  
+  scale_fill_gradient(name = "Recurrence\nBiomarker (y)", low = "#00bfc4", high = "#f8766d") +
+  stat_contour(aes(x = x1, y = x2, z = yhat), breaks = quantile(xy.grid$yhat, seq(0, 1, 0.25)), 
+               data = xy.grid, colour = "gray30") + 
+  scale_colour_gradient(name = "Recurrence\nBiomarker (y)", low = "#00bfc4", high = "#f8766d") + 
+  theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
+  coord_cartesian(xlim=c(min(xy.grid$x1),max(xy.grid$x1)), ylim=c(min(xy.grid$x2),max(xy.grid$x2)))
+print(p)
+ggsave(p, filename = "../img/esl-reg-knn-15.png", height=4, width=4, units="in", dpi=300)
+```
+
+Decision tree
+
+```{r}
+x.grid <- seq(min(df$x1), max(df$x1), 0.05)
+y.grid <- seq(min(df$x2), max(df$x2), 0.05)
+xy.grid <- expand.grid(x.grid, y.grid)
+names(xy.grid) <- c("x1", "x2")
+m <- rpart(y ~ x1 + x2, data = df)
+xy.grid$yhat <- predict(m, xy.grid)
+p <- ggplot(df) + 
+  geom_point(aes(x = x1, y = x2, colour = y, fill = y), pch = 21) + 
+  geom_point(aes(x = x1, y = x2, colour = yhat), alpha = 0.4, data = xy.grid, size = 0.5) + 
+  theme_bw() + 
+  xlab("Disease Severity Score (x1)") + 
+  ylab("Social Determinants Score (x2)") + 
+  scale_fill_gradient(name = "Recurrence\nBiomarker (y)", low = "#00bfc4", high = "#f8766d") +
+  stat_contour(aes(x = x1, y = x2, z = yhat), breaks = quantile(xy.grid$yhat, seq(0, 1, 0.25)), 
+               data = xy.grid, colour = "gray30") + 
+  scale_colour_gradient(name = "Recurrence\nBiomarker (y)", low = "#00bfc4", high = "#f8766d") + 
+  theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
+  coord_cartesian(xlim=c(min(xy.grid$x1),max(xy.grid$x1)), ylim=c(min(xy.grid$x2),max(xy.grid$x2)))
+print(p)
+ggsave(p, filename = "../img/esl-reg-decision-tree.png", height=4, width=4, units="in", dpi=300)
+```
+
+Plot the tree!
+
+```{r}
+palette <- colorRampPalette(colors=c("#00BFC4", "#F8766D"))
+png(filename = "../img/esl-decision-tree-just-tree-reg.png", height=4, width=4, units="in", res=300)
+rpart.plot(m, box.palette=palette(20))
+dev.off()
+```
+
+Plots of the individual covariates vs. the outcome.
+
+```{r}
+p <- ggplot(df) + 
+  geom_point(aes(x = x1, y = y, colour = y)) + 
+  theme_bw() + 
+  scale_colour_gradient(low = "#00bfc4", high = "#f8766d", guide = FALSE) 
+print(p)
+ggsave(p, filename = "../img/esl-reg-x1.png", height=4, width=4, units="in", dpi=300)
+
+p <- ggplot(df) + 
+  geom_point(aes(x = x2, y = y, colour = y)) + 
+  theme_bw() + 
+  scale_colour_gradient(low = "#00bfc4", high = "#f8766d", guide = FALSE) 
+print(p)
+ggsave(p, filename = "../img/esl-reg-x2.png", height=4, width=4, units="in", dpi=300)
+```
+
+
+

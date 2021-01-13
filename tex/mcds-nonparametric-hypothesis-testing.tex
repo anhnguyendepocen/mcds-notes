@@ -1,0 +1,59 @@
+\chapter{Nonparametric and Exact Hypothesis Tests}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Mann-Whitney Test}
+
+All of these variants of the T-test make assumptions about the normality of the data. Sometimes you want to compare the means of two groups but you aren't sure whether the normal assumption holds. In this case, you might want to try a \textbf{nonparametric} alternative to the two-sample T-test called the \textbf{Mann-Whitney Test}, or Wilcoxon Rank Sum Test. 
+
+Some interesting points about nonparametric tests:
+\begin{itemize}
+\item There are no distributional assumptions.
+\item Most nonparametric methods replace data by their ranks, which are invariant to any monotonic transformation of the data.
+\item Compare this to the T-test: If you use the log-transform of the data instead of the original values and do a T-test on them, the $p$-value can change. But with ranks that doesn't happen.
+\item Replacing the data by ranks also makes the test less sensitive to outliers.
+\item But remember, there is no free lunch: You will always lose power relative to a parametric test if you use the nonparametric alternative in a case where the distributional assumptions of the parametric test are true.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Fisher's Exact Test}
+
+For small sample sizes, the assumptions underlying Pearson's chi-squared test are no longer true. In these cases, it is common to replace the chi-squared test with something called \textbf{Fisher's Exact Test}, which calculates an exact $p$-value directly by considering every possible outcome. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Tests of Normality}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{The Binomial Test}
+
+The \textbf{binomial test} is a simple test of the probability of success in a Bernoulli experiment (see Sections~\ref{sect:bernoulli} and \ref{sect:binomial}). 
+
+\paragraph{Example: Diabetes Prevalence with Different Sample Sizes} The prevalence of diabetes in the U.S. population in 2020 was 10.5\% (Source: CDC's National Diabetes Statistics Report, 2020). Imagine that you test a random sample of $10$ people from your small Appalachian town and none of them are hypertensive.
+
+\noindent Let's conduct a hypothesis test to examine this result.
+
+\begin{enumerate}
+\item \textit{Create an initial \textbf{research hypothesis}}. ``The prevalence of hypertension in this community is different from that of the U.S. population at large.''
+\item \textit{State the \textbf{null hypothesis}}. Let $\mu_c$ be the prevalence of hypertension in the Appalachian community and $\mu_0$ be its prevalence for the general U.S. population.
+\begin{align*}
+H_0: & \mu_c = \mu_0 \\
+H_a: & \mu_c \neq \mu_0
+\end{align*}
+
+\begin{question}{}
+These statements about the null and alternative hypotheses in this example look the same as in the previous example, but they mean something different here. What is the difference between $\mu_c$ and $\mu_0$ in the previous example vs. this one?
+\end{question}
+
+\item \textit{List statistical {assumptions}}. We assume that the individuals we tested were chosen independently from the population of the Appalachian town.
+\item \textit{Decide on an appropriate test and test statistic}. Our test statistic in this case is going to be the \textbf{Z-statistic}, which measures the deviation of the sample mean from the population mean in units of the \textbf{standard deviation of the sample mean}, $\sigma/\sqrt{n}$:
+$$ Z = \frac{\bar{x} - \mu_0}{\sigma / \sqrt{n}} \qquad \text{where} \qquad \bar{x} = \frac{1}{n} \sum_{i=1}^n x^{(i)}$$
+In our case, $n = 20$ because $\bar{x}$, our sample mean, is an average of 20 samples.  
+\item \textit{Derive the distribution of the test statistic under the null}. The Z-statistic follows a \textbf{standard normal} distribution under the null, which is a normal distribution with $\mu=0$ and $\sigma=1$. To see this, remember that the distribution of $\bar{x}$ (blue distribution in the figure) under the null is $\mathcal{N}(\mu_0, \sigma/\sqrt{n})$. When you calculate the Z-statistic, you shift that distribution by a distance $\mu_0$ so it is centered at zero, then adjust its width to 1.0 by dividing by $\sigma/\sqrt{n}$.
+\item \textit{Select a {significance level} under which you'll reject the null}. For the purposes of this example, we will choose $\alpha = 0.05$ (5\% chance of a type I error). The null distribution of the Z-statistic is shown below. The vertical dotted black lines are situated at the \textbf{critical values} that produce $\alpha = 0.05$ (the area under the null distribution that is outside those lines is 0.05). 
+\item \textit{Compute the observed value of the test statistic from the data.} The observed value of the test statistic is:
+$$ Z = \frac{\bar{x} - \mu_0}{\sigma / \sqrt{n}} = \frac{125.45 - 139.75}{21.40/\sqrt{20}} = -2.99. $$
+\item \textit{Decide whether or not to reject the null hypothesis.} The value of our test statistic falls outside the region contained by the critical values (the \textbf{acceptance region}), so we reject the null at this value of $\alpha$.
+\end{enumerate}

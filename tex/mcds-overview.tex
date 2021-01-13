@@ -1,4 +1,4 @@
-\chapter{Overview of Clinical Data Science \label{chapter:overview}}
+\chapter{A Taxonomy of Problems \label{chapter:overview}}
 
 The term ``data science'' has been overused in recent years, and it has become something of a buzzword as a result\footnote{See also: ``artificial intelligence'', ``machine learning'', ``deep learning''.}. However, I think it can best be described as: 
 \begin{quote}
@@ -6,15 +6,11 @@ The term ``data science'' has been overused in recent years, and it has become s
 \end{quote}
 Data science is about using the machinery of statistics and computer science to solve real-world problems. In the clinical domain, that means incorporating methods from epidemiology, biostatistics, computer science, and machine learning with insights gained from the clinical research literature and the practical experiences of physicians, nurses, hospital administrators, operational teams, and biomedical researchers.
 
-So why is data science considered its own thing, and why am I creating a separate course about it instead of pointing you to Khan Academy, Coursera, etc., all of which have excellent courses on these various technical domains? Because (a) if you tried to learn data science that way, you'd never get anywhere; there are simply too many different subjects you'd have to master, and (b) clinical data has issues that are domain-specific, and that rarely come up in general courses on machine learning and related topics. Many times I will think I know what method to use to solve a particular problem, but then when it comes time to gather the data, unusual and unforeseen problems arise. This happens all the time to biomedical and clinical data science researchers, and it is particularly problematic for people who are encountering data analysis and statistical/machine learning methods for the first time. Many assume the problem is them and give up, when in reality they are encountering a genuine difficulty with the data they're working with that the folks doing ad recommendations at Google never have to face.
-
-However, my main reason for doing this is that I believe that in healthcare, clinical and operational teams will increasingly come to rely on data. People who have mastered at least the basic vocabulary of data science will be best positioned to think creatively about how we can improve healthcare using data and analytics, and will be assets to their teams. 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Project Examples \label{section:projectexamples}}
 
-Whenever I teach, I ask students to provide some examples of projects for which they think data and machine learning/statistics could be useful. The following are real examples. There are many and some of them are long, but I encourage you to read through all of them to see the diversity of problems that physicians and folks working in population health, health system operations, etc. come up with.
+Whenever I teach, I ask students to provide some examples of projects for which they think data science could be useful. The following are real examples. They provide a broad representation of most of the types of problems clinicians and health system operations/population health teams are interested in. 
 
 \begin{enumerate}
 \item \textit{Unnecessary ER trips.} ``Given a number of factors (types of admissions a person has had in the past, number of admissions/re-admissions, social determinants, etc.) can we predict who is going to show up at the emergency room unnecessarily''
@@ -35,7 +31,7 @@ Whenever I teach, I ask students to provide some examples of projects for which 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{A Taxonomy of Problems}
+\section{Abstracting the Problem}
 
 All of these examples describe situations where we want to use data to answer questions of clinical or operational importance. While the details differ in each scenario, the important thing to notice here is that many of the tasks themselves are structurally similar. 
 

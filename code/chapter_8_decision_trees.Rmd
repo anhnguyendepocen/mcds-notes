@@ -1,0 +1,22 @@
+---
+title: "Decision Tree Building"
+output: html_notebook
+---
+
+Standard deviation reduction!
+
+```{r}
+set.seed(200)
+df <- data.frame(y = c(rnorm(100, 0, 1), rnorm(100, 3, 1)), 
+                 gauss_id = c(rep(0.1, 100), rep(0.9, 100)),
+                 x1 = rbinom(200, 1, 0.5)) %>%
+  mutate(x2 = rbinom(length(x1), 1, gauss_id)) %>%
+  gather(x1:x2, key = "variable", value = "value")
+
+p <- ggplot(df) + 
+  geom_histogram(aes(x = y, fill = as.factor(value)), position = "stack", alpha = 0.5, bins = 30) + 
+  theme_bw() + scale_fill_discrete(name = "Variable Value") + 
+  facet_wrap(~variable, nrow = 2) + ylab("Count") + xlab("Outcome (y)")
+print(p)
+ggsave(p, filename = "../img/esl-reg-decision-tree-varsplit.png", height=4, width=6, units="in", dpi=300)
+```

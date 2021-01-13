@@ -1,0 +1,78 @@
+---
+title: "Maximum Likelihood Estimation"
+output: html_notebook
+---
+
+## Libraries
+
+```{r setup}
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(survival)
+library(survminer)
+library(lubridate)
+library(tidyr)
+library(stringr)
+library(forcats)
+library(wesanderson)
+library(class)
+library(rpart)
+library(rpart.plot)
+```
+
+## Plot of Normal Likelihood vs. Observed Data
+
+```{r}
+set.seed(500)
+norm_df <- rnorm(100, 2.5, 0.7)
+p <- ggplot() + geom_histogram(aes(x = norm_df), colour = "gray60", fill = "gray60", bins = 60, alpha = 0.8) + 
+  theme_bw() + xlab("Biomarker Concentration") + ylab("Count") + xlim(0, 8)
+print(p)
+ggsave(p, filename = "../img/normal-likelihood-example-data.png", height=3, width=4, units="in", dpi=300)
+
+sigma = 0.7
+pal = brewer_pal(3, "Dark2")
+x <- seq(0, 8, 0.1)
+p <- ggplot() + geom_histogram(aes(x = norm_df), colour = "gray60", fill = "gray60", alpha = 0.7, bins = 60) + 
+  theme_bw() + xlab("Biomarker Concentration") + ylab("Count") + 
+  geom_line(aes(x = x, y = dnorm(x, 0, sigma)), colour = pal(3)[1]) + 
+  geom_line(aes(x = x, y = dnorm(x, 2, sigma)), colour = pal(3)[2]) + 
+  geom_line(aes(x = x, y = dnorm(x, 5, sigma)), colour = pal(3)[3]) + 
+  xlim(0, 8)
+print(p)
+ggsave(p, filename = "../img/normal-likelihood-example-data-normal.png", height=3, width=4, units="in", dpi=300)
+
+sigma = 0.7
+df = {}
+for (mu in seq(0, 5, 0.1)) {
+  log_lik <- (-100/2) * log(2*pi) - (100/2) * log(sigma^2) - (1/(2*sigma^2)) * sum(sapply(norm_df, function(x){return((x-mu)^2)}))
+  df = rbind(df, data.frame(mu, log_lik))
+}
+mle_mu <- sum(norm_df) / 100
+p <- ggplot(df) + geom_point(aes(x = mu, y = log_lik), colour = "gray30", alpha = 0.8) + 
+  theme_bw() + xlab(expression(mu)) + ylab("Log-Likelihood") + 
+  geom_vline(xintercept = mle_mu, linetype = "dotted", colour = "red") + 
+  geom_point(aes(x = 0, y = (-100/2) * log(2*pi) - (100/2) * log(sigma^2) - 
+                   (1/(2*sigma^2)) * sum(sapply(norm_df, function(x){return((x-0)^2)}))), colour = pal(3)[1], size = 3) + 
+  geom_point(aes(x = 2, y = (-100/2) * log(2*pi) - (100/2) * log(sigma^2) - 
+                   (1/(2*sigma^2)) * sum(sapply(norm_df, function(x){return((x-2)^2)}))), colour = pal(3)[2], size = 3) + 
+  geom_point(aes(x = 5, y = (-100/2) * log(2*pi) - (100/2) * log(sigma^2) - 
+                   (1/(2*sigma^2)) * sum(sapply(norm_df, function(x){return((x-5)^2)}))), colour = pal(3)[3], size = 3)
+print(p)
+ggsave(p, filename = "../img/normal-likelihood-example-vary-mu.png", height=3, width=4, units="in", dpi=300)
+
+mu = mle_mu
+df = {}
+for (sigma in seq(0, 4, 0.1)) {
+  log_lik <- (-100/2) * log(2*pi) - (100/2) * log(sigma^2) - (1/(2*sigma^2)) * sum(sapply(norm_df, function(x){return((x-mu)^2)}))
+  df = rbind(df, data.frame(sigma, log_lik))
+}
+mle_sigma <- sqrt(sum(sapply(norm_df, function(x){return((x-mu)^2)})) / 100)
+p <- ggplot(df) + geom_point(aes(x = sigma, y = log_lik), colour = "gray30", alpha = 0.8) + 
+  theme_bw() + xlab(expression(sigma)) + ylab("Log-Likelihood") + 
+  geom_vline(xintercept = mle_sigma, linetype = "dotted", colour = "red")
+print(p)
+ggsave(p, filename = "../img/normal-likelihood-example-vary-sigma.png", height=3, width=4, units="in", dpi=300)
+```
+
