@@ -39,11 +39,11 @@ d2 <- data.frame(x = rep(x, 3),
                  y = c(y2a, y2b, y2c),
                  c = c(rep(0.5, length(x)), rep(1.0, length(x)), rep(2.0, length(x))))
 
-p1 <- ggplot(d1) + geom_line(aes(x=x, y=y, colour=as.factor(c))) + theme_minimal() + 
+p1 <- ggplot(d1) + geom_line(aes(x=x, y=y, colour=as.factor(c))) + theme_bw() + 
   scale_colour_discrete(name=expression(mu)) + xlab("") + ylab("")
 ggsave(p1, filename="../img/l01-figure1-normal-mean-change.png", height=3, width=6, units="in", dpi=300)
 
-p2 <- ggplot(d2) + geom_line(aes(x=x, y=y, colour=as.factor(c))) + theme_minimal() + 
+p2 <- ggplot(d2) + geom_line(aes(x=x, y=y, colour=as.factor(c))) + theme_bw() + 
   scale_colour_discrete(name=expression(sigma)) + xlab("") + ylab("")
 ggsave(p2, filename="../img/l01-figure2-normal-sd-change.png", height=3, width=6, units="in", dpi=300)
 
@@ -73,14 +73,14 @@ p3 <- ggplot(d3, aes(x=x, y=y, fill=as.factor(c))) +
   geom_bar(data = subset(d3, c==10), stat = "identity", colour=NA, alpha=0.5) +
   geom_bar(data = subset(d3, c==50), stat = "identity", colour=NA, alpha=0.5) +
   geom_bar(data = subset(d3, c==80), stat = "identity", colour=NA, alpha=0.5) +
-  theme_minimal() + scale_fill_discrete(name="n") + xlab("") + ylab("") + xlim(0, 60)
+  theme_bw() + scale_fill_discrete(name="n") + xlab("") + ylab("") + xlim(0, 60)
 ggsave(p3, filename="../img/l01-figure3-binom-n-change.png", height=3, width=6, units="in", dpi=300)
 
 p4 <- ggplot(d4, aes(x=x, y=y, fill=as.factor(c))) + 
   geom_bar(data = subset(d4, c==0.2), stat = "identity", colour=NA, alpha=0.5) +
   geom_bar(data = subset(d4, c==0.5), stat = "identity", colour=NA, alpha=0.5) +
   geom_bar(data = subset(d4, c==0.9), stat = "identity", colour=NA, alpha=0.5) +
-  theme_minimal() + scale_fill_discrete(name=expression(mu)) + xlab("") + ylab("") + xlim(0, 52)
+  theme_bw() + scale_fill_discrete(name=expression(mu)) + xlab("") + ylab("") + xlim(0, 52)
 ggsave(p4, filename="../img/l01-figure4-binom-p-change.png", height=3, width=6, units="in", dpi=300)
 
 n <- 100
@@ -90,7 +90,7 @@ d5 <- data.frame(mean.binom = n*p, var.binom = n*p*(1-p))
 
 p5 <- ggplot(d5) + geom_point(aes(x=mean.binom, y=var.binom), pch=21, 
                               colour="gray50", fill="gray30", alpha=0.6, size=1.0) +
-  xlab("Mean (Binomial)") + ylab("Variance (Binomial)") + theme_minimal()
+  xlab("Mean (Binomial)") + ylab("Variance (Binomial)") + theme_bw()
 ggsave(p5, filename="../img/l01-figure5-mean-var-binomial.png", height=3, width=3.5, units="in", dpi=300)
 
 ```
@@ -108,7 +108,7 @@ d6 <- data.frame(x = rep(x, 4),
                  c = c(rep(1, length(x)), rep(3, length(x)), rep(7, length(x)), rep(15, length(x))))
 
 p6 <- ggplot(d6, aes(x=x, y=y, colour=as.factor(c))) + geom_line() + geom_point() + 
-  theme_minimal() + scale_colour_discrete(name=expression(lambda)) + xlab("") + ylab("")
+  theme_bw() + scale_colour_discrete(name=expression(lambda)) + xlab("") + ylab("")
 ggsave(p6, filename="../img/l01-figure3a-poisson-lambda-change.png", height=3, width=6, units="in", dpi=300)
 ```
 
@@ -124,7 +124,7 @@ d7 <- data.frame(x = rep(x, 3),
                  c = c(rep(0.1, length(x)), rep(0.3, length(x)), rep(0.5, length(x))))
 
 p7 <- ggplot(d7, aes(x=x, y=y, colour=as.factor(c))) + geom_line() + geom_point() + 
-  theme_minimal() + scale_colour_discrete(name=expression(mu)) + xlab("") + ylab("")
+  theme_bw() + scale_colour_discrete(name=expression(mu)) + xlab("") + ylab("")
 ggsave(p7, filename="../img/l01-figure4-geometric-mu-change.png", height=3, width=6, units="in", dpi=300)
 ```
 
@@ -140,7 +140,7 @@ d7 <- data.frame(x = rep(x, 3),
                  c = c(rep(0.1, length(x)), rep(0.3, length(x)), rep(0.5, length(x))))
 
 p7 <- ggplot(d7, aes(x=x, y=y, colour=as.factor(c))) + geom_line() + 
-  theme_minimal() + scale_colour_discrete(name=expression(lambda)) + xlab("") + ylab("")
+  theme_bw() + scale_colour_discrete(name=expression(lambda)) + xlab("") + ylab("")
 ggsave(p7, filename="../img/l01-figure5-exponential-lambda-change.png", height=3, width=6, units="in", dpi=300)
 ```
 
@@ -155,7 +155,7 @@ dat = data.frame(t = rep(x, length(df)),
 head(dat)
 p <- ggplot(dat) + 
   geom_line(aes(x = t, y = p, color = dfr), size = 0.4) + 
-  theme_minimal() + xlab("") + ylab("Density") + 
+  theme_bw() + xlab("") + ylab("Density") + 
   scale_colour_discrete(name = "Degrees of Freedom") + ylim(0, 0.5)
 print(p)
 ggsave(p, filename = "../img/hyp-example-chisq-distribution.png", height=3, width=6, units="in", dpi=300)
@@ -172,7 +172,7 @@ dat = data.frame(t = rep(x, 4),
 head(dat)
 p <- ggplot(dat) + 
   geom_line(aes(x = t, y = p, color = dfr), size = 0.4) + 
-  theme_minimal() + xlab("") + ylab("Density") + 
+  theme_bw() + xlab("") + ylab("Density") + 
   scale_colour_discrete(name = "Degrees of Freedom")
 print(p)
 ggsave(p, filename = "../img/hyp-example-t-distribution.png", height=3, width=6, units="in", dpi=300)
@@ -193,7 +193,7 @@ dat <- dat %>% mutate(p = df(t, df1, df2),
 head(dat)
 p <- ggplot(dat) + 
   geom_line(aes(x = t, y = p, color = dfr), size = 0.4) + 
-  theme_minimal() + xlab("") + ylab("Density") + 
+  theme_bw() + xlab("") + ylab("Density") + 
   scale_colour_discrete(name = "Degrees of Freedom")
 print(p)
 ggsave(p, filename = "../img/hyp-example-f-distribution.png", height=3, width=6, units="in", dpi=300)
