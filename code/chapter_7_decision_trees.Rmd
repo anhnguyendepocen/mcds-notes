@@ -1,0 +1,113 @@
+---
+title: "Chapter 7: Building a Decision Tree"
+output: html_notebook
+---
+
+## Libraries
+
+```{r setup}
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(survival)
+library(survminer)
+library(lubridate)
+library(tidyr)
+library(stringr)
+library(forcats)
+library(wesanderson)
+library(class)
+library(rpart)
+library(rpart.plot)
+```
+
+## Wisconsin Breast Cancer Dataset
+
+```{r}
+d <- read.csv("../data/breast-cancer-wisconsin-data.csv")
+d <- d %>% select(-id)
+```
+
+Build decision tree using rpart.
+
+```{r}
+m <- rpart(diagnosis ~ ., data = d, method = "class", parms = list(split = "gini"))
+palette <- colorRampPalette(colors=c("#00BFC4", "#F8766D"))
+png(filename = "../img/wisconsin-decision-tree.png", height=4, width=4, units="in", res=300)
+rpart.plot(m, box.palette=palette(20))
+dev.off()
+```
+
+Second decision tree with altered parameters.
+
+```{r}
+m <- rpart(diagnosis ~ ., data = d, method = "class", parms = list(split = "information"))
+palette <- colorRampPalette(colors=c("#00BFC4", "#F8766D"))
+png(filename = "../img/wisconsin-decision-tree-infogain.png", height=4, width=4, units="in", res=300)
+rpart.plot(m, box.palette=palette(20))
+dev.off()
+```
+
+## Illustrations
+
+Entropy of Bernoulli distribution.
+
+```{r}
+mu <- seq(0, 1, 0.01)
+ent <- -mu*log2(mu) - (1 - mu) * log2 (1 - mu)
+ent[is.nan(ent)] = 0
+p <- ggplot() + geom_line(aes(x = mu, y = ent)) + theme_bw() + 
+  xlab(expression(mu)) + ylab("Entropy")
+print(p)
+ggsave(p, filename = "../img/entropy-bernoulli.png", height=3, width=4, units="in", dpi=300)
+```
+
+Gini impurity of Bernoulli distribution.
+
+```{r}
+mu <- seq(0, 1, 0.01)
+gi <- 1 - mu^2 - (1 - mu)^2
+df = data.frame(mu = rep(mu, 2), impurity = c(ent, gi), 
+                measure = c(rep("entropy", length(ent)), rep("gini", length(gi))))
+p <- ggplot(df) + 
+  geom_line(aes(x = mu, y = impurity, linetype = measure)) +
+  theme_bw() + 
+  xlab(expression(mu)) + ylab("Value") + 
+  scale_linetype_discrete(name = "Impurity Measure")
+print(p)
+ggsave(p, filename = "../img/comparison-entropy-gini-bernoulli.png", height=3, width=5, units="in", dpi=300)
+```
+
+
+## Standard deviation reduction
+
+```{r}
+set.seed(200)
+df <- data.frame(y = c(rnorm(100, 0, 1), rnorm(100, 3, 1)), 
+                 gauss_id = c(rep(0.1, 100), rep(0.9, 100)),
+                 x1 = rbinom(200, 1, 0.5)) %>%
+  mutate(x2 = rbinom(length(x1), 1, gauss_id)) %>%
+  gather(x1:x2, key = "variable", value = "value")
+
+p <- ggplot(df) + 
+  geom_histogram(aes(x = y, fill = as.factor(value)), position = "stack", alpha = 0.8, bins = 30) + 
+  theme_bw() + scale_fill_discrete(name = "Variable Value") + 
+  facet_wrap(~variable, nrow = 2) + ylab("Count") + xlab("Outcome (y)")
+print(p)
+ggsave(p, filename = "../img/esl-reg-decision-tree-varsplit.png", height=4, width=6, units="in", dpi=300)
+```
+
+## Wisconsin Breast Cancer feature example
+
+```{r}
+d_long <- d %>% 
+  gather(radius_mean:fractal_dimension_worst, key = "variable", value = "value") %>%
+  mutate(worst = !is.na(str_match(variable, "worst"))) %>%
+  subset(worst)
+
+p <- ggplot(d_long) + geom_histogram(aes(x = value, fill = diagnosis), alpha = 0.8) + 
+  facet_wrap(~ variable, scales = "free") + theme_bw()
+print(p)
+ggsave(p, filename = "../img/wisconsin-variable-plots.png", height=4, width=6, units="in", dpi=300)
+```
+

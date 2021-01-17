@@ -1,8 +1,8 @@
-\chapter{Generalized Linear Models* \label{chapter:glms}}
+\chapter{Generalized Linear Models \label{chapter:glms}}
 
 Generalized linear models (GLMs) are a class of supervised learning models that form a convenient bridge between machine learning and traditional statistics. The basic idea behind a GLM is that your outcome variable (a.k.a. response variable, see Chapter~\ref{chapter:classification}), $y$, follows a probability distribution. The expected value, or mean, of that distribution is related to the values of the predictors (a.k.a. covariates; see Chapters~\ref{chapter:classification} and \ref{chapter:regression}), $x_1, \dots, x_p$ in a model-specific way.
 
-We will focus on three classes of GLM: \textbf{linear regression}, which models data where the outcome, $y$, is numeric $\left( y \in \mathbb{R} \right)$; \textbf{logistic regression}, in which the outcome is binary $\left( y \in \{0, 1\} \right)$, and \textbf{loglinear (Poisson) regression}, in which the outcome is a positive integer, or count $\left( y \in \{0, 1, 2, \dots\} \right)$. We have seen linear regression already in Chapter~\ref{chapter:regression} and logistic regression in Chapter~\ref{chapter:classification}. There are many more GLMs corresponding to outcomes that follow other types of probability distributions. 
+Linear and logistic regression, which we have already seen in Chapters~\ref{chapter:classification}, \ref{chapter:regression}, \ref{chapter:linreg}, and \ref{chapter:logreg}, are both GLMs. Linear regression models data in which the outcome, $y$, is numeric $\left( y \in \mathbb{R} \right)$ and follows a normal distribution. Logistic regression models data in which the outcome is binary $\left( y \in \{0, 1\} \right)$ and follows a Bernoulli distribution\footnote{In grouped logistic regression, the outcome follows a binomial distribution. More on that later.} There are many more GLMs corresponding to outcomes that follow other types of probability distributions. For example, \textbf{loglinear (Poisson) regression} models data in which the outcome is a positive integer, or count $\left( y \in \{0, 1, 2, \dots\} \right)$. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -149,3 +149,91 @@ $$ \mathcal{L}(\beta) = \prod_{i=1}^n \frac{\exp{(y^{(i)} \beta^T x^{(i)})} e^{-
 Taking the log, we obtain the log-likelihood:
 $$ \log \mathcal{L}(\beta) = \sum_{i=1}^n \left[ y^{(i)} \beta^T x^{(i)} - \exp(\beta^T x^{(i)}) - \log (y^{(i)}!) \right] $$
 As with logistic regression, we cannot solve for the optimal $\beta$s analytically; numerical optimization methods are used. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Standard Errors and Hypothesis Tests \label{section:sehyp}}
+
+The magnitudes of the coefficients in these models matter only in relation to:
+\begin{enumerate}
+\item The scale on which the predictors are measured. 
+\item The amount of uncertainty the model has about their values.
+\end{enumerate}
+For example, if a predictor varies only across a tiny range of values, its model coefficient may be large, since it quantifies the change in the link-function-transformed outcome when the predictor changes by 1.0. However, that doesn't mean that the predictor itself is important to the outcome\footnote{This is one reason many advocate \textbf{scaling} and \textbf{centering} predictors before fitting a model. Centering means subtracting the mean value of a predictor from all of its individual measurements so that the mean of each centered predictor is zero. Scaling means dividing the values of each predictor by their standard deviation, so that the standard deviation of each predictor is 1.0. This enables the relative magnitudes of the model coefficients to be compared directly.}.
+
+Similarly, the model may be highly uncertain about a coefficient's value, owing to factors like a small dataset (small $n$) or collinearity among the predictors. Mathematically, high uncertainty means that the value of the likelihood doesn't change very rapidly as you move away from the maximum likelihood estimate of a coefficient. For example, here is how the log-likelihood for the logistic regression example above changes when we vary $\beta_1$ (the coefficient of $x_1$), keeping $\beta_0$ (the intercept) and $\beta_2$ (the coefficient of $x_2$) fixed at their MLEs: 
+\begin{center}
+\includegraphics[width=0.7\textwidth]{img/esl-logistic-beta1.png}
+\end{center}
+The gray vertical lines are related to the \textbf{standard error} of the model coefficient, which is in turn related to the ``flatness'' of the likelihood surface around the MLE. The gray lines are situated at 1 and 2 standard errors away from the MLE in either direction. You can see that in the case of $\beta_1$, the gray lines overlap zero. The value zero (no effect) is a plausible estimate of the impact of $x_1$ on the outcome. 
+
+Contrast this with how the log-likelihood varies around the MLE for $\beta_2$:
+\begin{center}
+\includegraphics[width=0.7\textwidth]{img/esl-logistic-beta2.png}
+\end{center}
+Here the standard error is larger, but the magnitude of the coefficient is also larger, so the range of the gray lines does not overlap zero. These findings are reflected in the relative values of the \textbf{Z-statistic} (\texttt{z value}) and \textbf{P-value} (\verb|Pr(>|z|)|) in the model output for the two coefficients. Whether a coefficient's value is likely to be nonzero is typically evaluated using a formalism called a \textbf{hypothesis test}. We will discuss hypothesis tests in much greater detail in Chapter~\ref{chapter:hypothesistesting}. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Example: Nesting Horseshoe Crabs Dataset}
+
+These data come from a study of nesting horseshoe crabs. Each of the 173 observed female horseshoe crabs had a male crab resident in her nest. The study investigated factors affecting whether the female crab had any other males, called \emph{satellites}, residing nearby. (Source: Agresti, \emph{Categorical Data Analysis}, Table 4.3. Data courtesy of Jane Brockmann, Zoology Department, University of Florida; study described in \emph{Ethology} \textbf{102}: 1-21, 1996.)
+
+\begin{center}
+\texttt{\small
+\begin{tabular}{ll}
+\toprule
+SATELL & Number of satellites \\
+COLOR & Color of the female crab \\
+& (1 = light medium, 2 = medium, 3 = dark medium, \\
+& 4 = dark) \\
+SPINE & Spine condition \\
+& (1 = both good, 2 = one work or broken, \\
+& 3 = both worn or broken) \\
+WIDTH & Carapace width of the female crab (cm) \\
+WEIGHT & Weight of the female crab (g) \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\noindent The GLM output of this model is:
+
+{\small
+\begin{verbatim}
+Call:
+glm(formula = satell ~ color + spine + width + weight, family = "poisson", 
+    data = d)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-3.0126  -1.8846  -0.5406   0.9448   4.9602  
+
+Coefficients:
+              Estimate Std. Error z value Pr(>|z|)   
+(Intercept) -0.3435447  0.9684204  -0.355  0.72278   
+color       -0.1849325  0.0665236  -2.780  0.00544 **
+spine        0.0399764  0.0568062   0.704  0.48160   
+width        0.0275251  0.0479425   0.574  0.56588   
+weight       0.0004725  0.0001649   2.865  0.00417 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 632.79  on 172  degrees of freedom
+Residual deviance: 551.85  on 168  degrees of freedom
+AIC: 917.15
+
+Number of Fisher Scoring iterations: 6
+\end{verbatim}
+}
+
+\begin{question}{}
+Comment on how the variables \texttt{color} and \texttt{spine} are coded here. Does this make sense in light of what those variables mean?
+\end{question}
+
+\begin{question}{}
+Interpret the values of each of these coefficients. Based on the coefficient values and their standard errors, which predictor(s) do you think have the greatest impact on the number of male satellites around a nesting female horseshoe crab? 
+\end{question}
+

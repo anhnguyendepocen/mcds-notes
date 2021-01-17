@@ -1,0 +1,144 @@
+---
+title: "Chapter 11: Kaplan-Meier Curves"
+output: html_notebook
+---
+
+```{r libraries, setup}
+library(ggplot2)
+library(dplyr)
+library(survival)
+library(survminer)
+library(xtable)
+library(lubridate)
+```
+
+Read in the dataset.
+
+```{r}
+d <- survival::ovarian
+write.table(d, file = "../data/ovarian-cancer-survival.csv", sep=",", quote=FALSE, row.names=FALSE)
+```
+
+Adjust the coding of the covariates.
+
+```{r}
+d <- d %>% mutate(resid.ds = as.factor(as.character(resid.ds)), 
+                  rx = as.factor(as.character(rx)), 
+                  ecog.ps = as.factor(as.character(ecog.ps)))
+summary(d)
+```
+
+```{r}
+p <- ggplot(d) + geom_histogram(aes(x = futime, fill = as.factor(fustat)), bins = 30) + 
+  theme_bw() + ylab("Count") + xlab("futime (days)") + 
+  scale_fill_manual(values = c("#486274", "#79AEB2"), name = "fustat")
+print(p)
+ggsave(p, filename = "../img/cs-ovarian-futime.png", height=3, width=5, units="in", dpi=300)
+
+p <- ggplot(d) + geom_histogram(aes(x = futime, fill = rx), bins = 30) + 
+  theme_bw() + ylab("Count") + xlab("rx") + 
+  scale_fill_manual(values = c("#486274", "#E2725A"))
+print(p)
+ggsave(p, filename = "../img/cs-ovarian-futime2.png", height=3, width=5, units="in", dpi=300)
+```
+
+Evaluate a wrong approach: logistic regression models trained to predict outcome using treatment group as input and treating censored patients as ``still alive''. 
+
+```{r}
+results <- {}
+for (ftime in seq(200, 1000, 100)) {
+  d_mod <- d %>% mutate(death = futime < ftime & fustat == 1)
+  m <- glm(death ~ rx, data = d_mod, family = "binomial")
+  results = rbind(results, data.frame(ftime, coef = m$coefficients[2], pval = summary(m)$coefficients[2,4], 
+                                      nsubj = dim(d_mod)[1]))
+}
+print(xtable(results, align = c("c", "c", "c", "c", "c"), digits = c(0, 0, 4, 4, 0)), include.rownames = FALSE)
+```
+
+Landmark analyses at different landmark times.
+
+```{r}
+results <- {}
+for (ftime in seq(200, 1000, 100)) {
+  d_mod <- d %>% 
+    mutate(death = futime < ftime & fustat == 1) %>%
+    subset(death | futime > ftime)
+  m <- glm(death ~ rx, data = d_mod, family = "binomial")
+  results = rbind(results, data.frame(ftime, coef = m$coefficients[2], pval = summary(m)$coefficients[2,4],
+                                      nsubj = dim(d_mod)[1]))
+}
+print(xtable(results, align = c("c", "c", "c", "c", "c"), digits = c(0, 0, 4, 4, 0)), include.rownames = FALSE)
+```
+
+Kaplan-Meier curve for the ovarian dataset.
+
+```{r}
+km1 <- survfit(Surv(futime, fustat) ~ 1, data = d)
+p <- ggsurvplot(km1, conf.int = FALSE) + xlab("Time (Days)") + ylab("Survival Probability")
+print(p)
+png(filename = "../img/ovarian-km-curve.png", height=4, width=4, units="in", res=300)
+print(p)
+dev.off()
+```
+
+```{r}
+km1 <- survfit(Surv(futime, fustat) ~ rx, data = d)
+p <- ggsurvplot(km1) + xlab("Time (Days)") + ylab("Survival Probability")
+print(p)
+png(filename = "../img/ovarian-km-curve-rx.png", height=4, width=4, units="in", res=300)
+print(p)
+dev.off()
+```
+
+Smaller example.
+
+```{r}
+d_small <- data.frame(survtime = c(6, 44, 21, 14, 62), obs = c(1, 1, 0, 1, 1))
+
+p <- ggsurvplot(survfit(Surv(survtime, obs) ~ 1, data = d_small), conf.int = FALSE)
+print(p)
+png(filename = "../img/km-curve-sample-answer.png", height=4, width=4, units="in", res=300)
+print(p)
+dev.off()
+
+p2 <- ggplot(d_small) + geom_vline(xintercept = d_small$survtime, linetype = "dotted") + theme_bw() + 
+  xlab("Time (Days)") + ylab("Estimated Survival Probability") + 
+  scale_x_continuous(breaks = seq(0, 70, 10)) + 
+  theme(panel.grid = element_blank()) + 
+  xlim(0, 70)
+print(p2)
+png(filename = "../img/km-curve-sample.png", height=4, width=4, units="in", res=300)
+print(p2)
+dev.off()
+
+xtable(d_small, digits = c(0, 0, 0))
+```
+
+Treatment group 1 only.
+
+```{r}
+d_rx1 <- subset(d, rx == 1) %>%
+  select(rx, futime, fustat) %>%
+  arrange(futime)
+
+xtable(d_rx1, digits = c(0, 0, 0, 0))
+```
+
+Treatment group 2 only.
+
+```{r}
+d_rx2 <- subset(d, rx == 2) %>%
+  select(rx, futime, fustat) %>%
+  arrange(futime)
+
+xtable(d_rx2, digits = c(0, 0, 0, 0))
+
+p2 <- ggplot(d_small) + 
+  geom_vline(xintercept = d_rx2$futime, linetype = "dotted") + 
+  theme_bw() + 
+  xlab("Time (Days)") + ylab("Estimated Survival Probability") + 
+  theme(panel.grid = element_blank()) + ylim(0, 1) + xlim(0, 1250)
+print(p2)
+ggsave(p2, filename="../img/km-curve-sample-rx2.png", height=4, width=6, units="in", dpi=300)
+```
+

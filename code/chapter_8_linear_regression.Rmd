@@ -1,0 +1,112 @@
+---
+title: "Chapter 8: Interpreting a Linear Regression Model"
+output: html_notebook
+---
+
+## Libraries
+
+```{r setup}
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(survival)
+library(survminer)
+library(lubridate)
+library(tidyr)
+library(stringr)
+library(forcats)
+library(wesanderson)
+library(class)
+library(rpart)
+library(rpart.plot)
+```
+
+## Disease recurrence biomarker example from Chapter 3
+
+```{r}
+load("../data/mixture.example.RData")
+intercept = 50.0
+coef_x1 = 10.0
+coef_x2 = -2.0
+set.seed(1000)
+df <- data.frame(x1 = mixture.example$x[,1], 
+                 x2 = mixture.example$x[,2]) %>%
+  mutate(y = intercept + coef_x1 * x1 + coef_x2 * x2 + rnorm(length(x1), 0, 5))
+```
+
+Model.
+
+```{r}
+m <- lm(y ~ x1 + x2, data = df)
+summary(m)
+```
+
+Histogram of residuals.
+
+```{r}
+p <- ggplot() + geom_histogram(aes(x = m$residuals), bins = 40, fill = "gray60") + 
+  theme_bw() + xlab("Residual") + ylab("Count")
+print(p)
+ggsave(p, filename = "../img/linreg-example-residuals.png", height=3, width=4, units="in", dpi=300)
+```
+
+Residuals vs. y-hat.
+
+```{r}
+p <- ggplot() + geom_point(aes(x = m$fitted.values, y = m$residuals, colour = df$y)) + 
+  theme_bw() + xlab("Model's Predicted Value (y-hat)") + ylab("Residual") + 
+  scale_colour_gradient(name = "Recurrence\nBiomarker (y)", low = "#00bfc4", high = "#f8766d")
+print(p)
+ggsave(p, filename = "../img/linreg-example-residual-vs-fitted.png", height=3, width=5, units="in", dpi=300)
+```
+
+QQ-plot.
+
+```{r}
+df_resid <- data.frame(resid = m$residuals, y = df$y) %>%
+  arrange(resid) %>%
+  mutate(q_sample = ppoints(resid),
+         resid_theor = qnorm(q_sample, mean = mean(resid), sd = sd(resid)), 
+         q_theor = qnorm(q_sample, mean = 0, sd = 1))
+
+p <- ggplot(df_resid) +
+  geom_point(aes(x = resid_theor, y = resid, colour = y), data = df_resid) + 
+  theme_bw() + 
+  xlab("Residual if Errors Perfectly Normal") + ylab("Actual Residual") + 
+  geom_abline(slope = diff(quantile(df_resid$resid, c(0.25, 0.75))) / 
+                diff(quantile(df_resid$resid_theor, c(0.25, 0.75))), 
+              intercept = mean(df_resid$resid), colour = "gray30") + 
+  scale_colour_gradient(name = "Recurrence\nBiomarker (y)", low = "#00bfc4", high = "#f8766d")
+print(p)
+ggsave(p, filename = "../img/linreg-example-almost-qq-plot.png", height=3, width=5, units="in", dpi=300)
+```
+
+Sum of squared residuals.
+
+```{r}
+sse = sum(m$residuals^2)
+sse
+sqrt(sse / (200 - 2 - 1))
+```
+
+Example of t-distribution with 197 degrees of freedom.
+
+```{r}
+x <- seq(-12, 12, 0.01)
+y <- dnorm(x, 0.0, 0.2855)
+p <- ggplot() + geom_line(aes(x = x, y = y)) + theme_bw() + 
+  xlab(paste("Normal Distribution with ", "\u00b5", "=0 and ", 
+             "\u03c3", "=0.2855", sep="")) + ylab("Density") + 
+  geom_vline(xintercept = 10.4372, linetype = "dashed", colour = "red")
+print(p)
+ggsave(p, filename = "../img/linreg-example-coef-hyp-test.png", height=3, width=5, units="in", dpi=300)
+```
+
+## Linear Small Cities Data
+
+```{r}
+d <- read.csv("../data/linear-small-cities-data.csv")
+m <- lm(MORT ~ PRECIP + EDUC + NONWHITE + NOX + SO2, data = d)
+summary(m)
+```
+

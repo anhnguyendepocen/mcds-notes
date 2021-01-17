@@ -5,10 +5,13 @@
 
 \usepackage{mystyle}
 \usepackage{centernot}
+\usepackage{enumitem}
 \makeindex[columns=1, title=Index]
 
 \usepackage[backend=biber,style=numeric-comp, firstinits=true,citestyle=verbose,maxnames=50,sorting=none,defernumbers=true]{biblatex}
 \addbibresource{mcdsrefs.bib}
+
+% \includeonly{tex/mcds-linear-regression}
 
 \begin{document}
 
@@ -22,28 +25,30 @@
 \include{tex/mcds-regression}
 \include{tex/mcds-probability-distributions}
 \include{tex/mcds-maximum-likelihood}
+
 \include{tex/mcds-hypothesis-testing}
-
 \include{tex/mcds-decision-trees}
+\include{tex/mcds-linear-regression}
+\include{tex/mcds-logistic-regression}  % todo
+\include{tex/mcds-generalized-linear-models}  % todo
 
-% \include{tex/mcds-generalized-linear-models}
-% \include{tex/mcds-fitting-glms}
-% \include{tex/mcds-feature-engineering}
-
-\include{tex/mcds-perils-time-to-event}
 \include{tex/mcds-kaplan-meier}
+\include{tex/mcds-bias-variance}  % todo
+\include{tex/mcds-feature-selection}  % todo
 
+% \include{tex/mcds-missing-data}
+% \include{tex/mcds-confidence-intervals}
+% \include{tex/mcds-cox-model}
 % \include{tex/mcds-power-sample-size}
 %\include{tex/mcds-distance-metrics}
 % \include{tex/mcds-lasso-ridge-regression}
-% \include{tex/mcds-bias-variance}
 % \include{tex/mcds-random-forests}
 % \include{tex/mcds-boosting}
-% \include{tex/mcds-missing-data}
-% \include{tex/acknowledgments}
 % \include{tex/mcds-naive-bayes}
 % \include{tex/mcds-bias-retrospective}
 % \include{tex/mcds-multiple-hypothesis-testing}
+
+% \include{tex/acknowledgments}
 
 % \printindex
 
