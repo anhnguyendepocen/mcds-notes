@@ -21,3 +21,133 @@ library(rpart)
 library(rpart.plot)
 ```
 
+## Revisiting Chapter 2 ER Readmissions Example
+
+```{r}
+load("../data/mixture.example.RData")
+df <- data.frame(x1 = mixture.example$x[,1], x2 = mixture.example$x[,2], y = mixture.example$y)
+x.grid <- seq(min(df$x1), max(df$x1), 0.1)
+y.grid <- seq(min(df$x2), max(df$x2), 0.1)
+df$y <- 1 - df$y # fix issue of class labeling
+```
+
+```{r}
+m <- glm(y ~ x1 + x2, data = df, family = "binomial")
+summary(m)
+```
+
+Residuals.
+
+```{r}
+r1 <- residuals(m, type = "response")
+p <- ggplot() + geom_histogram(aes(x = r1), bins = 40, fill = "gray60") + 
+  theme_bw() + xlab("Response Residual") + ylab("Count")
+print(p)
+ggsave(p, filename = "../img/logreg-example-residuals-response.png", height=3, width=4, units="in", dpi=300)
+```
+
+```{r}
+r2 <- residuals(m, type = "working")
+p <- ggplot() + geom_histogram(aes(x = r2), bins = 40, fill = "gray60") + 
+  theme_bw() + xlab("Working Residual") + ylab("Count")
+print(p)
+ggsave(p, filename = "../img/logreg-example-residuals-working.png", height=3, width=4, units="in", dpi=300)
+```
+
+```{r}
+r3 <- residuals(m, type = "pearson")
+p <- ggplot() + geom_histogram(aes(x = r3), bins = 40, fill = "gray60") + 
+  theme_bw() + xlab("Pearson Residual") + ylab("Count") 
+print(p)
+ggsave(p, filename = "../img/logreg-example-residuals-pearson.png", height=3, width=4, units="in", dpi=300)
+```
+
+```{r}
+r4 <- residuals(m, type = "deviance")
+p <- ggplot() + geom_histogram(aes(x = r4), bins = 40, fill = "gray60") + 
+  theme_bw() + xlab("Deviance Residual") + ylab("Count")
+print(p)
+# ggsave(p, filename = "../img/logreg-example-residuals-deviance.png", height=3, width=4, units="in", dpi=300)
+
+r4 <- m$residuals
+p <- ggplot() + geom_histogram(aes(x = r4), bins = 40, fill = "gray60") + 
+  theme_bw() + xlab("Deviance Residual") + ylab("Count")
+print(p)
+ggsave(p, filename = "../img/logreg-example-residuals-deviance.png", height=3, width=4, units="in", dpi=300)
+```
+
+Chi-squared test of goodness of fit.
+
+```{r}
+m$null.deviance - m$deviance
+m$df.null - m$df.residual
+1 - pchisq(m$null.deviance - m$deviance, m$df.null - m$df.residual)
+```
+
+```{r}
+x <- seq(0, 70, 0.1)
+d_chisq <- data.frame(x, c = dchisq(x, 2))
+p <- ggplot(d_chisq) + geom_ribbon(aes(x = x, ymax = c, ymin = 0), fill = "gray40") + 
+  theme_bw() + xlab("Null - Residual Deviance Under the Null") + ylab("Density") + 
+  geom_vline(xintercept = m$null.deviance - m$deviance, linetype = "dashed", colour = "red")
+print(p)
+ggsave(p, filename = "../img/logreg-example-goodness-of-fit-test.png", height=3, width=4, units="in", dpi=300)
+```
+
+Linear predictor against working responses.
+
+```{r}
+r2 <- residuals(m, type = "working")
+p <- ggplot() + geom_point(aes(x = m$linear.predictors, y = r2), fill = "gray60") + 
+  theme_bw() + xlab("Linear Combination of Predictors") + ylab("Working Residual")
+print(p)
+ggsave(p, filename = "../img/logreg-example-residuals-vs-lin-pred.png", height=3, width=4, units="in", dpi=300)
+```
+
+Betas and p-values.
+
+```{r}
+x <- seq(-1.2, 1.2, 0.01)
+beta_0_est <- summary(m)$coefficients[1,1]
+beta_0_se <- summary(m)$coefficients[1,2]
+p <- ggplot() + geom_line(aes(x = x, y = dnorm(x, mean = 0, sd = beta_0_se))) + 
+  theme_bw() + xlab(expression("\u03b2"[0])) + ylab("Density (Under Null)") + 
+  geom_vline(xintercept = beta_0_est, linetype = "dashed", colour = "gray40")
+print(p)
+ggsave(p, filename = "../img/logreg-example-beta-0.png", height=3, width=4, units="in", dpi=300)
+```
+
+```{r}
+x <- seq(-1, 1, 0.01)
+beta_1_est <- summary(m)$coefficients[2,1]
+beta_1_se <- summary(m)$coefficients[2,2]
+p <- ggplot() + geom_line(aes(x = x, y = dnorm(x, mean = 0, sd = beta_1_se))) + 
+  theme_bw() + xlab(expression("\u03b2"[1])) + ylab("Density (Under Null)") + 
+  geom_vline(xintercept = beta_1_est, linetype = "dashed", colour = "#dc298d")
+print(p)
+ggsave(p, filename = "../img/logreg-example-beta-1.png", height=3, width=4, units="in", dpi=300)
+```
+
+```{r}
+x <- seq(-2, 1, 0.01)
+beta_2_est <- summary(m)$coefficients[3,1]
+beta_2_se <- summary(m)$coefficients[3,2] 
+p <- ggplot() + geom_line(aes(x = x, y = dnorm(x, mean = 0, sd = beta_2_se))) + 
+  theme_bw() + xlab(expression("\u03b2"[2])) + ylab("Density (Under Null)") + 
+  geom_vline(xintercept = beta_2_est, linetype = "dashed", colour = "#06abeb")
+print(p)
+ggsave(p, filename = "../img/logreg-example-beta-2.png", height=3, width=4, units="in", dpi=300)
+```
+
+## Low birthweight example
+
+```{r}
+d <- read.delim("../data/logistic-lowbwt-data.tsv")
+d$RACE <- as.factor(d$RACE)  # <- ensure RACE is coded as factor, not number
+```
+
+```{r}
+m <- glm(LOW ~ AGE + LWT + RACE + SMOKE + PTL + HT + UI + FTV, data = d, family = "binomial")
+summary(m)
+```
+

@@ -1,6 +1,6 @@
 \chapter{Interpreting a Linear Regression Model \label{chapter:linreg}}
 
-This chapter is devoted to understanding the structure of linear regression models. We first encountered them in Chapter~\ref{chapter:regression} as ``just one example'' of a regression model. However, linear regression's overwhelming popularity in the clinical domain means that one cannot do clinical data science without fully understanding these models' structure and how to interpret the software output. 
+This chapter is devoted to understanding the structure of linear regression models. We first encountered them in Chapter~\ref{chapter:regression} as ``just one example'' of a regression model. However, linear regression's overwhelming popularity in the clinical domain means that one cannot do clinical data science without fully understanding these models' structure and how to interpret the output produced by model fitting software. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -11,12 +11,12 @@ In Chapter~\ref{chapter:regression}, we saw an example where information about t
 \includegraphics[width=0.35\textwidth]{img/esl-reg-linear.png}
 \includegraphics[width=0.64\textwidth]{img/linear-regression-model-output.png}
 \end{center}
-But what do all these numbers \emph{mean}?
-\vspace{5mm}
 
 \begin{question}{}
 What are the number of samples, $n$, and the number of predictors, $p$, for this dataset?
 \end{question}
+
+\noindent But what do all these numbers \emph{mean}?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -24,11 +24,11 @@ What are the number of samples, $n$, and the number of predictors, $p$, for this
 
 A linear regression model looks like this (see also Chapter~\ref{chapter:regression}, Section~\ref{ssect:linreg}):
 $$ y = \beta_0 + \beta_1 x_1 + \dots + \beta_p x_p + \varepsilon $$
-where we assume that the error, $\varepsilon$, is normally distributed, $\mathcal{N}(0, \sigma)$. Another way of saying this is that we are assuming the outcome, $y$, is normally distributed with mean $\beta_0 + \beta_1 x_1 + \dots + \beta_p x_p$ and standard deviation $\sigma$\footnote{The actual requirements of the linear regression model, as it was originally derived, do not state that the errors must be normally distributed; they just have to have constant variance. For the purposes of learning and seeing how these models are connected to other regression models, though, it's easiest just to assume the errors are normal.}. 
+where we assume that the error, $\varepsilon$, is normally distributed, $\mathcal{N}(0, \sigma)$. Another way of saying this is that we are assuming the outcome, $y$, is normally distributed with mean $\beta_0 + \beta_1 x_1 + \dots + \beta_p x_p$ and standard deviation $\sigma$. 
 
 \subsection{The Call}
 
-The first line of the output is just repeating the call you made to the \verb|lm| function in R to fit the model\footnote{The \texttt{lm} package fits linear regression models using ordinary least squares. However, linear regression models are also a type of generalized linear model (see Chapter~\ref{chapter:glms}) and can be fit using maximum likelihood. In R, if you use the \texttt{glm} package with \texttt{family = "gaussian"} you should get identical coefficients and error estimates to what you get using the \texttt{lm} package.}.
+The first line of the output is just repeating the call you made to the \verb|lm| function in R to fit the model. The \texttt{lm} package fits linear regression models using ordinary least squares. However, linear regression models are also a type of generalized linear model (see Chapter~\ref{chapter:glms}) and can be fit using maximum likelihood. In R, if you use the \texttt{glm} package with \texttt{family = "gaussian"} you should get identical coefficients and error estimates to what you get using the \texttt{lm} package.
 
 \subsection{The Residuals}
 
@@ -100,7 +100,7 @@ The standard errors of the model coefficients likewise require matrix multiplica
 The standard errors attempt to capture how much we expect our estimates of the model coefficients to vary if we were to refit the model using a different dataset, provided that the new dataset is similar to (i.e., sampled from the same population distribution as) the one used to fit the model. On average, approximately how much would we expect $\beta_0$ (the intercept) to deviate from its fitted value of 49.8600? How much would we expect $\beta_1$ and $\beta_2$ to deviate from their fitted values? 
 \end{question}
 
-\subsection{Hypothesis Tests}
+\subsection{Hypothesis Tests of Coefficients}
 
 Armed with our coefficients and standard errors, we can perform a hypothesis test on each regression coefficient. Our null hypothesis in each case will be that the true value of that coefficient is zero: that is, it has no effect on the outcome. Under the null hypothesis that $\beta_j = 0$ and assuming $n$, our number of samples, is large enough, the quantity $\hat{\beta_j}/\text{se}(\hat{\beta}_j)$ will be distributed according to a Student's T distribution (see Chapter~\ref{chapter:probabilitydistributions}, Section~\ref{sect:tdist}) with $n-p-1$ degrees of freedom.
 \vspace{5mm}

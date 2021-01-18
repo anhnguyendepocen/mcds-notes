@@ -2,9 +2,7 @@
 
 % TODO: remove feature engineering section and focus solely on feature selection
 
-The methods we've studied in Chapters~\ref{chapter:classification} and \ref{chapter:regression}, as well as all other supervised (and unsupervised) machine learning algorithms, all depend on the concept of a \textbf{feature}. A feature is some aspect of each training example that the model designer believes will influence its relationship to the outcome, or that captures some aspect of the data in a way that is relevant to the problem he/she is trying to solve. 
-
-Before any algorithm can be applied, therefore, it is necessary to decide how to represent the data: which features to include and how to extract them from the raw data. This task is called \textbf{feature engineering}. In most cases, the model designer will also want to incorporate some form of \textbf{feature selection}: a process that automatically or semi-automatically decides which features are most relevant to the model and discards the others.
+ In most cases, the model designer will also want to incorporate some form of \textbf{feature selection}: a process that automatically or semi-automatically decides which features are most relevant to the model and discards the others.
 
 \vspace{5mm}
 
@@ -12,9 +10,7 @@ Before any algorithm can be applied, therefore, it is necessary to decide how to
 Choose 2-3 examples from the list of problems in Section~\ref{section:projectexamples}. Describe the setup of each problem and what types of features one would need to collect to build an accurate/useful model. 
 \end{question}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Sample Dataset}
+\section{Example: The Pima Indians Dataset}
 
 The so-called ``Pima Indians diabetes dataset'' was collected in the 1980s. It includes information on 768 women from the Pima people, who live near Phoenix, Arizona. The Pima were, as of the late 1980s, under continuous study by the National Institute of Diabetes and Digestive and Kidney Diseases because of their high incidence of diabetes\footnote{The causative factors behind this high diabetes rate are not clear. Some scholars believe that it was driven by a sudden shift in diet during the last century from traditional agricultural crops to processed foods, together with a decline in physical activity \cite{schulz2006effects}.}. There are eight predictors in the dataset and one outcome. The predictors are:
 \begin{center}
@@ -105,19 +101,7 @@ The type of study design here is called a \textbf{prospective cohort study}. How
 
 \subsection{Transformations}
 
-Depending on the learning algorithm you're using and the goal of your project, you may or may not decide to employ transformations. A \textbf{transformation} is simply the application of a deterministic mathematical function to your data. In a supervised learning problem, you can transform one or more of the predictors and/or the outcome. Transformations are used to improve the interpretability of the model and/or to ensure that the model fulfills the assumptions of the statistical inference method(s) being used (e.g., a hypothesis test).
 
-For example, here is what happens to the ``diabetes pedigree function'' predictor in the Pima dataset when we employ a common transformation called a \textbf{log transformation}\footnote{Here we are using log base 10, but you could also perform a similar transformation with the natural log, $\log_2$, etc.}:
-
-\begin{center}
-\includegraphics[width=0.49\textwidth]{img/pima-diab-ped-function.png} \includegraphics[width=0.49\textwidth]{img/pima-diab-ped-function-log.png}
-\end{center}
-
-\begin{question}{}
-In the log transformation shown here, we simply replace each value, $x$, by $\log_{10}(x)$. Every unit increase on a $\log_{10}$ scale corresponds to a 10-fold multiplication on the usual scale of the predictor. If you put the log-transformed predictor into a regression model in place of the original (linear is the easiest to understand, but you could also consider logistic, Poisson, etc.), how would that change your interpretation of the model? 
-\end{question}
-
-Political science, economics, sociology, and related disciplines, which are heavily dependent on the use of linear regression models and hypothesis tests, rely extensively on transformations. In my experience, machine learning folks spend almost no time on them because their primary concern is predictive accuracy, not model interpretation. Machine learning practitioners, however, very frequently \textbf{scale and center} their predictors (see footnote in Section~\ref{section:sehyp}), which is another type of transformation. We will get into more detail on transformations as we continue to learn about regression models. 
 
 \subsection{Correlations and Redundancy \label{section:redund}}
 

@@ -1,0 +1,121 @@
+---
+title: "Chapter 10: A Brief Note on Feature Engineering"
+output: html_notebook
+---
+
+## Libraries
+
+```{r setup}
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(survival)
+library(survminer)
+library(lubridate)
+library(tidyr)
+library(stringr)
+library(forcats)
+library(wesanderson)
+library(class)
+library(rpart)
+library(rpart.plot)
+```
+
+## Transformations of the Normal
+
+```{r}
+palette <- wes_palette("Royal2", 5)
+```
+
+```{r}
+n = 100
+set.seed(9683)
+x <- rnorm(n, 3, 0.5)
+p <- ggplot() + geom_histogram(aes(x = x), fill = "gray50", binwidth = 0.1) + 
+  theme_bw() + xlab("x (untransformed)") + ylab("Count") + coord_cartesian(xlim = c(0, 5))
+print(p)
+ggsave(p, filename = "../img/normal-transform-0.png", height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p <- ggplot() + geom_histogram(aes(x = log2(x)), fill = palette[1], binwidth = 0.1) + 
+  theme_bw() + xlab("log2(x) (log base 2)") + ylab("Count") + coord_cartesian(xlim = c(0, 5))
+# print(p)
+ggsave(p, filename = "../img/normal-transform-1.png", height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p <- ggplot() + geom_histogram(aes(x = log10(x)), fill = palette[2], binwidth = 0.1) + 
+  theme_bw() + xlab("log10(x) (log base 10)") + ylab("Count") + coord_cartesian(xlim = c(0, 5))
+# print(p)
+ggsave(p, filename = "../img/normal-transform-2.png", height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p <- ggplot() + geom_histogram(aes(x = log(x)), fill = palette[3], binwidth = 0.1) + 
+  theme_bw() + xlab("ln(x) (natural log)") + ylab("Count") + coord_cartesian(xlim = c(0, 5))
+# print(p)
+ggsave(p, filename = "../img/normal-transform-3.png", height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p <- ggplot() + geom_histogram(aes(x = sqrt(x)), fill = palette[4], binwidth = 0.1) + 
+  theme_bw() + xlab("sqrt(x) (square root)") + ylab("Count") + coord_cartesian(xlim = c(0, 5))
+# print(p)
+ggsave(p, filename = "../img/normal-transform-4.png", height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p <- ggplot() + geom_histogram(aes(x = x^(1/3)), fill = palette[5], binwidth = 0.1) + 
+  theme_bw() + xlab("x^(1/3) (cube root)") + ylab("Count") + coord_cartesian(xlim = c(0, 5))
+# print(p)
+ggsave(p, filename = "../img/normal-transform-5.png", height = 3, width = 4, units = "in", dpi = 300)
+```
+
+## Transformations of the Exponential
+
+```{r}
+n = 100
+set.seed(9683)
+x <- rexp(n, 0.8)
+p <- ggplot() + geom_histogram(aes(x = x), fill = "gray50", binwidth = 0.2) + 
+  theme_bw() + xlab("x (untransformed)") + ylab("Count") + coord_cartesian(xlim = c(-7, 7))
+print(p)
+ggsave(p, filename = "../img/exp-transform-0.png", height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p <- ggplot() + geom_histogram(aes(x = log2(x)), fill = palette[1], binwidth = 0.2) + 
+  theme_bw() + xlab("log2(x) (log base 2)") + ylab("Count") + coord_cartesian(xlim = c(-7, 7))
+print(p)
+ggsave(p, filename = "../img/exp-transform-1.png", height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p <- ggplot() + geom_histogram(aes(x = log10(x)), fill = palette[2], binwidth = 0.2) + 
+  theme_bw() + xlab("log10(x) (log base 10)") + ylab("Count") + coord_cartesian(xlim = c(-7, 7))
+print(p)
+ggsave(p, filename = "../img/exp-transform-2.png", height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p <- ggplot() + geom_histogram(aes(x = log(x)), fill = palette[3], binwidth = 0.2) + 
+  theme_bw() + xlab("ln(x) (natural log)") + ylab("Count") + coord_cartesian(xlim = c(-7, 7))
+print(p)
+ggsave(p, filename = "../img/exp-transform-3.png", height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p <- ggplot() + geom_histogram(aes(x = sqrt(x)), fill = palette[4], binwidth = 0.2) + 
+  theme_bw() + xlab("sqrt(x) (square root)") + ylab("Count") + coord_cartesian(xlim = c(-7, 7))
+print(p)
+ggsave(p, filename = "../img/exp-transform-4.png", height = 3, width = 4, units = "in", dpi = 300)
+```
+
+```{r}
+p <- ggplot() + geom_histogram(aes(x = x^(1/3)), fill = palette[5], binwidth = 0.2) + 
+  theme_bw() + xlab("x^(1/3) (cube root)") + ylab("Count") + coord_cartesian(xlim = c(-7, 7))
+print(p)
+ggsave(p, filename = "../img/exp-transform-5.png", height = 3, width = 4, units = "in", dpi = 300)
+```
+
