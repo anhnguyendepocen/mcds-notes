@@ -6,7 +6,7 @@ Welcome to "Modern Clinical Data Science", a pilot course and discussion group f
 
 What is data science? We go through 14 examples of project ideas from real students, including physicians and operational/population health team members, and see how they reflect different types of questions. Key terms: supervised vs. unsupervised learning, classification vs. regression, time-to-event outcome, observational study vs. experiment.
 
-[Notes](pdf/ch1.pdf) | [Chapter Guide](pdf/ch1-guide.pdf) | Video
+[Notes](pdf/ch1.pdf) | [Chapter Guide](pdf/ch1-guide.pdf) | [Video](https://vimeo.com/501913554/064d5fb98a)
 
 ### Chapter 2: The Basics of Classification
 
