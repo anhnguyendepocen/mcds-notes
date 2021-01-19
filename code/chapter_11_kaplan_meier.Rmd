@@ -36,7 +36,7 @@ print(p)
 ggsave(p, filename = "../img/cs-ovarian-futime.png", height=3, width=5, units="in", dpi=300)
 
 p <- ggplot(d) + geom_histogram(aes(x = futime, fill = rx), bins = 30) + 
-  theme_bw() + ylab("Count") + xlab("rx") + 
+  theme_bw() + ylab("Count") + xlab("futime (days)") + 
   scale_fill_manual(values = c("#486274", "#E2725A"))
 print(p)
 ggsave(p, filename = "../img/cs-ovarian-futime2.png", height=3, width=5, units="in", dpi=300)

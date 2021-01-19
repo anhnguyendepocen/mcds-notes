@@ -58,12 +58,12 @@ This chapter is similar to Chapter 8 but focuses on logistic regression models, 
 
 ### Chapter 10: A Brief Note on Feature Engineering
 
-This short chapter takes a closer look at features and the role of the data scientist in choosing appropriate features for a problem. We talk about how to code different classes of features (numbers, binary yes/no, categories) and briefly touch on how transformations can be used to adjust features. We look back at the features used in Chapters 2, 3, 7, 8, and 9 and how they were coded. (; 5 pages)
+This short chapter takes a closer look at features and the role of the data scientist in choosing appropriate features for a problem. We talk about how to code different classes of features (numbers, binary yes/no, categories) and briefly touch on how transformations can be used to adjust features. We look back at the features used in Chapters 2, 3, 7, 8, and 9 and how they were coded. (14:22; 5 pages)
 
-[Notes](pdf/ch10.pdf) | [Slides](pdf/ch10-guide.pdf) | Video
+[Notes](pdf/ch10.pdf) | [Slides](pdf/ch10-guide.pdf) | [Video](https://vimeo.com/502349732/63e2acd662)
 
 ### Chapter 11: Survival Data and the Kaplan-Meier Curve
 
-This chapter is our entrypoint into time-to-event data and survival models. We talk about the concept of censoring and its effect on models. We learn about the nonparametric Kaplan-Meier estimator and spend the bulk of the chapter constructing Kaplan-Meier curves by hand for an ovarian cancer dataset. Key terms: survival, hazard, censoring, Kaplan-Meier estimator. (; 8 pages)
+This chapter is our entrypoint into time-to-event data and survival models. We talk about the concept of censoring and its effect on models. We learn about the nonparametric Kaplan-Meier estimator and spend the bulk of the chapter constructing Kaplan-Meier curves by hand for an ovarian cancer dataset. Key terms: survival, hazard, censoring, Kaplan-Meier estimator. (22:30; 8 pages)
 
-[Notes](pdf/ch11.pdf) | [Slides](pdf/ch11-guide.pdf) | Video
+[Notes](pdf/ch11.pdf) | [Slides](pdf/ch11-guide.pdf) | [Video](https://vimeo.com/502363035/f862032e7c)
