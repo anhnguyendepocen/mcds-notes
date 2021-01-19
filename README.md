@@ -18,7 +18,7 @@ We investigate three different ways of solving classification problems: logistic
 
 We see how regression differs from classification and look at three regression algorithms that parallel the classification algorithms from Chapter 2. We visualize the regression problem using the same features as in Chapter 2 but a different outcome: the level of a "disease recurrence" biomarker. We see how the same machinery of linear models, KNN, and decision trees can be applied in a regression context.
 
-[Notes](pdf/ch3.pdf) | [Slides](pdf/ch3-guide.pdf) | Video
+[Notes](pdf/ch3.pdf) | [Slides](pdf/ch3-guide.pdf) | [Video](https://vimeo.com/502196350/b82f79fa5d)
 
 ### Chapter 4: Probability Distributions
 
