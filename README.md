@@ -34,15 +34,15 @@ Although it's usually thought of as an advanced topic, maximum likelihood estima
 
 ### Chapter 6: Introduction to Hypothesis Testing
 
-We examine the most common type of hypothesis testing, null hypothesis testing, through three examples: the Z test, Pearson's chi-squared test, and [several forms of] the T-test. By seeing how different questions can be answered using the same formalism, we think through the meaning of terms like null hypothesis, null distribution, test statistic, and significance level. We address p-values only briefly and do not touch on confidence intervals; those will be covered in later chapters. (; 18 pages)
+We examine the most common type of hypothesis testing, null hypothesis testing, through three examples: the Z test, Pearson's chi-squared test, and [several forms of] the T-test. By seeing how different questions can be answered using the same formalism, we think through the meaning of terms like null hypothesis, null distribution, test statistic, and significance level. We address p-values only briefly and do not touch on confidence intervals; those will be covered in later chapters. (25:44; 18 pages)
 
-[Notes](pdf/ch6.pdf) | [Slides](pdf/ch6-guide.pdf) | Video
+[Notes](pdf/ch6.pdf) | [Slides](pdf/ch6-guide.pdf) | [Video](https://vimeo.com/502270109/31c068caab)
 
 ### Chapter 7: Building a Decision Tree
 
-This chapter focuses on the conceptual and algorithmic details behind decision trees. We look at how tree building algorithms choose features based on measures of impurity/uncertainty, such as entropy or the Gini coefficient. We examine a decision tree built on the Wisconsin Breast Cancer Dataset and build a tree of our own from scratch using the ID3 algorithm on a small (10-sample) dataset. Following on our discussion in Chapters 2 and 3, we look at how the same basic algorithm can be used for both classification and regression. (; 11 pages)
+This chapter focuses on the conceptual and algorithmic details behind decision trees. We look at how tree building algorithms choose features based on measures of impurity/uncertainty, such as entropy or the Gini coefficient. We examine a decision tree built on the Wisconsin Breast Cancer Dataset and build a tree of our own from scratch using the ID3 algorithm on a small (10-sample) dataset. Following on our discussion in Chapters 2 and 3, we look at how the same basic algorithm can be used for both classification and regression. (25:32; 11 pages)
 
-[Notes](pdf/ch7.pdf) | [Slides](pdf/ch7-guide.pdf) | Video
+[Notes](pdf/ch7.pdf) | [Slides](pdf/ch7-guide.pdf) | [Video](https://vimeo.com/502291436/952ae9a371)
 
 ### Chapter 8: Interpreting a Linear Regression Model
 
