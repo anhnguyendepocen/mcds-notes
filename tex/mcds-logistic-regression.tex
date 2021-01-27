@@ -6,7 +6,7 @@ Unfortunately, a full understanding of logistic regression requires knowledge of
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{ER Readmissions Example from Chapter~\ref{chapter:classification}}
+\section{ER Readmissions Example from Chapter~\ref{chapter:classification} \label{sect:eragain}}
 
 In Chapter~\ref{chapter:classification}, we saw an example where information about two predictors -- a disease severity score ($x_1$) and a social determinants score ($x_2$) -- was used to predict a binary outcome: whether a patient would be readmitted to the ER within 30 days of discharge. We tried three different supervised learning algorithms, one of which was a logistic regression model (Section~\ref{ssect:logreg}). The output from that model is repeated below.
 
@@ -26,7 +26,7 @@ where $\mu$ is the mean of the Bernoulli distribution (see Section~\ref{sect:ber
 You will note that there is no independent error term here as there was in linear regression. That's because the variance and mean of a Bernoulli distribution are coupled and depend only on $\mu$ (again, see Section~\ref{sect:bernoulli}). 
 \vspace{3mm}
 
-\begin{question}{}
+\begin{question}{question:logreglink}
 In logistic regression, $\mu$ itself is not equal the sum of the predictors; instead, the \textbf{logit} of $\mu$ is their sum. Based on what you know about $\mu$, why is a logistic regression model not of the form
 $$ \mu = \beta_0 + \beta_1 x_1 + \dots + \beta_p x_p \text{?}$$
 We will explore this further in Chapter~\ref{chapter:glms}.
@@ -73,7 +73,7 @@ What are the odds of readmission for a patient with:
 Just as in linear regression, we can use our coefficients and standard errors to perform a hypothesis test on each regression coefficient, $\beta_j$, against the null hypothesis that $\beta_j = 0$ (the predictor $x_j$ has no effect on the outcome). In logistic regression, the quantity $\hat{\beta_j}/\text{se}(\hat{\beta}_j)$ will follow a normal distribution under the null.
 \vspace{3mm}
 
-\begin{question}{}
+\begin{question}{question:nulllogregexample}
 Below are the null distributions for the hypothesis tests of our three regression coefficients, $\beta_0$, $\beta_1$, and $\beta_2$. In each graph, the maximum likelihood estimate of the coefficient is shown as a vertical dashed line. Based on these graphs, can you tell why the $p$-values for $\beta_0$ and $\beta_2$ are low and the one for $\beta_1$ is high? What is the intuition behind this?
 \begin{center}
 \includegraphics[width=0.45\textwidth]{img/logreg-example-beta-0.png}

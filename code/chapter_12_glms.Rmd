@@ -1,0 +1,64 @@
+---
+title: "Chapter 12: Generalized Linear Models"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+```{r Systematic component, linear regression}
+bTx <- seq(-1, 1, 0.01)
+Ey <- bTx
+
+p.linear <- ggplot() + 
+  geom_segment(aes(x=-1, xend=1, y=0, yend=0), size = 1, arrow = arrow(length = unit(0.1, units="in"), type="closed", ends="both"), colour = "gray70") + 
+geom_segment(aes(y=-1, yend=1, x=0, xend=0), size = 1, arrow = arrow(length = unit(0.1, units="in"), type="closed", ends="both"), colour = "gray70") +
+  geom_line(aes(x=bTx, y=Ey)) + ylab(expression(paste(beta^T, "x"))) + 
+  xlab(expression(paste("E[y] = ", mu))) + theme_minimal() + 
+  theme(axis.text.x=element_blank(), axis.text.y=element_blank(),
+        axis.title.y = element_text(angle = 90)) +
+  scale_x_continuous(position = "top") + 
+  scale_y_continuous(position = "right")
+ggsave(p.linear, filename="../img/l02-figure1-linreg.png", height=4, width=4, units="in", dpi=300)
+```
+
+```{r Systematic component, logistic regression}
+bTx <- seq(-10, 10, 0.01)
+Ey <- 1/(1+exp(-bTx))
+
+p.linear <- ggplot() + 
+  geom_segment(aes(x=-10, xend=10, y=0, yend=0), size = 1, arrow = arrow(length = unit(0.1, units="in"), type="closed", ends="both"), colour = "gray70") + 
+geom_segment(aes(y=-1, yend=1, x=0, xend=0), size = 1, arrow = arrow(length = unit(0.1, units="in"), type="closed", ends="both"), colour = "gray70") +
+  geom_line(aes(x=bTx, y=Ey)) + ylab(expression(paste(beta^T, "x"))) + 
+  xlab(expression(paste("E[y] = ", mu))) + theme_minimal() + 
+  theme(axis.text.x=element_blank(), axis.text.y=element_blank(),
+        axis.title.y = element_text(angle = 90)) +
+  scale_x_continuous(position = "top") + 
+  scale_y_continuous(position = "right")
+ggsave(p.linear, filename="../img/l02-figure2-logistic.png", height=4, width=4, units="in", dpi=300)
+```
+
+```{r Systematic component, Poisson regression}
+bTx <- seq(-5, 5, 0.01)
+Ey <- exp(bTx)
+
+p.linear <- ggplot() + 
+  geom_segment(aes(x=-5, xend=5, y=0, yend=0), size = 1, arrow = arrow(length = unit(0.1, units="in"), type="closed", ends="both"), colour = "gray70") + 
+geom_segment(aes(y=-4, yend=4, x=0, xend=0), size = 1, arrow = arrow(length = unit(0.1, units="in"), type="closed", ends="both"), colour = "gray70") +
+  geom_line(aes(x=bTx, y=Ey)) + ylab(expression(paste(beta^T, "x"))) + 
+  xlab(expression(paste("E[y] = ", lambda))) + theme_minimal() + 
+  theme(axis.text.x=element_blank(), axis.text.y=element_blank(),
+        axis.title.y = element_text(angle = 90)) +
+  scale_x_continuous(position = "top") + 
+  scale_y_continuous(position = "right", limits = c(-4, 4))
+ggsave(p.linear, filename="../img/l02-figure3-poisson.png", height=4, width=4, units="in", dpi=300)
+```
+
+```{r Poisson regression example}
+d <- read.table("../data/poisson-crab-data.txt", head=TRUE)
+m <- glm(satell ~ color + spine + width + weight, family = "poisson", data = d)
+summary(m)
+```
+

@@ -15,5 +15,4 @@ pdflatex -jobname=pdf/ch10 "\includeonly{tex/mcds-feature-engineering}\input{doc
 
 pdflatex -jobname=pdf/ch11 "\includeonly{tex/mcds-kaplan-meier}\input{document}"
 pdflatex -jobname=pdf/ch12 "\includeonly{tex/mcds-generalized-linear-models}\input{document}"
-pdflatex -jobname=pdf/ch13 "\includeonly{tex/mcds-bias-variance}\input{document}"
-pdflatex -jobname=pdf/ch14 "\includeonly{tex/mcds-feature-selection}\input{document}"
+pdflatex -jobname=pdf/ch13 "\includeonly{tex/mcds-random-forests}\input{document}"
