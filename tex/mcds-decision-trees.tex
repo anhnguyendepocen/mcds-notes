@@ -164,12 +164,15 @@ H[Y(X_2 = 0)] &= \\[2mm]
 
 \section{Alternative Splitting Criteria}
 
-Information gain is not the only criterion that is used in decision tree algorithms. In fact, the tree built for the Wisconsin Breast Cancer dataset in Section~\ref{section:wisconsin} used a different criterion, Gini impurity, because it is the default in R's \texttt{rpart} package. 
+Information gain is not the only criterion that is used in decision tree algorithms. In fact, the tree built for the Wisconsin Breast Cancer dataset in Section~\ref{section:wisconsin} used a different criterion, the mean decrease in Gini impurity, or \textbf{Gini index}, because it is the default in R's \texttt{rpart} package. 
 
-The \textbf{Gini impurity} measures how often a randomly chosen element from a set would be incorrectly labeled if it were randomly labeled using the distribution of labels in the subset. It sums up the probability of an item with label $i$ being chosen ($p_i$) multiplied by the probability $\sum_{j \neq i} p_j = 1 - p_i$ that a mistake is made in classifying it. The formula is:
+The Gini impurity measures how often a randomly chosen element from a set would be incorrectly labeled if it were randomly labeled using the distribution of labels in the subset. It sums up the probability of an item with label $i$ being chosen ($p_i$) multiplied by the probability $\sum_{j \neq i} p_j = 1 - p_i$ that a mistake is made in classifying it. The formula is:
 $$ G(p) = \sum_{i} p_i (1 - p_i) = 1 - \sum_i p_i^2 $$
 which for a Bernoulli distribution is 
 $$ G_\text{Bernoulli} = 1 - \mu^2 - (1-\mu)^2. $$
+The Gini impurity plays a role analogous to entropy. The Gini index is a weighted sum of the Gini impurities within the children of a particular split; if it is low, it means the split was successful in reducing impurity. 
+
+\vspace{3mm}
 
 \begin{question}{}
 Plots of the Gini impurity vs. entropy for a Bernoulli distribution are shown below. What do you notice about the value(s) of $\mu$ for which each is maximized or minimized?
@@ -178,7 +181,7 @@ Plots of the Gini impurity vs. entropy for a Bernoulli distribution are shown be
 \end{center}
 \end{question}
 
-Although the two metrics are similar and usually yield similar trees, depending on the dataset, the trees can look quite different. The Gini impurity is computationally faster because it does not make use of logarithms as the entropy does. This can make a difference as the number of features grows. 
+Entropy and Gini impurity are similar and usually, though not always, yield similar trees. The Gini impurity is computationally faster because it does not make use of logarithms as the entropy does. This can make a difference as the number of features grows. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -191,12 +194,12 @@ $$ S(Y) = \sqrt{\frac{\sum_i(y^{(i)} - \overline{y})}{n-1}} $$
 The procedure is identical to the ID3 algorithm except that it uses conditional standard deviation instead of information gain to decide on features. We define
 $$ S(Y, X) = \sum_{x} P(X = x)~ S(Y(X=x)) $$
 and at each current leaf node, we split on the variable where the reduction in standard deviation, $S(Y) - S(Y,X)$, is the highest. 
-\vspace{5mm}
+\vspace{2mm}
 
 \begin{question}{}
 Imagine you have a dataset with two predictors, $x_1$ and $x_2$, each of which is binary (can only be 0 or 1). Here are the distributions of outcome values associated with $x_1$ and $x_2$:
 \begin{center}
-\includegraphics[width=0.8\textwidth]{img/esl-reg-decision-tree-varsplit.png}
+\includegraphics[width=0.7\textwidth]{img/esl-reg-decision-tree-varsplit.png}
 \end{center}
 Based on the idea of standard deviation reduction, which of these two variables, $x_1$ or $x_2$, would make the most sense for a decision tree to split on? What would such a split look like and what would the output value of the tree (the predicted value of $y$) be for each side of the split?
 \end{question}

@@ -1,0 +1,157 @@
+---
+title: "Chapter 13: Random Forests and Survival Forests"
+output: html_notebook
+---
+
+## Libraries
+
+```{r setup}
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(survival)
+library(survminer)
+library(lubridate)
+library(tidyr)
+library(stringr)
+library(forcats)
+library(wesanderson)
+library(randomForest)
+library(xtable)
+```
+
+## Wisconsin Breast Cancer Dataset
+
+Build a random forest with 100 trees.
+
+```{r}
+d <- read.csv("../data/breast-cancer-wisconsin-data.csv")
+d <- d %>% select(-id)
+
+set.seed(200)
+
+m <- randomForest(diagnosis ~ ., data = d, ntree = 100, maxnodes = 10, importance = TRUE)
+
+tree_1 = getTree(m, 1, labelVar = TRUE)
+names(tree_1) = c("left_child", "right_child", "split_variable", "split_point", "status", "prediction")
+tree_1$left_child = as.factor(tree_1$left_child)
+tree_1$right_child = as.factor(tree_1$right_child)
+tree_1$status = as.factor(tree_1$status)
+# xtable(tree_1 %>% select(-status))
+
+tree_1 = getTree(m, 4, labelVar = TRUE)
+names(tree_1) = c("left_child", "right_child", "split_variable", "split_point", "status", "prediction")
+tree_1$left_child = as.factor(tree_1$left_child)
+tree_1$right_child = as.factor(tree_1$right_child)
+tree_1$status = as.factor(tree_1$status)
+# xtable(tree_1 %>% select(-status))
+```
+
+## Insurance dataset
+
+```{r}
+d <- read.csv("../data/insurance.csv")
+d$charges = d$charges / 1000 # get more reasonable number scale
+
+set.seed(200)
+
+m2 <- randomForest(charges ~ ., data = d, ntree = 100, maxnodes = 10, importance = TRUE)
+
+tree_1 = getTree(m2, 1, labelVar = TRUE)
+names(tree_1) = c("left_child", "right_child", "split_variable", "split_point", "status", "prediction")
+tree_1$left_child = as.factor(tree_1$left_child)
+tree_1$right_child = as.factor(tree_1$right_child)
+tree_1$status = as.factor(tree_1$status)
+xtable(tree_1 %>% select(-status))
+
+tree_1 = getTree(m2, 4, labelVar = TRUE)
+names(tree_1) = c("left_child", "right_child", "split_variable", "split_point", "status", "prediction")
+tree_1$left_child = as.factor(tree_1$left_child)
+tree_1$right_child = as.factor(tree_1$right_child)
+tree_1$status = as.factor(tree_1$status)
+xtable(tree_1 %>% select(-status))
+```
+
+## Variable Importance
+
+Variable importance measures for the Wisconsin Breast Cancer classification dataset.
+
+```{r}
+m_imp = as.data.frame(m$importance)
+m_imp$Variable = row.names(m_imp)
+m_imp = m_imp %>% arrange(Variable) %>% select(Variable, B, M, MeanDecreaseAccuracy, MeanDecreaseGini)  
+print(xtable(m_imp), include.rownames=FALSE)
+```
+
+Variable importance measures for the insurance costs regression dataset.
+
+```{r}
+m_imp = as.data.frame(m2$importance)
+m_imp$Variable = row.names(m_imp)
+names(m_imp)[1] = "PercentIncMSE"
+m_imp = m_imp %>% arrange(Variable) %>% select(Variable, IncNodePurity, PercentIncMSE)  
+print(xtable(m_imp), include.rownames=FALSE)
+```
+
+## OOB Error
+
+Out of bag error plots for the two datasets.
+
+```{r}
+png("../img/oob-classification-wisc.png", height=4, width=7, units="in", res=300)
+par(mar=c(4, 4, 1, 1))
+plot(m, type = "l", main = "")
+dev.off()
+```
+
+```{r}
+png("../img/oob-classification-insur.png", height=4, width=7, units="in", res=300)
+par(mar=c(4, 4, 1, 1))
+plot(m2, type = "l", main = "")
+dev.off()
+```
+
+## Variable Importance Plots
+
+```{r}
+png("../img/vimp-classification-wisc.png", height=6, width=8, units="in", res=300)
+varImpPlot(m, main = "")
+dev.off()
+```
+
+```{r}
+png("../img/vimp-classification-insur.png", height=4, width=8, units="in", res=300)
+varImpPlot(m2, main = "")
+dev.off()
+```
+
+
+## Survival Example: PBC
+
+```{r}
+data(pbc, package = "randomForestSRC")
+pbc$ascites = as.factor(pbc$ascites)
+pbc$edema = as.factor(pbc$edema)
+pbc$stage = as.factor(pbc$stage)
+pbc$bili_high = pbc$bili > 1.2
+
+s1 <- survfit(Surv(days, status) ~ sex, data = pbc)
+png(filename = "../img/rf-surv-example-1.png", height=4, width=6, units="in", res=300)
+ggsurvplot(s1)
+dev.off()
+
+s2 <- survfit(Surv(days, status) ~ edema, data = pbc)
+png(filename = "../img/rf-surv-example-2.png", height=4, width=6, units="in", res=300)
+ggsurvplot(s2)
+dev.off()
+
+s3 <- survfit(Surv(days, status) ~ stage, data = pbc)
+png(filename = "../img/rf-surv-example-3.png", height=4, width=6, units="in", res=300)
+ggsurvplot(s3)
+dev.off()
+
+s4 <- survfit(Surv(days, status) ~ bili_high, data = pbc)
+png(filename = "../img/rf-surv-example-4.png", height=4, width=6, units="in", res=300)
+ggsurvplot(s4)
+dev.off()
+```

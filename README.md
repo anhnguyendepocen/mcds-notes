@@ -3,6 +3,13 @@
 Welcome to "Modern Clinical Data Science", a pilot course and discussion group for data-science-interested physicians and colleagues at Mount Sinai. These notes are designed to introduce important data science concepts in small pieces and show the connections between different methods. Each chapter contains notes and a slide presentation of key ideas (chapter guide).
 
 
+### Chapter 13: Random Forests
+
+This chapter introduces us to ensemble methods, in which input from tens or hundreds of diverse models is combined to produce a final answer. The random forest is one way to create an ensemble of decision trees that has higher predictive accuracy than any individual tree. We examine different splitting criteria, model parameters, and variable importance measures. We see how random forests can be used for different supervised learning problems, including classification, regression, and survival analysis. (; 13 pages)
+
+[Notes](pdf/ch13.pdf) | Slides | Video
+
+
 ### Chapter 12: Generalized Linear Models
 
 Generalized linear models (GLMs) allow us to solve different types of supervised learning problems using the same basic framework (linear combination of predictors, model the outcome as a probability distribution, use maximum likelihood estimation to fit). Linear and logistic regression are examples of GLMs; we introduce Poisson regression as a third example. We talk about how the models are fit using the analogy of hill climbing. Key terms: link function, gradient ascent, Fisher scoring. (25:13; 14 pages)
