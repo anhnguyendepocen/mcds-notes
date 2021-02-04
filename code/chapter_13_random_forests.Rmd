@@ -18,6 +18,8 @@ library(forcats)
 library(wesanderson)
 library(randomForest)
 library(xtable)
+library(rpart)
+library(rpart.plot)
 ```
 
 ## Wisconsin Breast Cancer Dataset
@@ -155,3 +157,25 @@ png(filename = "../img/rf-surv-example-4.png", height=4, width=6, units="in", re
 ggsurvplot(s4)
 dev.off()
 ```
+
+# Faux random forest on Wisconsin Breast Cancer dataset (illustration only)
+
+```{r}
+d <- read.csv("../data/breast-cancer-wisconsin-data.csv")
+d <- d %>% select(-id)
+```
+
+Build decision trees using rpart. This is not quite a random forest, because the basket of variables for each tree is only chosen once at the start and not at each split, but it's close enough for illustration purposes.
+
+```{r}
+for (i in 1:12) {
+  d_sub <- d[sample(1:dim(d)[1], 0.67*dim(d)[1], replace = TRUE), 
+             c(1, sample(2:dim(d)[2], sqrt(dim(d)[2]), replace = FALSE))]
+  m <- rpart(diagnosis ~ ., data = d_sub, method = "class", parms = list(split = "gini"))
+  palette <- colorRampPalette(colors=c("#00BFC4", "#F8766D"))
+  png(filename = paste("../img/wisconsin-decision-tree-", i, ".png", sep=""), height=4, width=4, units="in", res=300)
+  rpart.plot(m, box.palette=palette(20))
+  dev.off()
+}
+```
+

@@ -192,7 +192,7 @@ The variable \emph{charges} is the outcome of interest; it is the total individu
 \vspace{3mm}
 
 \begin{question}{}
-Draw the two regression trees from the Insurance Cost Dataset random forest that are represented by these tables. Note: if a variable's value is less than the split point at a particular node, the training sample goes to the left. For categorical variables, if the variable's value is one of the categories listed under ``split point'', the training sample goes to the left. 
+Draw the two regression trees from the Insurance Cost Dataset random forest that are represented by these tables. Note: if a variable's value is less than the split point at a particular node, the training sample goes to the left. For categorical variables, if the variable's value is one of the categories listed under ``split point'', the training sample goes to the right. 
 \end{question}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -291,7 +291,9 @@ Here is the final \textbf{confusion matrix} for the Wisconsin Breast Cancer rand
 \begin{center}
 {\tt
 \begin{tabular}{lrrr}
-&    B  &  M  & class.error \\B & 346 & 11 & 0.03081232 \\M & 16 & 196 & 0.07547170 
+&    B  &  M  & class.error \\
+B & 346 & 11 & 0.03081232 \\
+M & 16 & 196 & 0.07547170 
 \end{tabular}
 }
 \end{center}
