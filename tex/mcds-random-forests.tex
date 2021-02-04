@@ -138,9 +138,9 @@ The variable \emph{charges} is the outcome of interest; it is the total individu
   \hline
  node\_id & left\_child & right\_child & split\_variable & split\_point & prediction \\ 
   \hline
-1 & 2 & 3 & smoker & 1.00 & 13.19 \\ 
-  2 & 4 & 5 & region & 4.00 & 8.65 \\ 
-  3 & 6 & 7 & region & 11.00 & 31.94 \\ 
+  1 & 2 & 3 & smoker & yes & 13.19 \\ 
+  2 & 4 & 5 & region & NE & 8.65 \\ 
+  3 & 6 & 7 & region & NE, SE, SW & 31.94 \\ 
   4 & 8 & 9 & children & 2.50 & 7.85 \\ 
   5 & 10 & 11 & children & 0.50 & 8.92 \\ 
   6 & 12 & 13 & bmi & 30.01 & 29.21 \\ 
@@ -165,11 +165,11 @@ The variable \emph{charges} is the outcome of interest; it is the total individu
   \hline
  node\_id & left\_child & right\_child & split\_variable & split\_point & prediction \\ 
   \hline
-1 & 2 & 3 & smoker & 1.00 & 13.24 \\ 
+  1 & 2 & 3 & smoker & yes & 13.24 \\ 
   2 & 4 & 5 & bmi & 31.30 & 8.33 \\ 
-  3 & 6 & 7 & region & 3.00 & 31.71 \\ 
+  3 & 6 & 7 & region & NE, NW & 31.71 \\ 
   4 & 8 & 9 & sex & 2.00 & 7.56 \\ 
-  5 & 10 & 11 & region & 14.00 & 9.24 \\ 
+  5 & 10 & 11 & region & NE, NW, SE & 9.24 \\ 
   6 & 12 & 13 & children & 2.50 & 29.45 \\ 
   7 & 14 & 15 & bmi & 30.10 & 33.69 \\ 
   8 & 16 & 17 & children & 0.50 & 7.27 \\ 
@@ -201,7 +201,7 @@ Draw the two regression trees from the Insurance Cost Dataset random forest that
 
 \subsection{Splitting Criteria}
 
-We already discussed how individual trees are built in Chapter~\ref{chapter:decisiontrees}. One of the choices we made then was which \textbf{splitting criterion} to use in building the tree. The splitting criterion is some way of deciding which variables are ``good'' to split on. For classification trees, the most common criteria are Gini index and information gain (the Gini index is by far the most popular). For regression, \textbf{variance splitting} (the same idea as standard deviation reduction, just with a different name) is the most common criterion.
+We already discussed how individual trees are built in Chapter~\ref{chapter:decisiontrees}. One of the choices we made then was which \textbf{splitting criterion} to use in building the tree. The splitting criterion is some way of deciding which variables are ``good'' to split on. For classification trees, the most common criteria are Gini index and information gain (the Gini index is by far the most popular). For regression, \textbf{variance reduction} (the same idea as standard deviation reduction) is the most common criterion.
 
 \vspace{4mm}
 
@@ -250,7 +250,7 @@ A known issue with decision trees is their tendency to prefer to split on contin
 
 \subsection{Bag Size and Number of Predictors}
 
-Each tree in a random forest is built using a ``bagged'' sample of $n$ training examples from the original $N$ examples (so by definition, $n \leq N$). Typically around $2/3$ of training examples are used per tree, but most software packages include a parameter that allows the user to set this value. In addition, at each split, a tree considers only a randomly-chosen subset of $p$ predictor variables; the default number is usually $\sqrt{P}$ (for classification problems) or $P/3$ (for regression problems), where $P$ is the total number of predictors. In software, this will also be a settable parameter. Usually it's fine to leave these parameters at their default values.
+Each tree in a random forest is built using a ``bagged'' sample of $n$ training examples from the original $N$ examples. Typically around $2/3$ of training examples are used per tree, but most software packages include a parameter that allows the user to set this value. In addition, at each split, a tree considers only a randomly-chosen subset of $p$ predictor variables; the default number is usually $\sqrt{P}$ (for classification problems) or $P/3$ (for regression problems), where $P$ is the total number of predictors. In software, this will also be a settable parameter. Usually it's fine to leave these parameters at their default values.
 
 \vspace{5mm}
 

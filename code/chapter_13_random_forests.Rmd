@@ -145,7 +145,7 @@ png(filename = "../img/rf-surv-example-2.png", height=4, width=6, units="in", re
 ggsurvplot(s2)
 dev.off()
 
-s3 <- survfit(Surv(days, status) ~ stage, data = pbc)
+s3 <- survfit(Surv(days, status) ~ treatment, data = pbc)
 png(filename = "../img/rf-surv-example-3.png", height=4, width=6, units="in", res=300)
 ggsurvplot(s3)
 dev.off()
