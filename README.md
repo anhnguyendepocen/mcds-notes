@@ -5,9 +5,9 @@ Welcome to "Modern Clinical Data Science", a pilot course and discussion group f
 
 ### Chapter 13: Random Forests
 
-This chapter introduces us to ensemble methods, in which input from tens or hundreds of diverse models is combined to produce a final answer. The random forest is one way to create an ensemble of decision trees that has higher predictive accuracy than any individual tree. We examine different splitting criteria, model parameters, and variable importance measures. We see how random forests can be used for different supervised learning problems, including classification, regression, and survival analysis. (; 13 pages)
+This chapter introduces us to ensemble methods, in which input from tens or hundreds of diverse models is combined to produce a final answer. The random forest is one way to create an ensemble of decision trees that has higher predictive accuracy than any individual tree. We examine different splitting criteria, model parameters, and variable importance measures. We see how random forests can be used for different supervised learning problems, including classification, regression, and survival analysis. (37:58; 13 pages)
 
-[Notes](pdf/ch13.pdf) | [Slides](pdf/ch13-guide.pdf) | Video
+[Notes](pdf/ch13.pdf) | [Slides](pdf/ch13-guide.pdf) | [Video](https://vimeo.com/511768261/79b849a212)
 
 
 ### Chapter 12: Generalized Linear Models
