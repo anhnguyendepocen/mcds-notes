@@ -1,14 +1,10 @@
 \chapter{Feature Selection \label{chapter:featureselection}}
 
-% TODO: remove feature engineering section and focus solely on feature selection
+Modern clinical datasets tend to suffer from an overabundance of features. In fact, there are often more available features than there are training examples. Not all of these features will contribute equal information about the outcome. Including dozens or hundreds of predictors in a supervised learning model does not guarantee higher accuracy; in fact, it is more likely to lead to models that are unnecessarily complex and overfit (see Chapter~\ref{chapter:biasvariance}). Even when features are related to the outcome, they may contribute information that is redundant with other features in the study. 
 
- In most cases, the model designer will also want to incorporate some form of \textbf{feature selection}: a process that automatically or semi-automatically decides which features are most relevant to the model and discards the others.
+In cases like these, the model designer will either need to choose a subset of features manually or incorporate some form of \textbf{feature selection}: a process that automatically or semi-automatically decides which features are most relevant to the model and discards the others. The goal of feature selection is to remove useless and redundant features in a principled way. 
 
-\vspace{5mm}
-
-\begin{question}{}
-Choose 2-3 examples from the list of problems in Section~\ref{section:projectexamples}. Describe the setup of each problem and what types of features one would need to collect to build an accurate/useful model. 
-\end{question}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Example: The Pima Indians Dataset}
 
@@ -34,80 +30,11 @@ Age & Age in years \\
 
 The outcome is whether or not the woman went on to develop type II diabetes within $5$~years from the time of the survey. 
 
-\begin{question}{}
-Why is coding this outcome as 0/1, or yes/no, potentially problematic?
-\end{question}
-
-\begin{question}{}
-What type of problem is this? What methods should we consider when solving this problem? Name at least three learning algorithms that might be appropriate. 
-\end{question}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Feature Engineering}
+\section{Correlograms}
 
-Feature engineering mostly depends on domain expertise. There are three major analytical considerations when performing feature engineering: how the raw data is represented/summarized into features, how those features enter the model (e.g., do they need to be transformed or combined), and how different features are related to each other. 
-
-\subsection{Representation}
-
-Rarely will raw data, especially observational data, feed directly into a model. More often, one must decide how to design features that capture aspects of the data that are likely to be important to the model. 
-
-\vspace{2mm}
-
-\begin{question}{}
-These histograms show the distributions of the individual predictors in the Pima dataset. In each case, what is one alternative way that the same information could be represented as a feature? For predictors 2--6, what do you think the zero values mean and how should they be dealt with?
-  \begin{enumerate}
-  \item Pregnancies
-    \begin{center}
-    \includegraphics[width=0.65\textwidth]{img/pima-pregnancies.png}
-    \end{center}
-    \newpage
-  \item Glucose
-    \begin{center}
-    \includegraphics[width=0.65\textwidth]{img/pima-glucose.png}
-    \end{center}
-  \item BloodPressure
-    \begin{center}
-    \includegraphics[width=0.65\textwidth]{img/pima-blood-pressure.png}
-    \end{center}
-  \item SkinThickness
-    \begin{center}
-    \includegraphics[width=0.65\textwidth]{img/pima-skin-thickness.png}
-    \end{center}
-    \newpage
-  \item Insulin
-    \begin{center}
-    \includegraphics[width=0.65\textwidth]{img/pima-insulin.png}
-    \end{center}
-  \item BMI
-    \begin{center}
-    \includegraphics[width=0.65\textwidth]{img/pima-bmi.png}
-    \end{center}
-  \item DiabetesPedigreeFunction
-    \begin{center}
-    \includegraphics[width=0.65\textwidth]{img/pima-diab-ped-function.png}
-    \end{center}
-    \newpage
-  \item Age
-    \begin{center}
-    \includegraphics[width=0.65\textwidth]{img/pima-age.png}
-    \end{center}
-  \end{enumerate}
-\end{question}
-
-\begin{question}{}
-The type of study design here is called a \textbf{prospective cohort study}. How would you collect information on these eight predictors if this were a \textbf{retrospective cohort study} (e.g., if you collected information about these women and their subsequent development of diabetes from the EHR)? How might this change affect how you extract and code the predictors? 
-\end{question}
-
-\subsection{Transformations}
-
-
-
-\subsection{Correlations and Redundancy \label{section:redund}}
-
-Including dozens or hundreds of predictors in a model does not guarantee that each contributes independent information. A good rule of thumb for any model is that it should be \textbf{parsimonious}: it should accomplish its goal with as little complexity and as few parameters as possible.
-
-Finding a parsimonious model often means identifying sources of redundancy in a dataset. Often, two or more variables will be \textbf{correlated}, meaning that the value of one provides at least some information about the value of the other(s). A good way to alert yourself to the presence of highly correlated predictors is to create some sort of \textbf{correlogram}, or scatterplot matrix, which looks at associations between all pairs of variables. A correlogram for the Pima dataset is below.
+For datasets with a manageable number of features, A good way to alert oneself to the presence of highly correlated predictors is to create a \textbf{correlogram}, or scatterplot matrix, which looks at associations between all pairs of variables. A correlogram for the Pima dataset is below.
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/pima-ggpairs.png}
@@ -117,22 +44,13 @@ Finding a parsimonious model often means identifying sources of redundancy in a 
 This correlogram quantifies correlation using a metric called the \textbf{Pearson correlation coefficient}. Which pairs of predictors are the most tightly correlated? Are they positively or negatively correlated? How might you modify your dataset to eliminate redundancies in the information contributed by the different predictors?
 \end{question}
 
-Including correlated predictors is not always a bad thing, especially if your goal is prediction rather than model interpretation (see \cite{guyon2003introduction}, Figures 1, 2, and 3). The presence of correlations will also affect different types of models in different ways, and some suffer more than others. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-For example, here are eight univariate logistic regression models that capture the effect of each predictor in the Pima dataset on the outcome of diabetes vs. no diabetes:
+\section{Univariate vs. Multivariate Models \label{section:redund}}
 
-\begin{center}
-\includegraphics[width=0.45\textwidth]{img/cor-example-pregnancies.png}
-\includegraphics[width=0.45\textwidth]{img/cor-example-glucose.png} \\[2mm]
-\includegraphics[width=0.45\textwidth]{img/cor-example-bp.png}
-\includegraphics[width=0.45\textwidth]{img/cor-example-skin-thickness.png} \\[2mm]
-\includegraphics[width=0.45\textwidth]{img/cor-example-insulin.png}
-\includegraphics[width=0.45\textwidth]{img/cor-example-bmi.png} \\[2mm]
-\includegraphics[width=0.45\textwidth]{img/cor-example-diab-ped-funct.png}
-\includegraphics[width=0.45\textwidth]{img/cor-example-age.png}
-\end{center}
+The presence of correlations will affect different types of models in different ways, and some suffer more than others. In the clinical research literature, the standard approach to assessing and accounting for correlations is to start with \textbf{univariate} models, in which each predictor's association with the outcome is studied on its own. Those predictors that display some association with the outcome are then incorporated into larger \textbf{multivariate} models.
 
-The coefficients on each predictor here are called the \textbf{unadjusted coefficients}, and the p-values on the predictor-specific hypothesis tests are called  \textbf{unadjusted p-values}. If you exponentiate a coefficient in a univariate logistic regression model, you get an \textbf{unadjusted odds ratio}\footnote{See Chapter~\ref{chapter:glms} if you don't understand why you're exponentiating or where the term ``odds ratio'' comes from. The odds ratio compares the odds of having a positive outcome among two groups separated by a one unit difference of the predictor in question, all else being the same.}. Here is a summary table:
+Here are the results of eight univariate logistic regression models that capture the effect of each predictor in the Pima dataset on the outcome of diabetes vs. no diabetes. The coefficients on each predictor are called the \textbf{unadjusted} coefficients, and the p-values on the predictor-specific hypothesis tests are called unadjusted $p$-values. The exponentiated coefficients are called unadjusted odds ratios\footnote{See Chapter~\ref{chapter:logreg} if you don't understand why you're exponentiating or where the term ``odds ratio'' comes from. The odds ratio compares the odds of having a positive outcome among two groups separated by a one unit difference of the predictor in question, all else being the same.}.
 \vspace{-3mm}
 
 \begin{center} 
@@ -155,7 +73,8 @@ Age & 0.042 & 1.043 & $<$0.001 \\
 }
 \end{center}
 
-Now let's create one big logistic regression model that includes all eight predictors. This is called a \textbf{multivariate} model. The coefficients, exponentiated coefficients, and p-values are often called \textbf{adjusted} in this case, or one might say that the odds ratio measures the effect of one predictor, \textbf{controlling for} the effects of the other predictors. Here are the adjusted estimates:
+Now, here is a multivariate logistic regression model that includes all eight predictors. The coefficients, exponentiated coefficients, and p-values are often called \textbf{adjusted}. 
+
 \vspace{-3mm}
 \begin{center} 
 \texttt{ \small
@@ -177,6 +96,8 @@ Age & 0.015 & 1.015 & 0.111 \\
 }
 \end{center}
 
+Alternatively, one might say that the odds ratios here measure the effect of each predictor, \textbf{controlling for} the effects of the other predictors.
+
 \begin{question}{}
 How can the odds ratio for Insulin be so close to 1.0 yet its p-value so low? (Hint: See Section~\ref{section:sehyp}.)
 \end{question}
@@ -185,16 +106,11 @@ How can the odds ratio for Insulin be so close to 1.0 yet its p-value so low? (H
 Why might the coefficient and p-value for SkinThickness change so much in the shift from unadjusted to adjusted? 
 \end{question}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Feature Selection}
+\section{Filter Methods}
 
-The process of feature selection is largely about eliminating redundancies and useless predictors in an effort to come up with the most parsimonious model possible. In many cases, it is also about increasing the accuracy of model interpretation. There are three basic approaches to feature selection: filters, wrappers, and embedded methods. 
-
-\subsection{Filters}
-
-\textbf{Filter methods} select subsets of variables as a preprocessing step, \emph{independently of the chosen model}. These methods use \textbf{proxy measures} to rank variables; the proxy measure is often chosen to be computationally fast so that large numbers of features can be sifted through quickly.
+The approach of creating univariate models and then incorporating the best-performing predictors into multivariate models is part of a broader class of feature selection methods called \textbf{filter methods}. Filter methods select subsets of variables as a preprocessing step, independently of the  supervised learning model that will eventually be implemented. These methods use \textbf{proxy measures} to rank variables; the proxy measure is often chosen to be computationally fast so that large numbers of features can be sifted through quickly.
 
 A predetermined threshold of the proxy measure is usually used to determine which features pass to the multivariate modeling stage. Alternatively, the modeler may decide on a fixed number of features to include. Some examples of filter methods include:
 
@@ -223,9 +139,11 @@ How might you choose the appropriate threshold for a filter-based method in a da
 What is problematic about testing each potential feature, one at a time?
 \end{question}
 
-\subsection{Wrappers}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\textbf{Wrapper methods} use a search algorithm to traverse the space of possible features, evaluating each subset by running the chosen model using that subset. They are generally computationally intensive (e.g., imagine trying to find the optimal subset of 10,000 features, or even 50) so \textbf{heuristics} generally have to be used to pare down the search space. Some examples of wrapper methods include:
+\section{Wrapper Methods}
+
+Filter methods are just one possible approach to feature selection. An alternative to filter methods are \textbf{wrapper methods}. These methods use a search algorithm to traverse the space of possible features, evaluating each subset by running the chosen model using that subset. They are generally computationally intensive (e.g., imagine trying to find the optimal subset of 10,000 features, or even 50) so \textbf{heuristics} generally have to be used to pare down the search space. Some examples of wrapper methods include:
 
 \begin{itemize}
 \item \textbf{Exhaustive search.} Try all possible subsets of features. If there are $m$ features, this means trying $2^m$ possible subsets.
@@ -378,29 +296,35 @@ Outcome ~ Pregnancies + Glucose + BloodPressure + Insulin + BMI +
 What does the final model look like? How does it compare to the model obtained through forward selection?
 \end{question}
 
-\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Embedded Methods}
+\section{Embedded Methods}
 
-\textbf{Embedded methods} perform feature selection during the process of model training. They are usually specific to a particular type of model. 
+The third and final class of feature selection methods are called \textbf{embedded methods}. Embedded methods perform feature selection during the process of model training. They are usually specific to a particular type of model. 
 
-One example of an embedded method is a decision tree (see Chapter~\ref{chapter:decisiontrees}), which implicitly performs feature selection by placing the most informative predictors at the top of the tree and ignoring those that are unassociated with the outcome. 
+\subsection{Decision Trees}
+
+One example of an embedded method is a decision tree (see Chapters~\ref{chapter:decisiontrees}, \ref{chapter:randomforests}, and \ref{chapter:boosting}), which implicitly performs feature selection by placing the most informative predictors at the top of the tree and ignoring those that are unassociated with the outcome. 
 
 \vspace{2mm}
 
 \begin{question}{}
 Here is the decision tree produced by CART, using information gain/mutual information as the splitting criterion as usual:
 \begin{center}
-\includegraphics[width=\textwidth]{img/pima-decision-tree.png}
+\includegraphics[width=0.6\textwidth]{img/pima-decision-tree.png}
 \end{center}
 Which features were selected for this tree and which were ignored? How were the features transformed from their original forms in the dataset?
 \end{question}
+
+\subsection{Regularized Models}
 
 Another example of an embedded method is \textbf{regularization}. The easiest way to understand regularization is through our discussion of maximum likelihood estimation for GLMs in Chapter~\ref{chapter:glms}. The goal of maximum likelihood estimation is to find the set of model coefficients, $\beta$s, that maximize the joint probability (likelihood) of our observed data given the model. The trouble with this is that more complex models, with more parameters, will generally fit the data better: i.e. produce a higher likelihood.
 
 Regularization addresses this by introducing a penalty term on the likelihood that is proportional to the size of the parameters. In $L_1$ regularization, a.k.a. \textbf{Lasso}, the penalty term is proportional to the absolute values of the coefficients. It looks like this:
 $$ \lambda \sum_{j=1}^p \vert \beta_j \vert $$
 where $p$ is the number of predictors. This creates a tradeoff in the model between the likelihood and the number of parameters. During optimization, the model will set the coefficients on predictors to zero if including those predictors does not sufficiently improve the likelihood. The relative importance of the penalty term and likelihood is adjusted using the parameter $\lambda$. We will see regularized regression methods in much greater detail in Chapter~\ref{chapter:lassoridge}. 
+
+\vspace{2mm} 
 
 \begin{question}{}
 Here is the raw model output from the multivariate logistic regression model that includes all eight predictors:
@@ -426,6 +350,3 @@ We choose $\lambda$ to be equal to the value that produces the minimum deviance.
 \end{center}
 Compare this output to the results of models obtained through forward and backward selection methods, as well as to the full (unregularized) logistic regression model. What are the advantages and disadvantages of the regularization approach vs. wrappers and filters?
 \end{question}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-

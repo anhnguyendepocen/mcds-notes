@@ -2,6 +2,13 @@
 
 Welcome to "Modern Clinical Data Science", a pilot course and discussion group for data-science-interested physicians and colleagues at Mount Sinai. These notes are designed to introduce important data science concepts in small pieces and show the connections between different methods. Each chapter contains notes and a slide presentation of key ideas (chapter guide).
 
+### Chapter 16: Feature Selection
+
+We discuss the general idea of feature selection, comparing methods that are more common in the clinical research literature (univariate vs. multivariate regression models) with embedded methods from statistical learning (decision trees, regularized regression). We differentiate filter, wrapper, and embedded methods and provide examples of each. 
+
+[Notes](pdf/ch16.pdf) | Slides | Video
+
+
 ### Chapter 15: Model Quality and the Bias-Variance Tradeoff
 
 This chapter discusses the general problem of finding the best model for a given problem. We begin by discussing how to quantify error and examine Harrell's concordance index for survival models as an analogy to misclassification error and MSE for classification and regression. We discuss the difference between goodness of fit and generalizability, how each is measured using training and test error, and how to handle high bias vs. high variance situations. We continue our discussion of random forests and boosting using this framework. Key terms: bias-variance tradeoff, overfitting, underfitting. 
