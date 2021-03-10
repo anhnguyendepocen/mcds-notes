@@ -100,11 +100,11 @@ For a supervised learning model, we quantify (1) using the \textbf{training erro
 \vspace{2mm}
 
 \begin{question}{}
-Here we see three decision boundaries for KNN with different values of $K$ (the number of neighbors considered in making a prediction). The data are for the two-class classification problem first discussed in Chapter~\ref{chapter:classification}. From left to right, $K=3, 15,$ and $50$. What are the tradeoffs in moving from left to right in terms of (a) training error/goodness of fit and (b) test error/generalizability? 
+Here we see three decision boundaries for KNN with different values of $K$ (the number of neighbors considered in making a prediction). The data are for the two-class classification problem first discussed in Chapter~\ref{chapter:classification}. From left to right, $K=50, 15,$ and $3$. What are the tradeoffs in moving from left to right in terms of (a) training error/goodness of fit and (b) test error/generalizability? 
 \begin{center}
-\includegraphics[width=0.3\textwidth]{img/esl-knn-3.png}
-\includegraphics[width=0.3\textwidth]{img/esl-knn-15.png}
 \includegraphics[width=0.3\textwidth]{img/esl-knn-50.png}
+\includegraphics[width=0.3\textwidth]{img/esl-knn-15.png}
+\includegraphics[width=0.3\textwidth]{img/esl-knn-3.png}
 \end{center}
 \end{question}
 
@@ -145,5 +145,9 @@ Think of each dot as representing a single test example evaluated under the same
 \vspace{2mm}
 
 \begin{question}{}
-We saw random forests in Chapter~\ref{chapter:randomforests} and were introduced to boosting in Chapter~\ref{chapter:boosting}. It is interesting to compare the two methods because they reduce test error in different ways: one primarily tackles variance, while the other primarily tackles bias. Which one is which, and how does each algorithm succeed in reducing its respective form of error? 
+We saw random forests in Chapter~\ref{chapter:randomforests} and were introduced to boosting in Chapter~\ref{chapter:boosting}. It is interesting to compare the two methods because they reduce test error in different ways: one primarily tackles variance, while the other primarily tackles bias. Which one is which, and how does each algorithm succeed in reducing its respective form of error? Hint: The image below may help. One column represents three trees from a random forest; the other represents three trees from a boosting model.
+
+\begin{center}
+\includegraphics[width=0.7\textwidth]{img/bias-variance-reduction-targets.png}
+\end{center}
 \end{question}

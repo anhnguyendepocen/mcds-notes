@@ -4,12 +4,14 @@ Welcome to "Modern Clinical Data Science", a pilot course and discussion group f
 
 ### Chapter 15: Model Quality and the Bias-Variance Tradeoff
 
+This chapter discusses the general problem of finding the best model for a given problem. We begin by discussing how to quantify error and examine Harrell's concordance index for survival models as an analogy to misclassification error and MSE for classification and regression. We discuss the difference between goodness of fit and generalizability, how each is measured using training and test error, and how to handle high bias vs. high variance situations. We continue our discussion of random forests and boosting using this framework. Key terms: bias-variance tradeoff, overfitting, underfitting. 
 
 [Notes](pdf/ch15.pdf) | Slides | Video
 
 
-### Chapter 14: Boosting
+### Chapter 14: Introduction to Boosting
 
+Boosting is another ensemble algorithm (actually, a meta-algorithm) that creates an ensemble of decison trees, or other weak learners, in a completely different way from random forests. We look at AdaBoost, the first practical boosting algorithm, and go through a step-by-step example on a small dataset. We compare and contrast boosting and random forests. 
 
 [Notes](pdf/ch14.pdf) | Slides | Video
 
