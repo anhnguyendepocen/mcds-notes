@@ -1,0 +1,200 @@
+---
+title: "Chapter 14: Introduction to Boosting"
+output: html_notebook
+---
+
+## Libraries
+
+```{r setup}
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(survival)
+library(survminer)
+library(lubridate)
+library(tidyr)
+library(stringr)
+library(wesanderson)
+library(randomForest)
+library(xtable)
+library(rpart)
+library(rpart.plot)
+```
+
+## Boosting on Augmented Happiness Dataset
+
+Happiness dataset.
+
+```{r}
+happiness = data.frame(friends = c(1, 1, 0, 0, 1, 0, 1, 1, 0, 1), 
+                       money = as.factor(c(1, 1, 1, 0, 0, 0, 2, 0, 0, 0)), 
+                       free_time = c(0, 1, 1, 0, 0, 0, 1, 1, 1, 0), 
+                       pet = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 1),
+                       happy = c(0, 0, 0, 0, 0, 0, 1, 1, 1, 1))
+
+palette <- colorRampPalette(colors=c("#00BFC4", "#F8766D"))
+min_split = 5
+
+w1 = rep(1/dim(happiness)[1], dim(happiness)[1])
+tree_1 = rpart(happy ~ friends + money + free_time + pet, data = happiness, control = rpart.control(minsplit = min_split), 
+               weights = w1)
+png(filename = "../img/happiness-boosting-tree-1.png", height=4, width=4, units="in", res=300)
+rpart.plot(tree_1, box.palette=palette(20))
+dev.off()
+rpart.plot(tree_1, box.palette=palette(20))
+pred_1 = round(predict(tree_1, happiness))
+err_1 = sum((pred_1 != happiness$happy) * w1) / sum(w1)
+alpha_1 = log((1-err_1)/err_1)
+
+w2 = w1 * exp(alpha_1 * (pred_1 != happiness$happy))
+tree_2 = rpart(happy ~ friends + money + free_time + pet, data = happiness, control = rpart.control(minsplit = min_split), 
+               weights = w2)
+png(filename = "../img/happiness-boosting-tree-2.png", height=4, width=4, units="in", res=300)
+rpart.plot(tree_2, box.palette=palette(20))
+dev.off()
+rpart.plot(tree_2, box.palette=palette(20))
+pred_2 = round(predict(tree_2, happiness))
+err_2 = sum((pred_2 != happiness$happy) * w2) / sum(w2)
+alpha_2 = log((1-err_2)/err_2)
+
+w3 = w2 * exp(alpha_2 * (pred_2 != happiness$happy))
+tree_3 = rpart(happy ~ friends + money + free_time + pet, data = happiness, control = rpart.control(minsplit = min_split), 
+               weights = w3)
+png(filename = "../img/happiness-boosting-tree-3.png", height=4, width=4, units="in", res=300)
+rpart.plot(tree_3, box.palette=palette(20))
+dev.off()
+rpart.plot(tree_3, box.palette=palette(20))
+pred_3 = round(predict(tree_3, happiness))
+err_3 = sum((pred_3 != happiness$happy) * w3) / sum(w3)
+alpha_3 = log((1-err_3)/err_3)
+
+w4 = w3 * exp(alpha_3 * (pred_3 != happiness$happy))
+tree_4 = rpart(happy ~ friends + money + free_time + pet, data = happiness, control = rpart.control(minsplit = min_split), 
+               weights = w4)
+png(filename = "../img/happiness-boosting-tree-4.png", height=4, width=4, units="in", res=300)
+rpart.plot(tree_4, box.palette=palette(20))
+dev.off()
+rpart.plot(tree_4, box.palette=palette(20))
+pred_4 = round(predict(tree_4, happiness))
+err_4 = sum((pred_4 != happiness$happy) * w4) / sum(w4)
+alpha_4 = log((1-err_4)/err_4)
+
+alpha_1 * (pred_1 * 2 - 1) + 
+  alpha_2 * (pred_2 * 2 - 1) + 
+  alpha_3 * (pred_3 * 2 - 1) + 
+  alpha_4 * (pred_4 * 2 - 1)
+```
+
+## Adaboost on Wisconsin Breast Cancer dataset
+
+Adaboost function.
+
+```{r}
+adaboost = function(X, y, tree_depth = 3, n_rounds = 100, verbose = FALSE,
+                    control = NULL){
+  # check data types
+  if(!all(y %in% c(-1,1)))
+    stop("y must take values in -1, 1")
+
+  if(!is.matrix(X))
+    stop("X must be a matrix")
+
+  # check for presence of rpart control
+  if(is.null(control)){
+    control = rpart::rpart.control(minsplit = 0, minbucket = 1, cp = -1,
+                                   maxcompete = 0, maxsurrogate = 0,
+                                   usesurrogate = 0, xval = 0,
+                                   maxdepth = tree_depth)
+  } else if(control$maxdepth != tree_depth){
+    warning(paste('tree_depth set to: ', control$maxdepth))
+  }
+
+  n = dim(X)[1]
+  w = rep(1/n, n)
+  alphas = list()
+  weights = list()
+  errors = list()
+
+  for(i in seq(n_rounds)){
+    tree = rpart::rpart(y ~ ., data = data.frame(X), weights = w,
+                        method = "class", control = control, x=FALSE, y=FALSE,
+                        model=FALSE)
+    palette <- colorRampPalette(colors=c("#00BFC4", "#F8766D"))
+    if(i %% 10 == 0){
+      png(filename = paste("../img/wisconsin-boosting-tree-", i, ".png", sep=""), height=4, width=4, units="in", res=300)
+      rpart.plot(tree, box.palette=palette(20))
+      dev.off()
+    }
+    
+    pred = as.integer(as.character(stats::predict(tree, data.frame(X), type="class")))
+    print(pred[1:10])
+    e = sum(w*(pred != y))
+
+    # If tree perfectly gets data, boosting terminates
+    if(abs(e) < 1e-8){
+      # handle the case where first base classifier fits data perfectly
+      if(i == 1){
+        # trees[[i]] = tree
+        alphas[[i]] = 1
+        terms = tree$terms
+        break
+      }
+      break
+    }
+
+    weights[[i]] = w
+    alpha = 1/2*log((1-e)/e)
+    w = w*exp(-alpha*pred*y)
+    w = w/sum(w)
+
+    alphas[[i]] = alpha
+    errors[[i]] = e
+
+    if(verbose & (i %% 10 == 0))
+      cat("Iteration: ", i, "\n")
+
+  }
+
+  out = list(alphas = unlist(alphas), weights = unlist(weights), errors = unlist(errors))
+  class(out) = "adaboost"
+  return(out)
+}
+```
+
+Use AdaBoost on Wisconsin Breast Cancer data. 
+
+```{r}
+library(adabag)
+d <- read.csv("../data/breast-cancer-wisconsin-data.csv")
+d <- d %>% select(-id) %>%
+  mutate(diagnosis_transformed = as.factor(if_else(diagnosis=="M", 1, -1))) %>%
+  select(-diagnosis)
+
+train <- sample(1:569, 450)
+
+cntrl<-rpart.control(maxdepth=2)
+iris.adaboost <- boosting(diagnosis_transformed ~ ., data=d[train,], boos=FALSE, mfinal=50, control=cntrl)
+
+#Error evolution along the iterations in training set 
+# errorevol(iris.adaboost,d[train,])->evol.train
+# plot.errorevol(evol.train)
+
+#comparing error evolution in training and test set
+errorevol(iris.adaboost,d[-train,])->evol.test
+png("../img/wisconsin-boosting-error.png", height=3.5, width=4, units="in", res=500)
+plot.errorevol(evol.test, evol.train)
+dev.off()
+
+palette <- colorRampPalette(colors=c("#00BFC4", "#F8766D"))
+
+for (i in c(1, 3, 6, 8)) {
+  png(filename = paste("../img/wisconsin-boosting-tree-", i, ".png", sep=""), height=4, width=4, units="in", res=300)
+  rpart.plot(iris.adaboost$trees[[i]], box.palette = palette(20), roundint=FALSE)
+  dev.off()
+}
+```
+
+
+
+
+

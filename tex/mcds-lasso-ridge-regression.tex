@@ -1,4 +1,8 @@
-\chapter{Lasso, Ridge, and Elastic Net {\color{red} DRAFT} \label{chapter:lassoridge}}
+\chapter{Regularization \label{chapter:lassoridge}}
+
+The ideas we examined in Chapter~\ref{chapter:biasvariance} 
+
+\section{Lasso, Ridge, and Elastic Net}
 
 Sometimes when building regression models, you run into issues like the following:
 
@@ -8,3 +12,17 @@ Sometimes when building regression models, you run into issues like the followin
 \end{itemize}
 
 Both of these conditions can lead to models that are highly unstable. Maybe they fit your training data well, but if you change your training set even a tiny bit, the coefficients shift wildly. It becomes very hard to trust the coefficient values under these circumstances. One way to combat this is to introduce a \textbf{penalty} on the values of the coefficients. There are different types of penalty (see slides) that do different things. Relevant terms include: \textbf{ridge regression}, \textbf{Lasso}, and \textbf{elastic net}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Gradient Boosting}
+
+Jerome Friedman and Leo Breiman generalized AdaBoost into a general framework called \textbf{gradient boosting}. In this framework, of which AdaBoost is a subset, there are three components:
+
+\begin{enumerate}
+\item A loss function to be optimized.
+\item Weak learners to make predictions.
+\item An additive model that adds the contributions of different weak learners to minimize the loss function.
+\end{enumerate}
+
+We don't have time to get into the details of the gradient boosting framework today, but its basic advantage is that it formulates the boosting process in such a way that any differentiable loss function can be used. In addition, although classification trees or regression trees are usually the weak learners (and technically, Friedman defined ``gradient boosting'' as a model that uses trees as learners) the framework is general enough to encompass other types of weak learners. 

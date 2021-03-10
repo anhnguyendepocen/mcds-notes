@@ -2,6 +2,17 @@
 
 Welcome to "Modern Clinical Data Science", a pilot course and discussion group for data-science-interested physicians and colleagues at Mount Sinai. These notes are designed to introduce important data science concepts in small pieces and show the connections between different methods. Each chapter contains notes and a slide presentation of key ideas (chapter guide).
 
+### Chapter 15: Model Quality and the Bias-Variance Tradeoff
+
+
+[Notes](pdf/ch15.pdf) | Slides | Video
+
+
+### Chapter 14: Boosting
+
+
+[Notes](pdf/ch14.pdf) | Slides | Video
+
 
 ### Chapter 13: Random Forests
 

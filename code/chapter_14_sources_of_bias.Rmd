@@ -1,0 +1,35 @@
+---
+title: "Chapter 14: Sources of Bias in EHR Studies"
+output: html_notebook
+---
+
+## Libraries
+
+```{r setup}
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(survival)
+library(survminer)
+library(lubridate)
+library(tidyr)
+library(stringr)
+library(forcats)
+library(wesanderson)
+library(randomForest)
+library(xtable)
+library(rpart)
+library(rpart.plot)
+```
+
+## Simulations
+
+Generating a dataset with different predictors/relationships. We want to consider two things: (1) how well we can predict mortality from a given set of predictors and (2) how much each particular predictor impacts mortality. 
+
+https://github.com/virgesmith/demographyMicrosim
+
+```{r}
+n < 100
+d <- data.frame(id = 1:n, age = rnorm)
+```
+

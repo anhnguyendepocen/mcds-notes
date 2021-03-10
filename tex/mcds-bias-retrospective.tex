@@ -1,3 +1,225 @@
-\chapter{Sources of Bias in Healthcare Studies \label{chapter:biasretro}}
+\chapter{Bias in EHR Studies \label{chapter:biasretro}}
+
+In recent years, observational data have begun to 
+
+\begin{quote}
+Bias: Prejudice in favor of or against one thing, person, or group compared with another, usually in a way considered to be unfair. (from Oxford English Dictionary)
+\end{quote}
+
+
+
+\begin{quote}
+``[EHRs] present an opportunistic and non-random snapshot of patient interactions, capturing only the information that is relevant to each specific encounter and across a variety of contexts that are represented by how a patient interacts with the health system.'' -Phelan \emph{et al}  
+\end{quote}
+
+
+
+ this chapter, we pause our discussion of methods to reflect on some of the key sources of bias in studies that use EHR data. 
 
 When we build a supervised learning model or apply a hypothesis test, we are attempting to use data to draw a conclusion about the world. 
+
+\footnote{Gianfrancesco MA, Tamang S, Yazdany J, Schmajuk G. Potential biases in machine learning algorithms using electronic health record data. JAMA internal medicine. 2018 Nov 1;178(11):1544-7.}
+
+\footnote{Goldstein BA, Navar AM, Pencina MJ. Risk prediction with electronic health records: the importance of model validation and clinical context. JAMA cardiology. 2016 Dec 1;1(9):976-7.}
+
+\footnote{Phelan M, Bhavsar NA, Goldstein BA. Illustrating informed presence bias in electronic health records data: how patient interactions with a health system can impact inference. eGEMs. 2017;5(1).}
+
+\footnote{Agniel D, Kohane IS, Weber GM. Biases in electronic health record data due to processes within the healthcare system: retrospective observational study. Bmj. 2018 Apr 30;361.}
+
+Studies based on EHR data are part of an older tradition of \textbf{retrospective observational studies}. The potential sources of bias in these types of studies have been known for decades - in some cases, centuries. 
+
+Many of the definitions of biases that we will investigate today are from the wonderful website \texttt{catalogofbias.org}. 
+
+\begin{question}{}
+As clinicians, what information do you think is over-represented in EHRs? What information do you tend \emph{not} to record?
+\end{question}
+
+\begin{question}{}
+It gets a little tiresome hearing all the problems and potential sources of bias in EHR studies. There are positive aspects to working with EHR data as well that cannot be accomplished by other means. What are some reasons that it is worth it to attempt to mitigate the effects of bias in EHR studies instead of giving up?
+\end{question}
+
+\begin{question}{}
+In each case, think about how each of the following studies would be affected. (1) Predictive model of in-hospital mortality. (2) Study of the effectiveness of a particular treatment among patients admitted to the hospital for an acute illness. (3) Observational study of the utility of a particular lab value as a predictive biomarker for long-term development of a chronic illness. (4) Same as (3) except it's a machine learning-based study that uses 200 different patient characteristics as predictors. 
+\end{question}
+
+Imagine you are trying to decide if you believe a particular study. You're basically asking yourself whether the study's result is true or whether it could be due to (a) random chance, (b) confounding, or (c) bias. If it's unlikely that the result was due to one of these factors, the study is considered \textbf{internally valid}. However, the study is not deemed \textbf{externally valid} if it cannot be expected to generalize well to other circumstances (e.g., other health systems or patient populations).
+
+The authors of one article (Phelan \emph{et al}) call the set of biases introduced by how a patient interacts with a health system \textbf{informed presence bias}. The idea is that patient interactions with a health system are typically informative. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Confounding}
+
+What happens if the potential confounder is unknown or not available in the dataset? For example, access to housing or transportation may be the direct cause of adverse outcomes in patients with low socioeconomic status, but we may attribute the association to insurance status or race because those things are more easily measured and recorded in the EHR. 
+
+Example: Confounding by indication is a distortion that modifies an association between an exposure and an outcome, caused by the presence of an indication for the exposure that is the true cause of the outcome.
+
+A third factor that affects both exposure and outcome. Can be adjusted for, assuming you can measure it. 
+
+Difference with bias: you can't adjust for it. It's just part of your study. Bias arises whenever you treat the exposed/unexposed group differently. Tends to bias toward the null or away from the null. We often don't know the direction of bias but we know the bias is there. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Selection Bias}
+
+Problem: different groups within the study are selected in different ways; undermines internal validity
+
+Definition: occurs when individuals or groups in a study differ systematically from the population of interest leading to a systematic error in an association or outcome. 
+
+Messes up internal validity of study, meaning you just did the thing wrong. 
+
+A distinction of sampling bias (albeit not a universally accepted one) is that it undermines the external validity of a test (the ability of its results to be generalized to the rest of the population), while selection bias mainly addresses internal validity for differences or similarities found in the sample at hand.
+
+Examples: 
+\begin{enumerate}
+\item In a case-control study, choosing a control population that is not representative of the population that produced the cases
+\item The likelihood of being lost to follow-up is related to outcome or exposure status
+\item Patients self-select to be part of the study, so refusal, non-response, or agreement to participate is related to exposure and/or disease
+\item Differential referral or diagnosis of subjects from different groups within the study (e.g., cases defined using one technology; controls another)
+\item HbA1c measured in the ED is higher (clinically and statistically) than HbA1c measured at home or in an outpatient clinic. Positive association between HbA1c and future myocardial infarction attenuated when controlling for location of measurement (Phelan et al).
+\end{enumerate}
+
+Immortal time bias and length time bias are examples of selection biases. 
+
+Sampling bias is a form of selection bias. 
+
+Examples: Differential loss to follow up (differences between treatment and control groups)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Sampling Bias}
+
+Problem: study population differs from overall population; undermines external validity
+
+ALSO KNOWN AS Ascertainment Bias
+
+This messes up external validity of a study. The internal analysis may not be wrong as with selection bias. Sometimes people say this is a form of selection bias. 
+
+In Phelan et al, they discuss admixture bias, which occurs because the referral population for a particular institution is different than the local population. I would consider this a sampling bias, since you'd try to extrapolate findings to the local population without understanding that the referral population has biased the result. Also affects estimates of disease prevalence if, e.g., the facility is a referral facility for a particular disease/condition. 
+
+Systematic differences in the identification of individuals included in a study or distortion in the collection of data in a study.
+
+% Difference with detection is that detection is focused on outcomes, whereas ascertainment is about identifying patients who should be included in the study
+
+% sampling bias is a bias in which a sample is collected in such a way that some members of the intended population have a lower or higher sampling probability than others. It results in a biased sample, a non-random sample[1] of a population (or non-human factors) in which all individuals, or instances, were not equally likely to have been selected
+
+Ascertainment bias arises when data for a study or an analysis are collected (or surveyed, screened, or recorded) such that some members of the target population are less likely to be included in the final results than others. The resulting study sample becomes biased, as it is systematically different from the target population.
+
+Ascertainment bias can happen when there is more intense surveillance or screening for outcomes among exposed individuals than among unexposed individuals, or differential recording of outcomes.
+
+Ascertainment bias can occur in screening, where take-up can be influenced by factors such as cultural differences. It can occur in case-control studies in the initial identification of cases and controls, which can be skewed by relevant exposures, leading to biased estimates of associations.
+
+Examples: selection from a specific geographic area, self-selection when people get to choose whether to enter the study, pre-screening of trial participants or advertising for volunteers, healthy user bias, Berkson's fallacy 
+
+\begin{enumerate}
+\item Many -- perhaps most -- psychology studies are done using college students as subjects.
+\item Studies developed at university hospitals will be developed using individuals with generally higher income, younger age, and who are on average more white than the surrounding area. Results may not be applicable to a community hospital. 
+\end{enumerate}
+
+% Example: Admission Rate Bias (also called Berkson's bias) arises when the variables under study are affected by the selection of hospitalized subjects leading to a bias between the exposure and the disease under study. Basically hospitalized patients are not a representative sample of the overall population. The combination of exposure to a risk and occurrence of the disease makes it more likely that an individual will be admitted to hospital. In a case-control study, this means the hospital cases could have higher risk exposures or disease than cases from the population at large. This can affect the estimates of the association between the exposure and the disease.
+
+Solution is often stratification. Accounting for factors that influence a patient's pattern of encounters with a health system. 
+
+\begin{question}{}
+How does the end user of an analysis (health system, patient, physicians, other scientists) impact one's concern for various kinds of bias? 
+\end{question}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Information Bias}
+
+\begin{quote}
+Information bias: Information bias is any systematic difference from the truth that arises in the collection, recall, recording and handling of information in a study, including how missing data is dealt with.
+\end{quote}
+
+Information bias is probably more important than selection/ascertainment bias in EHR studies because its effects are more insidious; after all, one could make the argument that EHRs represent reasonably random samples of the surrounding area and documentation for different patients is unlikely to be influenced by features of the patient in a non-random way (potentially with the exception of insurance status). 
+
+
+\subsection{Informed Presence/Absence Bias}
+
+Also known as: missing/enriched data 
+
+% Missing data can be a major cause of information bias, where certain groups of people are more likely to have missing data. An example where differential recording may occur is in smoking data within medical records.  Overall, smoking status is quite well recorded in primary care records, those with no record of smoking status are more likely to be ex-smokers or non-smokers than current smokers. Marston et al, 2014 ).  showed the overestimate might be as much as 8% for smoking status. Those who quit smoking at a young age or a long time ago were more likely to misclassified as non-smokers.
+
+Examples:
+\begin{enumerate}
+\item Individuals from vulnerable populations, including those with low socioeconomic status, those with psychosocial issues, and immigrants, are more likely to visit multiple institutions or health care systems to receive care. Patients who use both VA and non-VA services have fewer measured comorbidities when only a single health system EHR was used in analyses (Phelan). 
+\item Patients with low socioeconomic status may receive fewer diagnostic tests and medications for for chronic diseases.  % patient may not have sufficient data to qualify for an electronic phenotyping algorithm
+\item Patients with lower technological literacy/access may not be able to access patient portals or document self-reported outcomes. 
+\item Patients with diabetes have more recorded HbA1c measurements within their EHR records than patients without diabetes (Phelan). 
+\end{enumerate}
+
+\begin{question}{}
+One of my pet peeves are machine learning models that predict a future diagnostic outcome using all available information: medications, labs, vitals, other diagnoses, procedures. Why is this practice problematic?
+\end{question}
+
+Kohane paper results: presence of lab tests, value of lab tests, time between successive tests all informative of mortality
+
+\subsection{Detection Bias}
+
+\begin{quote}{}
+Systematic differences between groups in how outcomes are determined.
+\end{quote}
+
+% A test or treatment for a disease may perform differently according to some characteristic of the study participant, which itself may influence the likelihood of disease detection or the effectiveness of the treatment. Detection bias can occur in trials when groups differ in the way outcome information is collected or the way outcomes are verified.
+
+% Example: Larger men have bigger prostates, which makes diagnosing prostate cancer via biopsy more difficult (it is harder to hit the target). Therefore, men with larger prostates are less likely to be accurately diagnosed with prostate cancer. Thus, a real association between obesity and prostate cancer risk may be underestimated.  
+
+% Example: Verification bias (sometimes referred to as ?work-up bias?) occurs during investigations of diagnostic test accuracy when there is a difference in testing strategy between groups of individuals, leading to differing ways of verifying the disease of interest. Sub-class is differential reference bias E.g. In one study of an elbow extension test to rule out elbow fracture, participants with a positive index test received the reference test of radiography. Those who did not undergo radiography (for example because the index test was negative) received a structured follow-up assessment by telephone.
+
+% Example Observer bias. Systematic difference between a true value and the value actually observed due to observer variation. For example, one radiologist may have a twitchier tendency to recommend biopsies for breast tumors than another radiologist. 
+
+% A failure to blind assessors of outcomes in randomized clinical trials may result in bias. Observer bias, sometimes called ?detection bias? or ?ascertainment bias,? occurs when outcome assessments are systematically influenced by the assessors? conscious or unconscious predispositions ? for example, because of hope or expectations, often favouring the experimental intervention.1
+
+\subsection{Misclassification Bias}
+
+\begin{quote}
+Misclassification bias: When the probability of a measurement/misclassification error differs based on some other relevant property (e.g. age, gender, body weight, etc.). 
+\end{quote}
+
+\begin{enumerate}
+\item Patients of low socioeconomic status may be more likely to be seen in teaching clinics, where data input or clinical reasoning may be less accurate. Implicit bias by healthcare practitioners could also lead to differences in how data are recorded and whether the results are accurate (e.g., the types of diagnoses considered as potential causes of a problem). 
+\item Women may be less likely to receive lipid-lowering medications and in-hospital procedures, as well as optimal care at discharge, compared with men, despite being more likely to present with hypertension and heart failure. 
+\end{enumerate}
+
+\subsection{Recall Bias}
+
+\begin{quote}
+Recall bias occurs when participants do not remember previous events or experiences accurately or omit details: the accuracy and volume of memories may be influenced by subsequent events and experiences. due to differences in accuracy or completeness of recall to memory of past events or experiences.
+\end{quote}
+
+\subsection{Reporting Bias}
+
+\begin{quote}
+Reporting bias occurs when the dissemination of research findings is influenced by the nature and direction of the results, for instance in systematic reviews. Positive results is a commonly used term to describe a study finding that one intervention is better than another. A systematic distortion that arises from the selective disclosure or withholding of information by parties involved in the design, conduct, analysis, or dissemination of a study or research findings
+\end{quote}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Social Bias vs. Scientific Bias}
+
+Bias could mean ``the model is wrong or does not generalize'' or bias could mean ``discrimination against one or more people/groups''. In machine learning, bias means a model that is oversimplified and makes the same errors each time. 
+
+Remember: a model can only recapitulate patterns found in the underlying data. 
+
+All observational studies may be biased; however, bias in machine learning is particularly insidious because it can affect clinical decision support tools. Clinical studies that use EHR data are also at risk, but these may be discussed and results replicated elsewhere. The process is somewhat longer. There is a significant risk that health systems that are developing their own internal machine learning tools may incorporate bias into real-time healthcare decisions. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Availability Bias}
+
+A distortion that arises from the use of information which is most readily available, rather than that which is necessarily most representative. Think Trump: opinion is whichever one he heard last. Same goes for doctors; they're more likely to use a diagnosis that they already used recently. 
+
+All research questions and decisions, whether considering diagnostic accuracy of a test or effectiveness of an intervention, involve interpretation of data. Clinical decisions are based on data, which may be from routine care, published evidence, guidelines or clinician preference or experience.
+
+\begin{enumerate}
+\item Certain diseases, groups of people, and outcomes are easier to study than others because more data are available. 
+\item Is the EHR really the best instrument to use to ask a particular question? If we devote resources toward these studies, are we taking them away from study types that may be more accurate?
+
+
+\end{enumerate}
+
+
