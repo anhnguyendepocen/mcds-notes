@@ -1,0 +1,88 @@
+---
+title: "Chapter 17: Lasso and Ridge Regression"
+output: html_notebook
+---
+
+## Libraries
+
+```{r setup}
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(survival)
+library(survminer)
+library(lubridate)
+library(tidyr)
+library(stringr)
+library(wesanderson)
+library(randomForest)
+library(xtable)
+library(rpart)
+library(rpart.plot)
+library(glmnet)
+```
+
+## Leukemia Dataset
+
+```{r}
+download.file("https://web.stanford.edu/~hastie/glmnet/glmnetData/Leukemia.RData",
+              "../data/Leukemia.RData")
+load("../data/Leukemia.Rdata")
+x = Leukemia$x
+y = as.factor(Leukemia$y)
+df = data.frame(x, y)
+```
+
+Random forest. 
+
+```{r}
+ptm <- proc.time()
+rf = randomForest(x, y, do.trace = FALSE, importance = TRUE, ntree = 100)
+proc.time() - ptm
+```
+
+Boosting (AdaBoost).
+
+```{r}
+library(adabag)
+
+ptm <- proc.time()
+ada = adabag::boosting(y ~ ., data = df, boos = FALSE, mfinal = 10, coeflearn = "Freund", verbose = TRUE)
+proc.time() - ptm
+```
+
+## Small Example
+
+```{r}
+d = data.frame(BP = c(123, 111, 98, 154, 199, 101, 91, 133, 116, 121), 
+               sex = c('m', 'f', 'f', 'm', 'm', 'f', 'm', 'f', 'f', 'm'),
+               age = c(54, 66, 23, 59, 76, 33, 35, 54, 21, 26), 
+               obesity = c(1, 0, 0, 1, 1, 0, 1, 0, 0, 0))
+X = makeX(d[,2:4])
+y = d$BP
+```
+
+Normal logistic regression.  
+
+```{r}
+m = lm(BP ~ sex + age + obesity, data = d)
+summary(m)
+```
+
+Lasso, ridge, and glmnet.
+
+```{r}
+results = {}
+alpha_values = c(0, 0.2, 0.5, 1)
+lambda_values = c(0, 1, 5, 10)
+for (alpha in alpha_values) {
+  for (lambda in lambda_values) {
+    m = glmnet(X, d$BP, family = "gaussian", lambda = lambda, alpha = alpha) 
+    results = rbind(results, c(lambda, alpha, t(as.matrix(m$beta))))
+  }
+}
+results = as.data.frame(results)
+names(results) = c("lambda", "alpha", "beta_sexf", "beta_sexm", "beta_age", "beta_obesity")
+xtable(results)
+```
+

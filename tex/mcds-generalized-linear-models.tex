@@ -119,7 +119,7 @@ Knowing this, how would you create a GLM where the outcome follows an exponentia
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Maximum Likelihood for GLMs}
+\section{Maximum Likelihood for GLMs \label{section:mleglms}}
 
 GLMs are fit using maximum likelihood estimation (see Chapter~\ref{chapter:mlebasics}). A full treatment of MLE for GLMs is outside the scope of these notes, but I've put the start of the calculations for each type of model below. The only difference between these calculations and those in Chapter~\ref{chapter:mlebasics} is that now our parameters of interest, the means of our outcome distributions, are functions of our predictors $x_1, \dots, x_p$. Our job is to find the coefficients on those predictors, $\beta_0, \dots, \beta_p$, that provide the best fit between our model and our training data.
 
@@ -146,7 +146,7 @@ $$ \mathcal{L}(\mu^{(1)}, \dots, \mu^{(n)}) = \prod_{i=1}^n {\mu^{(i)}}^{y^{(i)}
 Rewriting this as a function of the predictors, we get:
 $$ \mathcal{L}(\beta) = \prod_{i=1}^n \left( \frac{1}{1 + \exp(-\beta^T x^{(i)})} \right)^{y^{(i)}} \left( \frac{\exp(-\beta^T x^{(i)})}{1 + \exp(-\beta^T x^{(i)})} \right)^{1 - y^{(i)}} $$
 Taking the log, we obtain the log-likelihood:
-$$ \log \mathcal{L}(\beta) = \sum_{i=1}^n \left[ -y^{(i)} \log \left[ 1 + \exp(-\beta^T x^{(i)}) \right] + (1 -y^{(i)}) \log \left[ 1 + \exp(-\beta^T x^{(i)}) \right] \right] $$
+$$ \log \mathcal{L}(\beta) = \sum_{i=1}^n \left[ y^{(i)} \beta^T x^{(i)} - \log \left(1 + \exp(\beta^T x^{(i)}) \right) \right] $$
 Again, we will take derivatives of the log-likelihood with respect to the $\beta$s to maximize it. However, we cannot solve for the optimal $\beta$s analytically in this case. Numerical optimization methods are used to find the maximum likelihood estimates, $\hat{\beta}_0, \hat{\beta}_1,$ etc.
 
 \subsection{Loglinear (Poisson) Regression}

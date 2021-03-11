@@ -20,3 +20,4 @@ pdflatex -jobname=pdf/ch14 "\includeonly{tex/mcds-boosting}\input{document}"
 pdflatex -jobname=pdf/ch15 "\includeonly{tex/mcds-bias-variance}\input{document}"
 
 pdflatex -jobname=pdf/ch16 "\includeonly{tex/mcds-feature-selection}\input{document}"
+pdflatex -jobname=pdf/ch17 "\includeonly{tex/mcds-lasso-ridge-regression}\input{document}"
