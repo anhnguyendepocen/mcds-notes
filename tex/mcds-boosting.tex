@@ -248,10 +248,10 @@ Here are the predictions for this tree, along with the current weights.
 Datapoint ID & $w_i^{(4)}$ & happy $(Y)$ & $G_4(x)$ \\
 \midrule
 1 & 0.1 & -1 & -1 \\
-2 & 0.1 & -1 & -1 \\
-3 & 0.1 & -1 & -1 \\
+2 & 0.1 & -1 & 1 \\
+3 & 0.1 & -1 & 1 \\
 4 & 0.1 & -1 & -1 \\
-5 & 1.4 & -1 & 1 \\
+5 & 1.4 & -1 & -1 \\
 6 & 0.1 & -1 & -1 \\
 \midrule
 7 & 0.4 & 1 & 1 \\
@@ -301,7 +301,7 @@ Datapoint ID & happy $(Y)$ & $G_1(x)$ & $G_2(x)$ & $G_3(x)$ & $G_4(x)$ & $G(x)$ 
 \vspace{3mm}
 
 \begin{question}{}
-The most difficult thing to understand in all of this is how the updated weights play into the construction of subsequent trees. A clue comes from the dataset percentages shown in the nodes of each tree. For example, trees $1$ and $3$ actually have the same structure, but the impurities at each node are different due to the different weights. Discuss how the weights could inform the variables the splitting algorithm chooses to split on (revisit Chapter~\ref{chapter:decisiontrees}, if necessary, to see the math). 
+The most difficult thing to understand in all of this is how the updated weights play into the construction of subsequent trees. A clue comes from the dataset percentages shown in the nodes of each tree. For example, trees $1$ and $4$ actually have the same structure, but the impurities at each node are different due to the different weights. Discuss how the weights could inform the variables the splitting algorithm chooses to split on (revisit Chapter~\ref{chapter:decisiontrees}, if necessary, to see the math). 
 \end{question}
 
 \newpage
