@@ -34,6 +34,7 @@ happiness = data.frame(friends = c(1, 1, 0, 0, 1, 0, 1, 1, 0, 1),
 
 palette <- colorRampPalette(colors=c("#00BFC4", "#F8766D"))
 min_split = 5
+set.seed(200)
 
 w1 = rep(1/dim(happiness)[1], dim(happiness)[1])
 tree_1 = rpart(happy ~ friends + money + free_time + pet, data = happiness, control = rpart.control(minsplit = min_split), 
