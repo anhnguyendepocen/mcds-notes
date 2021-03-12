@@ -25,7 +25,7 @@ This chapter discusses the general problem of finding the best model for a given
 
 ### Chapter 14: Introduction to Boosting
 
-Boosting is another ensemble algorithm (actually, a meta-algorithm) that creates an ensemble of decison trees, or other weak learners, in a completely different way from random forests. We look at AdaBoost, the first practical boosting algorithm, and go through a step-by-step example on a small dataset. We compare and contrast boosting and random forests. (; 12 pages)
+Boosting is another ensemble algorithm (actually, a meta-algorithm) that creates an ensemble of decison trees, or other weak learners, in a completely different way from random forests. We look at AdaBoost, the first practical boosting algorithm, and go through a step-by-step example on a small dataset. We compare and contrast boosting and random forests. (26:35; 12 pages)
 
 [Notes](pdf/ch14.pdf) | [Slides](pdf/ch14-guide.pdf) | [Video](https://vimeo.com/522576437/2c1511e002)
 
