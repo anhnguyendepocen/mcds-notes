@@ -39,6 +39,30 @@ print(p)
 ggsave(p, filename = "../img/survival-function-example-fx.png", height = 3, width = 5, units = "in", dpi = 300)
 ```
 
+```{r}
+Ft = plnorm(x, 3, 1.0)
+St = 1 - Ft
+lambda = y/St
+Lambda = cumsum(lambda)
+
+p <- ggplot() + geom_line(aes(x = x, y = Ft)) + theme_light() + xlab("Time (days)") + ylab("F(t)")
+print(p)
+ggsave(p, filename = "../img/survival-function-example-Ft.png", height = 3, width = 5, units = "in", dpi = 300)
+
+p <- ggplot() + geom_line(aes(x = x, y = St)) + theme_light() + xlab("Time (days)") + ylab("S(t)")
+print(p)
+ggsave(p, filename = "../img/survival-function-example-St.png", height = 3, width = 5, units = "in", dpi = 300)
+
+p <- ggplot() + geom_line(aes(x = x, y = lambda)) + theme_light() + xlab("Time (days)") + ylab(expression(lambda(t)))
+print(p)
+ggsave(p, filename = "../img/survival-function-example-haz.png", height = 3, width = 5, units = "in", dpi = 300)
+
+p <- ggplot() + geom_line(aes(x = x, y = Lambda)) + theme_light() + xlab("Time (days)") + ylab(expression(Lambda(t)))
+print(p)
+ggsave(p, filename = "../img/survival-function-example-cumhaz.png", height = 3, width = 5, units = "in", dpi = 300)
+```
+
+
 ## Datasets
 
 Ovarian cancer survival dataset.
@@ -151,8 +175,32 @@ z <- cox.zph(m)
 z
 ggcoxdiagnostics(m, type = "schoenfeld", title = "Diagnostic plot", ox.scale = "observation.id")
 ggcoxdiagnostics(m, type = "schoenfeld", title = "Diagnostic plot", ox.scale = "time")
-png(filename = "../img/ovarian-cox-diagnostics-schoenfeld.png", height=6, width=6, units="in", res=300)
+png(filename = "../img/ovarian-cox-diagnostics-schoenfeld.png", height=5, width=7, units="in", res=300)
 ggcoxdiagnostics(m, type = "schoenfeld", title = "Diagnostic plot", ox.scale = "time")
 dev.off()
+```
+
+```{r}
+df <- data.frame(futime = d$futime, fustat = as.factor(d$fustat),
+                 age = d$age, resid.ds = d$resid.ds, ecog.ps = d$ecog.ps, rx = d$rx, risk = p_risk)
+df = df[order(df$futime),]
+xtable(df, digits = c(0, 0, 0, 2, 0, 0, 0, 2))
+```
+
+## Parametric models
+
+```{r}
+x <- seq(0, 7, 0.02)
+d_exp <- dexp(x, rate = 0.5)
+d_wei <- dweibull(x, shape = 1.5, scale = 1)
+d_wei2 <- dweibull(x, shape = 4, scale = 1)
+df = data.frame(x = rep(x, 3), fx = c(d_exp, d_wei, d_wei2), 
+                Distribution = c(rep("Exponential(0.5)", length(x)), 
+                          rep("Weibull(1.5, 1)", length(x)), 
+                          rep("Weibull(4, 1)", length(x))))
+
+p <- ggplot(df) + geom_line(aes(x = x, y = fx, colour = Distribution)) + theme_light() + 
+  xlab("Time (t)") + ylab("f(t)")
+ggsave(p, filename = "../img/survival-parametric-examples.png", height=3, width=6, units="in", dpi=300)
 ```
 

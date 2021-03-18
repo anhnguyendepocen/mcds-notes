@@ -4,9 +4,10 @@ Welcome to "Modern Clinical Data Science", a pilot course and discussion group f
 
 ### Chapter 18: The Cox Proportional Hazards Model
 
-Here we examine the main workhorse of survival analysis: the Cox proportional hazards model. We re-examine the concepts of survival, hazard, and cumulative hazard and calculate a simple example of cumulative hazard using the Nelson-Aalen estimator. We then examine the basic form of the Cox model and the assumptions behind the model, talking about model interpretation, fitting, and prediction. Finally, we look at some model diagnostics and talk about strategies for dealing with situations where the model assumptions are violated.
+Here we examine the main workhorse of survival analysis: the Cox proportional hazards model. We re-examine the concepts of survival, hazard, and cumulative hazard and calculate a simple example of cumulative hazard using the Nelson-Aalen estimator. We then examine the basic form of the Cox model and the assumptions behind the model, talking about model interpretation, fitting, and prediction. Finally, we look at some model diagnostics and talk about strategies for dealing with situations where the model assumptions are violated. Part III of the video guide also contains a section on alternatives to the Cox model. (; 16 pages)
 
-[Notes](pdf/ch18.pdf) | Slides | Video 
+[Notes](pdf/ch18.pdf) | [Slides](pdf/ch18-guide.pdf) | Video (Part I) | Video (Part II) | Video (Part III)
+
 
 ### Chapter 17: Lasso, Ridge, and Elastic Net
 
