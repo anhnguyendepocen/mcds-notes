@@ -1,8 +1,14 @@
-\chapter{Survival Trees and Survival Forests}
+\chapter{Survival Trees}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{The Log-Rank Test}
+
+The \textbf{log-rank test} (Mantel 1966; Peto and Peto 1972) is a test for statistical equivalence of two survival curves. It is obtained by constructing a $2x2$ contingency table at the time of each event and comparing the failure rates between the two groups, conditional on the number at risk in each group\footnote{See https://bookdown.org/sestelo/sa\_financial/comparing-survival-curves.html.}. In this way, the test compares the entire survival experience between groups. The null hypothesis is that the true underlying curves for the two groups are identical.
+
+``In the absence of censoring, these methods reduce to the Wilcoxon-Mann-Whitney rank-sum test (Mann and Whitney 1947) for two samples and to the Kruskal-Wallis test (Kruskal and Wallis 1952) for more than two groups of survival times.''
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -18,3 +24,12 @@ This data is from the Mayo Clinic trial in primary biliary cirrhosis (PBC) of th
 \begin{question}{}
 Here's a dataset of survival data... how would you build a survival forest?
 \end{question}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Random Survival Forests}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Boosted Survival Trees}
+

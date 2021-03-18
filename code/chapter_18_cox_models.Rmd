@@ -1,0 +1,158 @@
+---
+title: "Chapter 18: Cox Models"
+output: html_notebook
+---
+
+## Libraries
+
+```{r setup}
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(survival)
+library(survminer)
+library(lubridate)
+library(tidyr)
+library(stringr)
+library(wesanderson)
+library(randomForest)
+library(xtable)
+library(rpart)
+library(rpart.plot)
+library(glmnet)
+```
+
+## Example of survival and hazard
+
+```{r}
+x = seq(0, 150, 0.1)
+y = dlnorm(x, 3, 1.0)
+colors=c("#00BFC4", "#F8766D")
+p <- ggplot() + geom_line(aes(x = x, y = y)) + theme_light() + xlab("Time (days)") + ylab("f(t)") + 
+  geom_ribbon(aes(x = x[x < 30], ymin = 0, ymax = y[x < 30]), fill = colors[1], alpha = 0.7) + 
+  annotate("text", x = 15, y = 0.010, label = "F(T)") + 
+  geom_vline(xintercept = 30, linetype = "dashed", colour = "black") + 
+  annotate("text", x = 40, y = 0.028, label = "T = 30") + 
+  geom_ribbon(aes(x = x[x >= 30], ymin = 0, ymax = y[x >= 30]), fill = colors[1], alpha = 0.3) + 
+  annotate("text", x = 42, y = 0.003, label = "S(T)")
+print(p)
+ggsave(p, filename = "../img/survival-function-example-fx.png", height = 3, width = 5, units = "in", dpi = 300)
+```
+
+## Datasets
+
+Ovarian cancer survival dataset.
+
+```{r}
+d <- survival::ovarian
+d$rx = as.factor(d$rx)
+d$ecog.ps = as.factor(d$ecog.ps)
+d$age.group = cut(d$age, breaks = 4)
+d$resid.ds = as.factor(d$resid.ds)
+
+s1 <- survfit(Surv(futime, fustat) ~ 1, data = d, stype = 1, ctype = 1)  # direct estimation using Kaplan-Meier
+s2 <- survfit(Surv(futime, fustat) ~ 1, data = d, stype = 2, ctype = 1)  # exponentiating cumulative hazard (Nelson-Aalen)
+d_est <- data.frame(times = c(s1$time, s2$time), surv = c(s1$surv, s2$surv), cumhaz = c(s1$cumhaz, s2$cumhaz),
+                    censor = c(s1$n.censor, s2$n.censor),
+                    Method = c(rep("Direct (Kaplan-Meier)", length(s1$time)), rep("Exponentiated\nNelson-Aalen", length(s2$time))))
+p <- ggplot(d_est) + geom_step(aes(x = times, y = surv, colour = Method, linetype = Method), size = 1) + 
+  theme_light() + xlab("Times") + ylab("Survival Probability (%)") + ylim(0, 1) + 
+  scale_linetype_manual(values = c("solid", "dashed")) + 
+  geom_point(aes(x = times, y = surv, colour = Method), data = subset(d_est, censor == 1), shape = 3, size = 1)
+ggsave(p, filename = "../img/ovarian-overall-survival.png", height = 4, width = 6, units = "in", dpi = 300)
+p <- ggplot(d_est) + geom_step(aes(x = times, y = cumhaz, colour = Method, linetype = Method), size = 1) + 
+  theme_light() + xlab("Times") + ylab("Cumulative Hazard") + 
+  scale_linetype_manual(values = c("solid", "dashed")) + 
+  geom_point(aes(x = times, y = cumhaz, colour = Method), data = subset(d_est, censor == 1), shape = 3, size = 1)
+ggsave(p, filename = "../img/ovarian-overall-cumhaz.png", height = 4, width = 6, units = "in", dpi = 300)
+
+s <- survfit(Surv(futime, fustat) ~ rx, data=d, stype = 1, ctype = 1)
+png("../img/ovarian-rx-survival.png", height = 5, width = 4, units = "in", res = 300)
+ggsurvplot(s, conf.int = FALSE, fun = "pct", ggtheme = theme_light(), risk.table = TRUE)
+dev.off()
+png("../img/ovarian-rx-cumhaz.png", height = 5, width = 4, units = "in", res = 300)
+ggsurvplot(s, conf.int = FALSE, fun = "cumhaz", ggtheme = theme_light(), risk.table = TRUE)
+dev.off()
+
+s <- survfit(Surv(futime, fustat) ~ ecog.ps, data=d, stype = 1, ctype = 1)
+png("../img/ovarian-ecog-survival.png", height = 5, width = 4, units = "in", res = 300)
+ggsurvplot(s, conf.int = FALSE, fun = "pct", ggtheme = theme_light(), risk.table = TRUE)
+dev.off()
+png("../img/ovarian-ecog-cumhaz.png", height = 5, width = 4, units = "in", res = 300)
+ggsurvplot(s, conf.int = FALSE, fun = "cumhaz", ggtheme = theme_light(), risk.table = TRUE)
+dev.off()
+```
+
+Why are the two estimators so close (at relatively low hazard rates)?
+
+```{r}
+x = seq(0, 1, 0.01)
+y = -log(1-x)
+p = ggplot() + geom_line(aes(x = x, y = y), size = 1, colour = "gray40") + xlab("x") + 
+  theme_light() + ylab("-log(1-x)") + 
+  geom_abline(slope = 1, intercept = 0, linetype = "dotted", colour = "red", size = 1)
+ggsave(p, filename = "../img/survival-na-km-comparison.png", height = 4, width = 4, units = "in", dpi = 300)
+```
+
+Nelson-Aalen for first treatment group of ovarian dataset.
+
+```{r}
+s1 <- survfit(Surv(futime, fustat) ~ 1, data = subset(d, rx == 1), stype = 1, ctype = 1)
+s1$time
+s1$cumhaz
+```
+
+## Cox Models
+
+Ovarian cancer dataset.
+
+```{r}
+m <- coxph(Surv(futime, fustat) ~ age + resid.ds + ecog.ps + rx, data = d)
+summary(m)
+```
+
+Various predictions on training data. 
+
+```{r}
+p_lp <- predict(m, type = "lp", reference = "zero")
+p_risk <- predict(m, type = "risk", reference = "zero")
+p_expected <- predict(m, type = "expected", reference = "zero")
+p_surv <- predict(m, type = "survival", reference = "zero")
+p_terms <- predict(m, type = "terms", reference = "zero")
+df = data.frame(d$age, p_terms[,1], d$resid.ds, p_terms[,2], d$ecog.ps, p_terms[,3], d$rx, p_terms[,4],
+                p_lp, p_risk, p_expected, p_surv)
+names(df) = c("age", "lp_age", "resid.ds", "lp_resid.ds", "ecog.ps", "lp_ecog.ps", "rx", "lp_rx", "lp", "risk", "exp", "surv")
+xtable(df)
+```
+
+Predictions on new patients.
+
+```{r}
+x_base <- basehaz(m)
+x <- survfit(m, newdata=d, stype=1, ctype=1)
+
+p <- ggsurvplot(x, data = d, conf.int = FALSE, ggtheme = theme_light(), legend.title = "Patient", 
+                legend = "right", fun = "pct")
+png(filename = "../img/ovarian-survplot-bypatient.png", height = 4, width = 6, units = "in", res = 300)
+print(p)
+dev.off()
+
+p <- ggsurvplot(x, data = d, conf.int = FALSE, ggtheme = theme_light(), legend.title = "Patient", 
+                legend = "right", fun = "cumhaz")
+png(filename = "../img/ovarian-cumhaz-bypatient.png", height = 4, width = 6, units = "in", res = 300)
+print(p)
+dev.off()
+```
+
+Model diagnostics.
+
+```{r}
+z <- cox.zph(m)
+z
+ggcoxdiagnostics(m, type = "schoenfeld", title = "Diagnostic plot", ox.scale = "observation.id")
+ggcoxdiagnostics(m, type = "schoenfeld", title = "Diagnostic plot", ox.scale = "time")
+png(filename = "../img/ovarian-cox-diagnostics-schoenfeld.png", height=6, width=6, units="in", res=300)
+ggcoxdiagnostics(m, type = "schoenfeld", title = "Diagnostic plot", ox.scale = "time")
+dev.off()
+```
+
