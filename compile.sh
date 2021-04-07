@@ -22,3 +22,5 @@ pdflatex -jobname=pdf/ch15 "\includeonly{tex/mcds-bias-variance}\input{document}
 pdflatex -jobname=pdf/ch16 "\includeonly{tex/mcds-feature-selection}\input{document}"
 pdflatex -jobname=pdf/ch17 "\includeonly{tex/mcds-lasso-ridge-regression}\input{document}"
 pdflatex -jobname=pdf/ch18 "\includeonly{tex/mcds-cox-model}\input{document}"
+pdflatex -jobname=pdf/ch19 "\includeonly{tex/mcds-clustering}\input{document}"
+pdflatex -jobname=pdf/ch20 "\includeonly{tex/mcds-principal-components-analysis}\input{document}"
