@@ -2,6 +2,25 @@
 
 Welcome to "Modern Clinical Data Science", a pilot course and discussion group for data-science-interested physicians and colleagues at Mount Sinai. These notes are designed to introduce important data science concepts in small pieces and show the connections between different methods. Each chapter contains notes and a slide presentation of key ideas (chapter guide).
 
+### Workshop 21: Competing Risks Analysis
+
+We discuss the problem of competing risks in survival analysis and why it's a bad idea to use the Kaplan-Meier estimator in these contexts. We examine two alternative approaches for competing risks regression (cause-specific hazards vs. subdistribution hazard) and see how the same ideas can be extended to survival trees.
+
+Notes | Slides | Video
+
+*Readings:*
+
+- Austin PC, Lee DS, Fine JP. Introduction to the analysis of survival data in the presence of competing risks. _Circulation._ 2016; 133(6): 601-9. [Link](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4741409/)
+
+- Lau B, Cole SR, Gange SJ. Competing risk regression models for epidemiologic data. _American Journal of Epidemiology._ 2009; 170(2): 244-56. [Link](https://academic.oup.com/aje/article/170/2/244/111339)
+
+- Andersen PK, Geskus RB, de Witte T, Putter H. Competing risks in epidemiology: possibilities and pitfalls. _International Journal of Epidemiology._ 2012; 41(3): 861-70. [Link](https://academic.oup.com/ije/article/41/3/861/829598)
+
+- Putter H, Fiocco M, Geskus RB. Tutorial in biostatistics: competing risks and multi‐state models. _Statistics in Medicine._ 2007; 26(11): 2389-430. [Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/sim.2712?casa_token=xPwrli4dcesAAAAA:6BIMB8aMIJrUUvCVs2X--ntwDzvoAX58dl81acZqCGBSRL4rjQzTW521xd4NFq-Oauf1HultdUiywUg)
+
+- Therneau T, Crowson C, Atkinson E. Multi-state models and competing risks. CRAN-R Vignettes, 2021. [Link](https://cran.r-project.org/web/packages/survival/vignettes/compete.pdf)
+
+
 ### Workshop 20: Principal Components Analysis
 
 Following on our discussion in Chapter 19, we examine the technique of Principal Components Analysis (PCA) and see how it can be applied to a variety of problems relevant to medicine and biology. (; 16 pages)
