@@ -8,7 +8,7 @@ We discuss the problem of competing risks in survival analysis and why it's a ba
 
 Notes | Slides | Video
 
-*Readings:*
+##### Readings:
 
 - Austin PC, Lee DS, Fine JP. Introduction to the analysis of survival data in the presence of competing risks. _Circulation._ 2016; 133(6): 601-9. [Link](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4741409/)
 
