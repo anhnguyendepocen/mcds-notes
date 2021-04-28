@@ -1,8 +1,12 @@
 # mcds-notes
 
-These are the first round of course materials for "Modern Clinical Data Science", a pilot course and discussion group for data-science-interested physicians and colleagues at Mount Sinai. These notes are designed to introduce important data science concepts in small pieces and show the connections between different methods. Clinical data science is challenging because one needs to know both elements of machine learning and traditional statistical methods, such as survival analysis. Although I'm not an expert in all of these areas, my goal here is to provide a set of references that can serve as a starting point for clinicians who (a) want to understand what biostats and data science folks are talking about and (b) start working on their own analyses with electronic health record (EHR) data.
+Modern Clinical Data Science is a pilot course and discussion group for data-science-interested physicians and colleagues at Mount Sinai. Clinical data science is challenging because one needs to understand both elements of machine learning and traditional statistical methods, such as survival analysis. My goal here is to provide a set of notes and references that can serve as a starting point for clinicians who (a) want to understand what biostats and data science folks are talking about and (b) start working on their own analyses with electronic health record (EHR) data.
 
-Each chapter contains notes and a slide presentation of key ideas (chapter guide). The format of these sections was affected by the COVID-19 pandemic (we were stuck with Zoom) and evolved over time, so I may modify earlier material or videos as I continue to refine these workshops. 
+Each topic contains notes and a slide presentation of key ideas (chapter guide), as well as a list of readings and pointers to relevant software. The format of these sections was affected by the COVID-19 pandemic (we were stuck with Zoom) and evolved over time, so I may modify earlier material or videos as I continue to refine these workshops.
+
+---
+
+## Acknowledgments
 
 Many thanks to the students who asked questions and provided feedback as I was writing and gathering this material, especially: Valeria Santibanez Briones, Oren Cohen, Kim Cousins, Teja Ganta, Dan Howell, Tomi Jun, Amanda Leiter, Persio Lopez Loyo, Grenye O'Malley, Furquan Pathan, Arsalan Rehmani, Stephanie Rutledge, Pranai Tandon, Santiago Thibaud, and Doug Tremblay. Thanks to Cindy Gao for acting as course coordinator throughout the 2020-2021 academic year. 
 
