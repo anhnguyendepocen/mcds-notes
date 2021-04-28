@@ -4,7 +4,7 @@ Modern Clinical Data Science is a pilot course and discussion group for data-sci
 
 Each topic contains notes and a slide presentation of key ideas (chapter guide), as well as a list of readings and pointers to relevant software. The format of these sections was affected by the COVID-19 pandemic (we were stuck with Zoom) and evolved over time, so I may modify earlier material or videos as I continue to refine these workshops.
 
------
+---
 
 ## Latest Topics and Readings
 
@@ -32,7 +32,6 @@ Notes | Slides | Video
 
 - Emily Zabor Tutorial: "Survival Analysis in R". Part 3: Competing Risks. Accessed April 28, 2021. [Link](https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html)
 
----
 
 ### Topic 21: Survival Trees
 
