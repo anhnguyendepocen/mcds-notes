@@ -20,7 +20,8 @@ What is data science? We go through 14 examples of project ideas from real stude
 
 - Breiman L. [Statistical modeling: The two cultures (with comments and a rejoinder by the author).](https://projecteuclid.org/download/pdf_1/euclid.ss/1009213726) _Statistical Science._ 2001;16(3):199-231.
 
-- Deo RC. [Machine learning in medicine.](https://www.ahajournals.org/doi/full/10.1161/CIRCULATIONAHA.115.001593) Circulation. 2015; 132(20): 1920-30.
+- Deo RC. [Machine learning in medicine.](https://www.ahajournals.org/doi/full/10.1161/CIRCULATIONAHA.115.001593) _Circulation.
+_ 2015; 132(20): 1920-30.
 
 - Ioannidis JP. [Why most published research findings are false.](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124) _PLoS Medicine._ 2005; 2(8): e124.
 
@@ -28,13 +29,13 @@ What is data science? We go through 14 examples of project ideas from real stude
 
 I recommend learning either R or Python. If your interests tend more toward biostatistics, I'd recommend learning R first. If you're most interested in machine learning, especially modern methods like deep learning, you should choose Python. The book recommendations below focus on packages for data manipulation (i.e., reading data files, performing transformations and cleaning, etc.) and visualization.
 
-- The official Python tutorial [Link](https://docs.python.org/3/tutorial/)
+- The [official](https://docs.python.org/3/tutorial/) Python tutorial
 
-- R programming tutorial from freecodecamp.org [Link](https://www.youtube.com/watch?v=_V8eKsto3Ug)
+- [R programming tutorial](https://www.youtube.com/watch?v=_V8eKsto3Ug) from freecodecamp.org
 
-- Hadley Wickham and Garrett Grolemund, _R for Data Science_ [Link](https://www.amazon.com/Data-Science-Transform-Visualize-Model/dp/1491910399/ref=sr_1_1?dchild=1&keywords=R+for+data+science&qid=1619915950&sr=8-1)
+- Hadley Wickham and Garrett Grolemund, [_R for Data Science_ ](https://www.amazon.com/Data-Science-Transform-Visualize-Model/dp/1491910399/ref=sr_1_1?dchild=1&keywords=R+for+data+science&qid=1619915950&sr=8-1)
 
-- Wes McKinney, _Python for Data Analysis: Data Wrangling with Pandas, NumPy, and IPython_ [Link](https://www.amazon.com/Python-Data-Analysis-Wrangling-IPython/dp/1491957662/ref=sr_1_6?dchild=1&keywords=python+for+data+science&qid=1619916037&sr=8-6)
+- Wes McKinney, [_Python for Data Analysis: Data Wrangling with Pandas, NumPy, and IPython_][Link](https://www.amazon.com/Python-Data-Analysis-Wrangling-IPython/dp/1491957662/ref=sr_1_6?dchild=1&keywords=python+for+data+science&qid=1619916037&sr=8-6)
 
 - Jake VanderPlas, _Python Data Science Handbook: Essential Tools for Working with Data_ [Link](https://www.amazon.com/Python-Data-Science-Handbook-Essential/dp/1491912057/ref=sr_1_5?dchild=1&keywords=python+for+data+science&qid=1619916143&sr=8-5)
 
