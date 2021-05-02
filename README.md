@@ -183,7 +183,7 @@ Boosting is another ensemble algorithm (actually, a meta-algorithm) that creates
 
 - Schapire RE. The boosting approach to machine learning: An overview. _Nonlinear Estimation and Classification._ 2003: 149-71. [Link](https://www.cs.princeton.edu/courses/archive/spr07/cos424/papers/boosting-survey.pdf)
 
-- Bellot A, van der Schaar M. Boosted trees for risk prognosis. _Machine Learning for Healthcare Conference._ 2018: 2-16. [Link](http://proceedings.mlr.press/v85/bellot18a/bellot18a.pdf)
+- Bellot A, van der Schaar M. [Boosted trees for risk prognosis.](http://proceedings.mlr.press/v85/bellot18a/bellot18a.pdf) _Machine Learning for Healthcare Conference._ 2018: 2-16.
 
 
 ### Topic 15: Model Quality and the Bias-Variance Tradeoff
