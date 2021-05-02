@@ -16,13 +16,13 @@ What is data science? We go through 14 examples of project ideas from real stude
 
 #### Readings:
 
-- Ioannidis JP. Why most published research findings are false. _PLoS Medicine._ 2005; 2(8): e124. [Link](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124)
+- Gawande A. [Why doctors hate their computers.](https://www.newyorker.com/magazine/2018/11/12/why-doctors-hate-their-computers) _The New Yorker._ 2018 Nov 12;12.
 
-- Gawande A. Why doctors hate their computers. _The New Yorker._ 2018 Nov 12;12. [Link](https://www.newyorker.com/magazine/2018/11/12/why-doctors-hate-their-computers)
+- Breiman L. [Statistical modeling: The two cultures (with comments and a rejoinder by the author).](https://projecteuclid.org/download/pdf_1/euclid.ss/1009213726) _Statistical Science._ 2001;16(3):199-231.
 
-- Breiman L. Statistical modeling: The two cultures (with comments and a rejoinder by the author). _Statistical Science._ 2001;16(3):199-231. [Link](https://projecteuclid.org/download/pdf_1/euclid.ss/1009213726)
+- Deo RC. [Machine learning in medicine.](https://www.ahajournals.org/doi/full/10.1161/CIRCULATIONAHA.115.001593) Circulation. 2015; 132(20): 1920-30.
 
-- Deo RC. Machine learning in medicine. Circulation. 2015; 132(20): 1920-30. [Link](https://www.ahajournals.org/doi/full/10.1161/CIRCULATIONAHA.115.001593)
+- Ioannidis JP. [Why most published research findings are false.](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124) _PLoS Medicine._ 2005; 2(8): e124.
 
 #### Software and Tutorials:
 
@@ -51,7 +51,7 @@ We investigate three different ways of solving classification problems: logistic
 
 - Goldstein BA, Navar AM, Pencina MJ, Ioannidis J. Opportunities and challenges in developing risk prediction models with electronic health records data: a systematic review. _Journal of the American Medical Informatics Association._ 2017; 24(1): 198-208. [Link](https://academic.oup.com/jamia/article/24/1/198/2631444?login=true)
 
-- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ Chapter 4: Classification. New York: Springer; 2013. [Link](https://www.academia.edu/download/60707896/An_Introduction_to_Statistical_Learning_with_Applications_in_R-Springer_201320190925-63943-2cqzhk.pdf)
+- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ [Chapter 4: Classification.](https://www.statlearning.com/) New York: Springer; 2013.
 
 #### Software and Tutorials:
 
@@ -66,7 +66,7 @@ We see how regression differs from classification and look at three regression a
 
 #### Readings:
 
-- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ Chapter 3: Linear Regression. New York: Springer; 2013. [Link](https://www.academia.edu/download/60707896/An_Introduction_to_Statistical_Learning_with_Applications_in_R-Springer_201320190925-63943-2cqzhk.pdf)
+- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ [Chapter 3: Linear Regression.](https://www.statlearning.com/) New York: Springer; 2013.
 
 
 ### Topic 4: Probability Distributions
@@ -106,7 +106,7 @@ This chapter focuses on the conceptual and algorithmic details behind decision t
 
 #### Readings:
 
-- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ Chapter 8: Tree-Based Methods. New York: Springer; 2013. [Link](https://www.academia.edu/download/60707896/An_Introduction_to_Statistical_Learning_with_Applications_in_R-Springer_201320190925-63943-2cqzhk.pdf)
+- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ [Chapter 8: Tree-Based Methods.](https://www.statlearning.com/) New York: Springer; 2013.
 
 
 ### Topic 8: Interpreting a Linear Regression Model
@@ -196,7 +196,7 @@ This chapter discusses the general problem of finding the best model for a given
 
 - Christodoulou E, Ma J, Collins GS, Steyerberg EW, Verbakel JY, Van Calster B. [A systematic review shows no performance benefit of machine learning over logistic regression for clinical prediction models.](https://www.sciencedirect.com/science/article/pii/S0895435618310813) _Journal of Clinical Epidemiology._ 2019; 110: 12-22.
 
-- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ [Chapter 5: Resampling Methods](https://www.academia.edu/download/60707896/An_Introduction_to_Statistical_Learning_with_Applications_in_R-Springer_201320190925-63943-2cqzhk.pdf) (Cross Validation and the Bootstrap). New York: Springer; 2013.
+- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ [Chapter 5: Resampling Methods](https://www.statlearning.com/) (Cross Validation and the Bootstrap). New York: Springer; 2013.
 
 
 ### Topic 16: Feature Selection
