@@ -188,9 +188,9 @@ Boosting is another ensemble algorithm (actually, a meta-algorithm) that creates
 
 ### Topic 15: Model Quality and the Bias-Variance Tradeoff
 
-This chapter discusses the general problem of finding the best model for a given problem. We begin by discussing how to quantify error and examine Harrell's concordance index for survival models as an analogy to misclassification error and MSE for classification and regression. We discuss the difference between goodness of fit and generalizability, how each is measured using training and test error, and how to handle high bias vs. high variance situations. We continue our discussion of random forests and boosting using this framework. Key terms: bias-variance tradeoff, overfitting, underfitting. (; 9 pages)
+This chapter discusses the general problem of finding the best model for a given problem. We begin by discussing how to quantify error and examine Harrell's concordance index for survival models as an analogy to misclassification error and MSE for classification and regression. We discuss the difference between goodness of fit and generalizability, how each is measured using training and test error, and how to handle high bias vs. high variance situations. We continue our discussion of random forests and boosting using this framework. Key terms: bias-variance tradeoff, overfitting, underfitting.
 
-[Notes](pdf/ch15.pdf) | [Video Guide](https://vimeo.com/544235312/fc74992f4e)
+[Notes](pdf/ch15.pdf) (9 pages) | [Video Guide](https://vimeo.com/544235312/fc74992f4e) (28:02) 
 
 #### Readings:
 
