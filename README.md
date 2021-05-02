@@ -33,7 +33,7 @@ I recommend learning either R or Python. If your interests tend more toward bios
 
 - [R programming tutorial](https://www.youtube.com/watch?v=_V8eKsto3Ug) from freecodecamp.org
 
-- Hadley Wickham and Garrett Grolemund, [_R for Data Science_ ](https://www.amazon.com/Data-Science-Transform-Visualize-Model/dp/1491910399/ref=sr_1_1?dchild=1&keywords=R+for+data+science&qid=1619915950&sr=8-1)
+- Wickham H, Grolemund G. [_R for data science: import, tidy, transform, visualize, and model data._](https://www.amazon.com/Data-Science-Transform-Visualize-Model/dp/1491910399/ref=sr_1_1?dchild=1&keywords=R+for+data+science&qid=1619915950&sr=8-1) O'Reilly Media, Inc.; 2016.
 
 - Wes McKinney, [_Python for Data Analysis: Data Wrangling with Pandas, NumPy, and IPython_][Link](https://www.amazon.com/Python-Data-Analysis-Wrangling-IPython/dp/1491957662/ref=sr_1_6?dchild=1&keywords=python+for+data+science&qid=1619916037&sr=8-6)
 
