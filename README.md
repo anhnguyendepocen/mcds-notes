@@ -33,11 +33,11 @@ I recommend learning either R or Python. If your interests tend more toward bios
 
 - [R programming tutorial](https://www.youtube.com/watch?v=_V8eKsto3Ug) from freecodecamp.org
 
-- Wickham H, Grolemund G. [_R for data science: import, tidy, transform, visualize, and model data._](https://www.amazon.com/Data-Science-Transform-Visualize-Model/dp/1491910399/ref=sr_1_1?dchild=1&keywords=R+for+data+science&qid=1619915950&sr=8-1) O'Reilly Media, Inc.; 2016.
+- Wickham H, Grolemund G. [R for data science: import, tidy, transform, visualize, and model data.](https://www.amazon.com/Data-Science-Transform-Visualize-Model/dp/1491910399/ref=sr_1_1?dchild=1&keywords=R+for+data+science&qid=1619915950&sr=8-1) O'Reilly Media, Inc.; 2016.
 
-- Wes McKinney, [_Python for Data Analysis: Data Wrangling with Pandas, NumPy, and IPython_][Link](https://www.amazon.com/Python-Data-Analysis-Wrangling-IPython/dp/1491957662/ref=sr_1_6?dchild=1&keywords=python+for+data+science&qid=1619916037&sr=8-6)
+- McKinney W. [Python for data analysis: Data wrangling with Pandas, NumPy, and IPython.](https://www.amazon.com/Python-Data-Analysis-Wrangling-IPython/dp/1491957662/ref=sr_1_6?dchild=1&keywords=python+for+data+science&qid=1619916037&sr=8-6) O'Reilly Media, Inc.; 2012.
 
-- Jake VanderPlas, _Python Data Science Handbook: Essential Tools for Working with Data_ [Link](https://www.amazon.com/Python-Data-Science-Handbook-Essential/dp/1491912057/ref=sr_1_5?dchild=1&keywords=python+for+data+science&qid=1619916143&sr=8-5)
+- VanderPlas J. [Python data science handbook: Essential tools for working with data.](https://www.amazon.com/Python-Data-Science-Handbook-Essential/dp/1491912057/ref=sr_1_5?dchild=1&keywords=python+for+data+science&qid=1619916143&sr=8-5) O'Reilly Media, Inc.; 2016.
 
 
 ### Topic 2: The Basics of Classification
