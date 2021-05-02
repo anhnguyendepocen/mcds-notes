@@ -181,7 +181,7 @@ Boosting is another ensemble algorithm (actually, a meta-algorithm) that creates
 
 #### Readings:
 
-- Schapire RE. The boosting approach to machine learning: An overview. _Nonlinear Estimation and Classification._ 2003: 149-71. [Link](https://www.cs.princeton.edu/courses/archive/spr07/cos424/papers/boosting-survey.pdf)
+- Schapire RE. [The boosting approach to machine learning: An overview.](https://www.cs.princeton.edu/courses/archive/spr07/cos424/papers/boosting-survey.pdf) _Nonlinear Estimation and Classification._ 2003: 149-71.
 
 - Bellot A, van der Schaar M. [Boosted trees for risk prognosis.](http://proceedings.mlr.press/v85/bellot18a/bellot18a.pdf) _Machine Learning for Healthcare Conference._ 2018: 2-16.
 
@@ -194,9 +194,9 @@ This chapter discusses the general problem of finding the best model for a given
 
 #### Readings:
 
-- Christodoulou E, Ma J, Collins GS, Steyerberg EW, Verbakel JY, Van Calster B. A systematic review shows no performance benefit of machine learning over logistic regression for clinical prediction models. _Journal of Clinical Epidemiology._ 2019; 110: 12-22. [Link](https://www.sciencedirect.com/science/article/pii/S0895435618310813)
+- Christodoulou E, Ma J, Collins GS, Steyerberg EW, Verbakel JY, Van Calster B. [A systematic review shows no performance benefit of machine learning over logistic regression for clinical prediction models.](https://www.sciencedirect.com/science/article/pii/S0895435618310813) _Journal of Clinical Epidemiology._ 2019; 110: 12-22.
 
-- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ Chapter 5: Resampling Methods (Cross Validation and the Bootstrap). New York: Springer; 2013. [Link](https://www.academia.edu/download/60707896/An_Introduction_to_Statistical_Learning_with_Applications_in_R-Springer_201320190925-63943-2cqzhk.pdf)
+- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ [Chapter 5: Resampling Methods](https://www.academia.edu/download/60707896/An_Introduction_to_Statistical_Learning_with_Applications_in_R-Springer_201320190925-63943-2cqzhk.pdf) (Cross Validation and the Bootstrap). New York: Springer; 2013.
 
 
 ### Topic 16: Feature Selection
