@@ -24,7 +24,7 @@ What is data science? We go through 14 examples of project ideas from real stude
 
 - Deo RC. Machine learning in medicine. Circulation. 2015; 132(20): 1920-30. [Link](https://www.ahajournals.org/doi/full/10.1161/CIRCULATIONAHA.115.001593)
 
-### Software and Tutorials:
+#### Software and Tutorials:
 
 I recommend learning either R or Python. If your interests tend more toward biostatistics, I'd recommend learning R first. If you're most interested in machine learning, especially modern methods like deep learning, you should choose Python. The book recommendations below focus on packages for data manipulation (i.e., reading data files, performing transformations and cleaning, etc.) and visualization.
 
