@@ -213,20 +213,20 @@ We discuss the general idea of feature selection, comparing methods that are mor
 
 ### Topic 17: Lasso, Ridge, and Elastic Net
 
-This short chapter outlines the basics of penalized regression for feature selection and model regularization, including the lasso (L1), ridge (L2) and elastic net penalties. We fit many regularized regression models with different regularization parameters to the same 10-person dataset and examine the effect of parameter changes on model coefficients. Regularization is an important topic for many areas of machine learning, not just regression. (; 5 pages)
+This short chapter outlines the basics of penalized regression for feature selection and model regularization, including the lasso (L1), ridge (L2) and elastic net penalties. We fit many regularized regression models with different regularization parameters to the same 10-person dataset and examine the effect of parameter changes on model coefficients. Regularization is an important topic for many areas of machine learning, not just regression.
 
-[Notes](pdf/ch17.pdf) | Video Guide
+[Notes](pdf/ch17.pdf) (5 pages) | Video Guide
 
 #### Readings:
 
-- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ Chapter 6: Linear Model Selection and Regularization. New York: Springer; 2013. [Link](https://www.academia.edu/download/60707896/An_Introduction_to_Statistical_Learning_with_Applications_in_R-Springer_201320190925-63943-2cqzhk.pdf)
+- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ [Chapter 6: Linear Model Selection and Regularization.](https://www.statlearning.com/) New York: Springer; 2013.
 
 
 ### Topic 18: The Cox Proportional Hazards Model
 
-Here we examine the main workhorse of survival analysis: the Cox proportional hazards model. We re-examine the concepts of survival, hazard, and cumulative hazard and calculate a simple example of cumulative hazard using the Nelson-Aalen estimator. We then examine the basic form of the Cox model and the assumptions behind the model, talking about model interpretation, fitting, and prediction. Finally, we look at some model diagnostics and talk about strategies for dealing with situations where the model assumptions are violated. Part III of the video guide also contains a section on alternatives to the Cox model. (; 16 pages)
+Here we examine the main workhorse of survival analysis: the Cox proportional hazards model. We re-examine the concepts of survival, hazard, and cumulative hazard and calculate a simple example of cumulative hazard using the Nelson-Aalen estimator. We then examine the basic form of the Cox model and the assumptions behind the model, talking about model interpretation, fitting, and prediction. Finally, we look at some model diagnostics and talk about strategies for dealing with situations where the model assumptions are violated. Part III of the video guide also contains a section on alternatives to the Cox model.
 
-[Notes](pdf/ch18.pdf) | Video Guide
+[Notes](pdf/ch18.pdf) (16 pages) | Video Guide
 
 #### Readings:
 
@@ -245,7 +245,7 @@ Here we switch gears from supervised to unsupervised learning and discuss strate
 
 #### Readings:
 
-- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ Chapter 10: Unsupervised Learning. New York: Springer; 2013. [Link](https://www.academia.edu/download/60707896/An_Introduction_to_Statistical_Learning_with_Applications_in_R-Springer_201320190925-63943-2cqzhk.pdf)
+- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ [Chapter 10: Unsupervised Learning.](https://www.statlearning.com/) New York: Springer; 2013.
 
 
 ### Topic 20: Principal Components Analysis
@@ -256,7 +256,7 @@ Following on our discussion in Chapter 19, we examine the technique of Principal
 
 #### Readings:
 
-- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ Chapter 10: Unsupervised Learning. New York: Springer; 2013. [Link](https://www.academia.edu/download/60707896/An_Introduction_to_Statistical_Learning_with_Applications_in_R-Springer_201320190925-63943-2cqzhk.pdf)
+- James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ [Chapter 10: Unsupervised Learning.](https://www.statlearning.com/) New York: Springer; 2013.
 
 
 
@@ -266,7 +266,7 @@ We first encountered survival trees in workshops 11 (Survival Data and the Kapla
 
 #### Readings:
 
-- Ishwaran H, Kogalur UB, Blackstone EH, Lauer MS. Random survival forests. _Annals of Applied Statistics._ 2008; 2(3): 841-60. [Link](https://projecteuclid.org/euclid.aoas/1223908043)
+- Ishwaran H, Kogalur UB, Blackstone EH, Lauer MS. [Random survival forests.](https://projecteuclid.org/euclid.aoas/1223908043) _Annals of Applied Statistics._ 2008; 2(3): 841-60.
 
 
 ### Topic 22: Competing Risks Analysis
@@ -277,21 +277,21 @@ Notes | Slides | Video
 
 #### Readings:
 
-- Austin PC, Lee DS, Fine JP. Introduction to the analysis of survival data in the presence of competing risks. _Circulation._ 2016; 133(6): 601-9. [Link](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4741409/)
+- Austin PC, Lee DS, Fine JP. [Introduction to the analysis of survival data in the presence of competing risks.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4741409/) _Circulation._ 2016; 133(6): 601-9.
 
-- Lau B, Cole SR, Gange SJ. Competing risk regression models for epidemiologic data. _American Journal of Epidemiology._ 2009; 170(2): 244-56. [Link](https://academic.oup.com/aje/article/170/2/244/111339)
+- Lau B, Cole SR, Gange SJ. [Competing risk regression models for epidemiologic data.](https://academic.oup.com/aje/article/170/2/244/111339) _American Journal of Epidemiology._ 2009; 170(2): 244-56.
 
-- Andersen PK, Geskus RB, de Witte T, Putter H. Competing risks in epidemiology: possibilities and pitfalls. _International Journal of Epidemiology._ 2012; 41(3): 861-70. [Link](https://academic.oup.com/ije/article/41/3/861/829598)
+- Andersen PK, Geskus RB, de Witte T, Putter H. [Competing risks in epidemiology: possibilities and pitfalls.](https://academic.oup.com/ije/article/41/3/861/829598) _International Journal of Epidemiology._ 2012; 41(3): 861-70.
 
-- Columbia School of Public Health Resource: Population Health Methods, "Competing Risks Analysis", accessed April 28, 2021. [Link](https://www.publichealth.columbia.edu/research/population-health-methods/competing-risk-analysis)
+- [Columbia School of Public Health Resource: Population Health Methods, Competing Risks Analysis](https://www.publichealth.columbia.edu/research/population-health-methods/competing-risk-analysis), accessed April 28, 2021.
 
 #### Software and Tutorials:
 
-- Scrucca L, Santucci A, Aversa F. Competing risk analysis using R: an easy guide for clinicians. _Bone Marrow Transplantation._ 2007; 40(4): 381-7. [Link](https://www.nature.com/articles/1705727)
+- Scrucca L, Santucci A, Aversa F. [Competing risk analysis using R: an easy guide for clinicians.](https://www.nature.com/articles/1705727) _Bone Marrow Transplantation._ 2007; 40(4): 381-7.
 
-- Documentation for the 'cmprsk' package in R. [Link](https://cran.r-project.org/web/packages/cmprsk/cmprsk.pdf)
+- Documentation for the ['cmprsk'](https://cran.r-project.org/web/packages/cmprsk/cmprsk.pdf) package in R.
 
-- Emily Zabor Tutorial: "Survival Analysis in R". Part 3: Competing Risks. Accessed April 28, 2021. [Link](https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html)
+- Emily Zabor Tutorial: "Survival Analysis in R". [Part 3: Competing Risks.](https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html) Accessed April 28, 2021.
 
 
 ---
