@@ -418,6 +418,6 @@ Many clinical datasets are highly imbalanced. In a typical problem, you're tryin
 
 ## Acknowledgments
 
-Many thanks to the students who asked questions and provided feedback as I was writing and gathering this material, especially: Valeria Santibanez Briones, Oren Cohen, Kim Cousins, Teja Ganta, Dan Howell, Tomi Jun, Amanda Leiter, Persio Lopez Loyo, Grenye O'Malley, Furquan Pathan, Arsalan Rehmani, Stephanie Rutledge, Pranai Tandon, Santiago Thibaud, and Doug Tremblay. Thanks to Cindy Gao for acting as course coordinator throughout the 2020-2021 academic year. 
+Many thanks to the students who asked questions and provided feedback as I was writing and gathering this material, especially: Valeria Santibanez Briones, Oren Cohen, Kim Cousins, Teja Ganta, Dan Howell, Tomi Jun, Amanda Leiter, Persio Lopez Loyo, Grenye O'Malley, Furquan Pathan, Arsalan Rehmani, Stephanie Rutledge, Pranai Tandon, Santiago Thibaud, and Doug Tremblay. Thanks to Cindy Gao for acting as course coordinator for MCDS throughout the 2020-2021 academic year. Thanks also to the staff of Mount Sinai Health Partners (MSHP) who attended the "ML4MSHP" machine learning bootcamp in 2019 and provided project ideas and other feedback. 
 
 
