@@ -12,9 +12,9 @@ Each topic contains notes and a slide presentation of key ideas (chapter guide),
 
 What is data science? We go through 14 examples of project ideas from real students, including physicians and operational/population health team members, and see how they reflect different types of questions. Key terms: supervised vs. unsupervised learning, classification vs. regression, time-to-event outcome, observational study vs. experiment. (7:42; 8 pages)
 
-[Notes](pdf/ch1.pdf) | [Slides](pdf/ch1-guide.pdf) | [Video](https://vimeo.com/502178788/a23f7fb5a4)
+[Notes](pdf/ch1.pdf) | [Video Guide](https://vimeo.com/502178788/a23f7fb5a4)
 
-#### Articles:
+#### Readings:
 
 - Ioannidis JP. Why most published research findings are false. _PLoS Medicine._ 2005; 2(8): e124. [Link](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124)
 
@@ -43,20 +43,26 @@ I recommend learning either R or Python. If your interests tend more toward bios
 
 We investigate three different ways of solving classification problems: logistic regression, K-nearest neighbors (KNN), and decision trees. Using a simple ER readmissions example, we visualize the decision boundaries produced by each of these algorithms and discuss their advantages and disadvantages. Key terms: training and test data, feature, feature space, extrapolation, decision boundary, hyperparameter. (14:05; 10 pages)
 
-[Notes](pdf/ch2.pdf) | [Slides](pdf/ch2-guide.pdf) | [Video](https://vimeo.com/502177988/c2d71bd31f)
+[Notes](pdf/ch2.pdf) | [Video Guide](https://vimeo.com/502177988/c2d71bd31f)
 
 #### Readings:
+
+- Harper PR. A review and comparison of classification algorithms for medical decision making. _Health Policy._ 2005; 71(3): 315-31. [Link](https://pubmed.ncbi.nlm.nih.gov/15694499/)
 
 - Goldstein BA, Navar AM, Pencina MJ, Ioannidis J. Opportunities and challenges in developing risk prediction models with electronic health records data: a systematic review. _Journal of the American Medical Informatics Association._ 2017; 24(1): 198-208. [Link](https://academic.oup.com/jamia/article/24/1/198/2631444?login=true)
 
 - James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ Chapter 4: Classification. New York: Springer; 2013. [Link](https://www.academia.edu/download/60707896/An_Introduction_to_Statistical_Learning_with_Applications_in_R-Springer_201320190925-63943-2cqzhk.pdf)
+
+#### Software and Tutorials:
+
+- 
 
 
 ### Topic 3: The Basics of Regression
 
 We see how regression differs from classification and look at three regression algorithms that parallel the classification algorithms from Chapter 2. We visualize the regression problem using the same features as in Chapter 2 but a different outcome: the level of a "disease recurrence" biomarker. We see how the same machinery of linear models, KNN, and decision trees can be applied in a regression context. (10:32; 7 pages)
 
-[Notes](pdf/ch3.pdf) | [Slides](pdf/ch3-guide.pdf) | [Video](https://vimeo.com/502196350/b82f79fa5d)
+[Notes](pdf/ch3.pdf) | [Video Guide](https://vimeo.com/502196350/b82f79fa5d)
 
 #### Readings:
 
@@ -67,7 +73,7 @@ We see how regression differs from classification and look at three regression a
 
 We examine core concepts from probability through examples from several important probability distributions: the Gaussian (normal) distribution, Bernoulli distribution, binomial, Poisson, geometric, and exponential. We briefly discuss the chi-squared, T, and F distributions, which will be revisited later in Chapter 6 (Introduction to Hypothesis Testing). These ideas are important for understanding linear and logistic regression models, other probabilistic models, and most hypothesis tests. (24:08; 14 pages)
 
-[Notes](pdf/ch4.pdf) | [Slides](pdf/ch4-guide.pdf) | [Video](https://vimeo.com/502212195/4d7f328c2b)
+[Notes](pdf/ch4.pdf) | [Video Guide](https://vimeo.com/502212195/4d7f328c2b)
 
 #### Readings:
 
@@ -76,7 +82,7 @@ We examine core concepts from probability through examples from several importan
 
 Although it's usually thought of as an advanced topic, maximum likelihood estimation is key to understanding how many types of models are fit using software. Here we discuss the core ideas behind maximum likelihood estimation through simple examples, using the same distributions we saw in Chapter 4. Key terms: likelihood, log-likelihood, optimization. (21:20; 12 pages)
 
-[Notes](pdf/ch5.pdf) | [Slides](pdf/ch5-guide.pdf) | [Video](https://vimeo.com/502246270/ebf506ece7)
+[Notes](pdf/ch5.pdf) | [Video Guide](https://vimeo.com/502246270/ebf506ece7)
 
 #### Readings:
 
@@ -85,7 +91,7 @@ Although it's usually thought of as an advanced topic, maximum likelihood estima
 
 We examine the most common type of hypothesis testing, null hypothesis testing, through three examples: the Z test, Pearson's chi-squared test, and [several forms of] the T-test. By seeing how different questions can be answered using the same formalism, we think through the meaning of terms like null hypothesis, null distribution, test statistic, and significance level. We address p-values only briefly and do not touch on confidence intervals; those will be covered in later chapters. (25:44; 18 pages)
 
-[Notes](pdf/ch6.pdf) | [Slides](pdf/ch6-guide.pdf) | [Video](https://vimeo.com/502270109/31c068caab)
+[Notes](pdf/ch6.pdf) | [Video Guide](https://vimeo.com/502270109/31c068caab)
 
 #### Readings:
 
@@ -96,7 +102,7 @@ We examine the most common type of hypothesis testing, null hypothesis testing, 
 
 This chapter focuses on the conceptual and algorithmic details behind decision trees. We look at how tree building algorithms choose features based on measures of impurity/uncertainty, such as entropy or the Gini coefficient. We examine a decision tree built on the Wisconsin Breast Cancer Dataset and build a tree of our own from scratch using the ID3 algorithm on a small (10-sample) dataset. Following on our discussion in Chapters 2 and 3, we look at how the same basic algorithm can be used for both classification and regression. (25:32; 11 pages)
 
-[Notes](pdf/ch7.pdf) | [Slides](pdf/ch7-guide.pdf) | [Video](https://vimeo.com/502291436/952ae9a371)
+[Notes](pdf/ch7.pdf) | [Video Guide](https://vimeo.com/502291436/952ae9a371)
 
 #### Readings:
 
@@ -107,7 +113,7 @@ This chapter focuses on the conceptual and algorithmic details behind decision t
 
 Linear regression models are one of the workhorses of clinical data science. This chapter gets into the details behind the model output. Where do the model coefficients, standard errors, and hypothesis tests come from? What is a residual and why do we care about it? What are the rest of the diagnostics reported by R in the model summary? We examine the actual numbers behind our model from Chapter 3, as well as a larger model that predicts mortality from pollution levels in small cities. (26:44; 11 pages)
 
-[Notes](pdf/ch8.pdf) | [Slides](pdf/ch8-guide.pdf) | [Video](https://vimeo.com/502316223/6159a6417b)
+[Notes](pdf/ch8.pdf) | [Video Guide](https://vimeo.com/502316223/6159a6417b)
 
 #### Readings:
 
@@ -116,7 +122,7 @@ Linear regression models are one of the workhorses of clinical data science. Thi
 
 This chapter is similar to Chapter 8 but focuses on logistic regression models, which are used in supervised learning contexts where the outcome is binary yes/no. Although we first encountered logistic regression as an example of a classification algorithm in Chapter 2, the math behind it is close to that of linear regression, and software output for the two models is similar. We talk about how to interpret the model coefficients and diagnostics, but save a full treatment of maximum likelihood, deviance residuals, etc. for a later chapter. (22:13; 8 pages)
 
-[Notes](pdf/ch9.pdf) | [Slides](pdf/ch9-guide.pdf) | [Video](https://vimeo.com/502330703/55901a0803)
+[Notes](pdf/ch9.pdf) | [Video Guide](https://vimeo.com/502330703/55901a0803)
 
 #### Readings:
 
@@ -127,7 +133,7 @@ This chapter is similar to Chapter 8 but focuses on logistic regression models, 
 
 This short chapter takes a closer look at features and the role of the data scientist in choosing appropriate features for a problem. We talk about how to code different classes of features (numbers, binary yes/no, categories) and briefly touch on how transformations can be used to adjust features. We look back at the features used in Chapters 2, 3, 7, 8, and 9 and how they were coded. (14:22; 5 pages)
 
-[Notes](pdf/ch10.pdf) | [Slides](pdf/ch10-guide.pdf) | [Video](https://vimeo.com/502349732/63e2acd662)
+[Notes](pdf/ch10.pdf) | [Video Guide](https://vimeo.com/502349732/63e2acd662)
 
 #### Readings:
 
@@ -136,7 +142,7 @@ This short chapter takes a closer look at features and the role of the data scie
 
 This chapter is our entrypoint into time-to-event data and survival models. We talk about the concept of censoring and its effect on models. We learn about the nonparametric Kaplan-Meier estimator and spend the bulk of the chapter constructing Kaplan-Meier curves by hand for an ovarian cancer dataset. Key terms: survival, hazard, censoring, Kaplan-Meier estimator. (22:30; 8 pages)
 
-[Notes](pdf/ch11.pdf) | [Slides](pdf/ch11-guide.pdf) | [Video](https://vimeo.com/502363035/f862032e7c)
+[Notes](pdf/ch11.pdf) | [Video Guide](https://vimeo.com/502363035/f862032e7c)
 
 #### Readings:
 
@@ -153,7 +159,7 @@ This chapter is our entrypoint into time-to-event data and survival models. We t
 
 Generalized linear models (GLMs) allow us to solve different types of supervised learning problems using the same basic framework (linear combination of predictors, model the outcome as a probability distribution, use maximum likelihood estimation to fit). Linear and logistic regression are examples of GLMs; we introduce Poisson regression as a third example. We talk about how the models are fit using the analogy of hill climbing. Key terms: link function, gradient ascent, Fisher scoring. (25:13; 14 pages)
 
-[Notes](pdf/ch12.pdf) | [Slides](pdf/ch12-guide.pdf) | [Video](https://vimeo.com/505717483/e48bc2b5d6)
+[Notes](pdf/ch12.pdf) | [Video Guide](https://vimeo.com/505717483/e48bc2b5d6)
 
 #### Readings:
 
@@ -162,16 +168,16 @@ Generalized linear models (GLMs) allow us to solve different types of supervised
 
 This chapter introduces us to ensemble methods, in which input from tens or hundreds of diverse models is combined to produce a final answer. The random forest is one way to create an ensemble of decision trees that has higher predictive accuracy than any individual tree. We examine different splitting criteria, model parameters, and variable importance measures. We see how random forests can be used for different supervised learning problems, including classification, regression, and survival analysis. (37:58; 13 pages)
 
-[Notes](pdf/ch13.pdf) | [Slides](pdf/ch13-guide.pdf) | [Video](https://vimeo.com/511768261/79b849a212)
+[Notes](pdf/ch13.pdf) | [Video Guide](https://vimeo.com/511768261/79b849a212)
 
 #### Readings:
 
 
 ### Topic 14: Introduction to Boosting
 
-Boosting is another ensemble algorithm (actually, a meta-algorithm) that creates an ensemble of decison trees, or other weak learners, in a completely different way from random forests. We look at AdaBoost, the first practical boosting algorithm, and go through a step-by-step example on a small dataset. We compare and contrast boosting and random forests. (26:35; 12 pages)
+Boosting is another ensemble algorithm (actually, a meta-algorithm) that creates an ensemble of decison trees, or other weak learners, in a completely different way from random forests. We look at AdaBoost, the first practical boosting algorithm, and go through a step-by-step example on a small dataset. We compare and contrast boosting and random forests. (25:05; 12 pages)
 
-[Notes](pdf/ch14.pdf) | [Slides](pdf/ch14-guide.pdf) | [Video](https://vimeo.com/522576437/2c1511e002)
+[Notes](pdf/ch14.pdf) | [Video Guide](https://vimeo.com/544227266/a0470ebc5f)
 
 #### Readings:
 
@@ -184,9 +190,11 @@ Boosting is another ensemble algorithm (actually, a meta-algorithm) that creates
 
 This chapter discusses the general problem of finding the best model for a given problem. We begin by discussing how to quantify error and examine Harrell's concordance index for survival models as an analogy to misclassification error and MSE for classification and regression. We discuss the difference between goodness of fit and generalizability, how each is measured using training and test error, and how to handle high bias vs. high variance situations. We continue our discussion of random forests and boosting using this framework. Key terms: bias-variance tradeoff, overfitting, underfitting. (; 9 pages)
 
-[Notes](pdf/ch15.pdf) | [Slides](pdf/ch15-guide.pdf) | Video
+[Notes](pdf/ch15.pdf) | [Video Guide](https://vimeo.com/544235312/fc74992f4e)
 
 #### Readings:
+
+- Christodoulou E, Ma J, Collins GS, Steyerberg EW, Verbakel JY, Van Calster B. A systematic review shows no performance benefit of machine learning over logistic regression for clinical prediction models. _Journal of Clinical Epidemiology._ 2019; 110: 12-22. [Link](https://www.sciencedirect.com/science/article/pii/S0895435618310813)
 
 - James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ Chapter 5: Resampling Methods (Cross Validation and the Bootstrap). New York: Springer; 2013. [Link](https://www.academia.edu/download/60707896/An_Introduction_to_Statistical_Learning_with_Applications_in_R-Springer_201320190925-63943-2cqzhk.pdf)
 
@@ -195,7 +203,7 @@ This chapter discusses the general problem of finding the best model for a given
 
 We discuss the general idea of feature selection, comparing methods that are more common in the clinical research literature (univariate vs. multivariate regression models) with embedded methods from statistical learning (decision trees, regularized regression). We differentiate filter, wrapper, and embedded methods and provide examples of each. (; 14 pages)
 
-[Notes](pdf/ch16.pdf) | [Slides](pdf/ch16-guide.pdf) | Video
+[Notes](pdf/ch16.pdf) | Video Guide
 
 #### Readings:
 
@@ -206,7 +214,7 @@ We discuss the general idea of feature selection, comparing methods that are mor
 
 This short chapter outlines the basics of penalized regression for feature selection and model regularization, including the lasso (L1), ridge (L2) and elastic net penalties. We fit many regularized regression models with different regularization parameters to the same 10-person dataset and examine the effect of parameter changes on model coefficients. Regularization is an important topic for many areas of machine learning, not just regression. (; 5 pages)
 
-[Notes](pdf/ch17.pdf) | [Slides](pdf/ch17-guide.pdf) | Video
+[Notes](pdf/ch17.pdf) | Video Guide
 
 #### Readings:
 
@@ -217,7 +225,7 @@ This short chapter outlines the basics of penalized regression for feature selec
 
 Here we examine the main workhorse of survival analysis: the Cox proportional hazards model. We re-examine the concepts of survival, hazard, and cumulative hazard and calculate a simple example of cumulative hazard using the Nelson-Aalen estimator. We then examine the basic form of the Cox model and the assumptions behind the model, talking about model interpretation, fitting, and prediction. Finally, we look at some model diagnostics and talk about strategies for dealing with situations where the model assumptions are violated. Part III of the video guide also contains a section on alternatives to the Cox model. (; 16 pages)
 
-[Notes](pdf/ch18.pdf) | [Slides](pdf/ch18-guide.pdf) | Video (Part I) | Video (Part II) | Video (Part III)
+[Notes](pdf/ch18.pdf) | Video Guide
 
 #### Readings:
 
@@ -232,7 +240,7 @@ Here we examine the main workhorse of survival analysis: the Cox proportional ha
 
 Here we switch gears from supervised to unsupervised learning and discuss strategies for putting unlabeled data into groups, or clusters. We learn K-means, a classic clustering algorithm, and go through a step-by-step example of K-means applied to simulated flow cytometry data. We compare K-means and Gaussian mixture models, hard vs. soft clusterings, and the assumptions of each method, and observe the training of a Gaussian mixture model visually. (; 20 pages)
 
-[Notes](pdf/ch19.pdf) | [Slides](pdf/ch19-guide.pdf) | Video
+[Notes](pdf/ch19.pdf) | Video Guide
 
 #### Readings:
 
@@ -243,7 +251,7 @@ Here we switch gears from supervised to unsupervised learning and discuss strate
 
 Following on our discussion in Chapter 19, we examine the technique of Principal Components Analysis (PCA) and see how it can be applied to a variety of problems relevant to medicine and biology. (; 16 pages)
 
-[Notes](pdf/ch20.pdf) | [Slides](pdf/ch20-guide.pdf) | Video 
+[Notes](pdf/ch20.pdf) | Video Guide
 
 #### Readings:
 
@@ -392,6 +400,18 @@ Advanced topics in survival analysis. Multi-state models extend the competing ri
 Many clinical datasets are highly imbalanced. In a typical problem, you're trying to identify members of a class, such as patients with a particular type of cancer, from among a background of many orders of magnitude more patients who do not have the cancer. Traditional methods for training and evaluating models suffer some limitations in these cases.
 
 #### Readings:
+
+
+### Topic xx: Introduction to Causal Inference
+
+#### Readings:
+
+- Hernán MA, Robins JM (2020). _Causal Inference: What If._ Boca Raton: Chapman & Hall/CRC. [Link](https://cdn1.sph.harvard.edu/wp-content/uploads/sites/1268/2021/03/ciwhatif_hernanrobins_30mar21.pdf)
+
+- Hernán MA, Hsu J, Healy B. A second chance to get causal inference right: a classification of data science tasks. _Chance._ 2019; 32(1): 42-9. [Link](https://amstat.tandfonline.com/doi/pdf/10.1080/09332480.2019.1579578)
+
+#### Software and Tutorials:
+
 
 ---
 
