@@ -48,9 +48,9 @@ We investigate three different ways of solving classification problems: logistic
 
 #### Readings:
 
-- Harper PR. A review and comparison of classification algorithms for medical decision making. _Health Policy._ 2005; 71(3): 315-31. [Link](https://pubmed.ncbi.nlm.nih.gov/15694499/)
+- Harper PR. [A review and comparison of classification algorithms for medical decision making.](https://pubmed.ncbi.nlm.nih.gov/15694499/) _Health Policy._ 2005; 71(3): 315-31.
 
-- Goldstein BA, Navar AM, Pencina MJ, Ioannidis J. Opportunities and challenges in developing risk prediction models with electronic health records data: a systematic review. _Journal of the American Medical Informatics Association._ 2017; 24(1): 198-208. [Link](https://academic.oup.com/jamia/article/24/1/198/2631444?login=true)
+- Goldstein BA, Navar AM, Pencina MJ, Ioannidis J. [Opportunities and challenges in developing risk prediction models with electronic health records data: a systematic review.](https://academic.oup.com/jamia/article/24/1/198/2631444?login=true) _Journal of the American Medical Informatics Association._ 2017; 24(1): 198-208.
 
 - James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ [Chapter 4: Classification.](https://www.statlearning.com/) New York: Springer; 2013.
 
@@ -96,7 +96,7 @@ We examine the most common type of hypothesis testing, null hypothesis testing, 
 
 #### Readings:
 
-- Gigerenzer G, Krauss S, Vitouch O. The null ritual: what you always wanted to know about significance testing but were afraid to ask. _The Sage handbook of quantitative methodology for the social sciences._ 2004: 391-408. [Link](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.331.4861&rep=rep1&type=pdf)
+- Gigerenzer G, Krauss S, Vitouch O. [The null ritual: what you always wanted to know about significance testing but were afraid to ask.](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.331.4861&rep=rep1&type=pdf) _The Sage handbook of quantitative methodology for the social sciences._ 2004: 391-408.
 
 
 ### Topic 7: Building a Decision Tree
@@ -127,7 +127,7 @@ This chapter is similar to Chapter 8 but focuses on logistic regression models, 
 
 #### Readings:
 
-- Stoltzfus JC. Logistic regression: a brief primer. _Academic Emergency Medicine._ 2011; 18(10): 1099-104. [Link](https://onlinelibrary.wiley.com/doi/full/10.1111/j.1553-2712.2011.01185.x)
+- Stoltzfus JC. [Logistic regression: a brief primer.](https://onlinelibrary.wiley.com/doi/full/10.1111/j.1553-2712.2011.01185.x) _Academic Emergency Medicine._ 2011; 18(10): 1099-104.
 
 
 ### Topic 10: A Brief Note on Feature Engineering
@@ -151,11 +151,11 @@ This chapter is our entrypoint into time-to-event data and survival models. We t
 
 #### Software and Tutorials:
 
-- Emily Zabor Tutorial: "Survival Analysis in R". Part 1: Introduction to Survival Analysis. Accessed April 28, 2021. [Link](https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html)
+- Emily Zabor Tutorial: "Survival Analysis in R". [Part 1: Introduction to Survival Analysis.](https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html) Accessed April 28, 2021.
 
-- Documentation for the "survival" package in R. [Link](https://cran.r-project.org/web/packages/survival/survival.pdf)
+- Documentation for the ["survival" package](https://cran.r-project.org/web/packages/survival/survival.pdf) in R.
 
-- Documentation for the "survminer" package in R. [Link](https://www.rdocumentation.org/packages/survminer/versions/0.4.9)
+- Documentation for the ["survminer" package](https://www.rdocumentation.org/packages/survminer/versions/0.4.9) in R. 
 
 
 ### Topic 12: Generalized Linear Models
@@ -433,7 +433,7 @@ Continuation of the content in "Introduction to Neural Networks" and an introduc
 
 #### Readings:
 
-- Cheng Y, Wang F, Zhang P, Hu J. Risk prediction with electronic health records: A deep learning approach. In: _Proceedings of the 2016 SIAM International Conference on Data Mining._ 2016; pp. 432-440. Society for Industrial and Applied Mathematics. [Link](https://epubs.siam.org/doi/abs/10.1137/1.9781611974348.49)
+- Cheng Y, Wang F, Zhang P, Hu J. [Risk prediction with electronic health records: A deep learning approach.](https://epubs.siam.org/doi/abs/10.1137/1.9781611974348.49) In: _Proceedings of the 2016 SIAM International Conference on Data Mining._ 2016; pp. 432-440. Society for Industrial and Applied Mathematics.
 
 
 
