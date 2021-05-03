@@ -147,6 +147,8 @@ This chapter is our entrypoint into time-to-event data and survival models. We t
 
 #### Readings:
 
+- Clark TG, Bradburn MJ, Love SB, Altman DG. [Survival analysis part I: basic concepts and first analyses.](https://www.nature.com/articles/6601118) _British Journal of Cancer. 2003; 89(2): 232-8.
+
 #### Software and Tutorials:
 
 - Emily Zabor Tutorial: "Survival Analysis in R". Part 1: Introduction to Survival Analysis. Accessed April 28, 2021. [Link](https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html)
@@ -224,11 +226,17 @@ This short chapter outlines the basics of penalized regression for feature selec
 
 ### Topic 18: The Cox Proportional Hazards Model
 
-Here we examine the main workhorse of survival analysis: the Cox proportional hazards model. We re-examine the concepts of survival, hazard, and cumulative hazard and calculate a simple example of cumulative hazard using the Nelson-Aalen estimator. We then examine the basic form of the Cox model and the assumptions behind the model, talking about model interpretation, fitting, and prediction. Finally, we look at some model diagnostics and talk about strategies for dealing with situations where the model assumptions are violated. Part III of the video guide also contains a section on alternatives to the Cox model.
+Here we examine the main workhorse of survival analysis: the Cox proportional hazards model. We re-examine the concepts of survival, hazard, and cumulative hazard and calculate a simple example of cumulative hazard using the Nelson-Aalen estimator. We then examine the basic form of the Cox model and the assumptions behind the model, talking about model interpretation, fitting, and prediction. Finally, we look at some model diagnostics and talk about strategies for dealing with situations where the model assumptions are violated. Note: Part III on alternatives to the Cox model was moved to Topic 21 (Survival Trees). 
 
-[Notes](pdf/ch18.pdf) (16 pages) | [Video Guide (Part I)](https://vimeo.com/544537188/b877c80c9d) | [Video Guide (Part II)]()
+[Notes](pdf/ch18.pdf) (16 pages) | [Video Guide I](https://vimeo.com/544537188/b877c80c9d) (32:26) | [Video Guide II](https://vimeo.com/544551868/5a3e7b449e) (35:43)
 
 #### Readings:
+
+- Bradburn MJ, Clark TG, Love SB, Altman DG. [Survival analysis part II: multivariate data analysis - an introduction to concepts and methods.](https://www.nature.com/articles/6601119) _British Journal of Cancer._ 2003; 89(3): 431-6.
+
+- Bradburn MJ, Clark TG, Love SB, Altman DG. [Survival analysis Part III: multivariate data analysis – choosing a model and assessing its adequacy and fit.](https://www.nature.com/articles/6601120) _British Journal of Cancer._ 2003; 89(4): 605-11.
+
+- Clark TG, Bradburn MJ, Love SB, Altman DG. [Survival analysis part IV: further concepts and methods in survival analysis.](https://www.nature.com/articles/6601117) _British Journal of Cancer._ 2003; 89(5): 781-6.
 
 - Emily Zabor Tutorial: "Survival Analysis in R". [Part 1: Introduction to Survival Analysis.](https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html) Accessed April 28, 2021.
 
@@ -261,15 +269,20 @@ Following on our discussion in Chapter 19, we examine the technique of Principal
 
 
 
-### Topic 21: Survival Trees
+### Topic 21: Survival Trees and Cox Model Alternatives
 
 We first encountered survival trees in workshops 11 (Survival Data and the Kaplan-Meier Curve) and 18 (Cox Proportional Hazards Model). Here we revisit them in more detail, showing how they apply ideas from decision trees/random forests to survival data.
+
+Notes | Video Guide 
 
 #### Readings:
 
 - Ishwaran H, Kogalur UB, Blackstone EH, Lauer MS. [Random survival forests.](https://projecteuclid.org/euclid.aoas/1223908043) _Annals of Applied Statistics._ 2008; 2(3): 841-60.
 
 - Intrator O, Kooperberg C. [Trees and splines in survival analysis.](https://journals.sagepub.com/doi/pdf/10.1177/096228029500400305) Statistical Methods in Medical Research. 1995; 4(3): 237-61.
+
+- Ohno-Machado L. [A comparison of Cox proportional hazards and artificial neural network models for medical prognosis.](https://www.sciencedirect.com/science/article/pii/S0010482596000364) _Computers in Biology and Medicine._ 1997; 27(1): 55-65.
+
 
 
 ### Topic 22: Competing Risks Analysis
