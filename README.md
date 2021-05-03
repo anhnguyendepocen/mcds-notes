@@ -242,7 +242,9 @@ Here we examine the main workhorse of survival analysis: the Cox proportional ha
 
 #### Software and Tutorials:
 
-- Documentation for the "survival" package in R. [Link](https://cran.r-project.org/web/packages/survival/survival.pdf)
+- Documentation for the ["survival" package in R](https://cran.r-project.org/web/packages/survival/survival.pdf)
+
+- Documentation for ["lifelines" survival regression](https://lifelines.readthedocs.io/en/latest/Survival%20Regression.html) package in Python
 
 
 ### Topic 19: Clustering
