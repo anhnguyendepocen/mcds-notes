@@ -1,8 +1,8 @@
 # mcds-notes
 
-Modern Clinical Data Science is a pilot course and discussion group for data-science-interested physicians and colleagues at Mount Sinai. Clinical data science is challenging because one needs to understand both elements of machine learning and traditional statistical methods, such as survival analysis. My goal here is to provide a set of notes and references that can serve as a starting point for clinicians who (a) want to understand what biostats and data science folks are talking about and (b) start working on their own analyses with electronic health record (EHR) data.
+Modern Clinical Data Science is a pilot course and discussion group for data-science-interested physicians at Mount Sinai. Clinical data science is challenging because one needs to understand elements of biostatistics, epidemiology, and causal inference in addition to data engineering, programming, and machine learning. My goal here is to provide a set of notes and references that can serve as a starting point for clinicians who (a) want to understand what biostats and data science folks are talking about and (b) start working on their own analyses with electronic health record (EHR) data.
 
-Each topic contains notes and a slide presentation of key ideas (chapter guide), as well as a list of readings and pointers to relevant software. The format of these sections was affected by the COVID-19 pandemic (we were stuck with Zoom) and evolved over time, so I may modify earlier material or videos as I continue to refine these workshops.
+Each topic contains notes and a slide presentation of key ideas (chapter guide), as well as a list of readings and pointers to relevant software. The format of these sections was affected by the COVID-19 pandemic - we were stuck with Zoom - and evolved over time, so I may modify earlier material or videos as I continue to refine these workshops.
 
 ---
 
@@ -186,7 +186,6 @@ Boosting is another ensemble algorithm (actually, a meta-algorithm) that creates
 
 - Schapire RE. [The boosting approach to machine learning: An overview.](https://www.cs.princeton.edu/courses/archive/spr07/cos424/papers/boosting-survey.pdf) _Nonlinear Estimation and Classification._ 2003: 149-71.
 
-- Bellot A, van der Schaar M. [Boosted trees for risk prognosis.](http://proceedings.mlr.press/v85/bellot18a/bellot18a.pdf) _Machine Learning for Healthcare Conference._ 2018: 2-16.
 
 
 ### Topic 15: Model Quality and the Bias-Variance Tradeoff
@@ -305,6 +304,8 @@ Notes | Video Guide
 
 - Intrator O, Kooperberg C. [Trees and splines in survival analysis.](https://journals.sagepub.com/doi/pdf/10.1177/096228029500400305) Statistical Methods in Medical Research. 1995; 4(3): 237-61.
 
+- Bellot A, van der Schaar M. [Boosted trees for risk prognosis.](http://proceedings.mlr.press/v85/bellot18a/bellot18a.pdf) _Machine Learning for Healthcare Conference._ 2018: 2-16.
+
 - Ohno-Machado L. [A comparison of Cox proportional hazards and artificial neural network models for medical prognosis.](https://www.sciencedirect.com/science/article/pii/S0010482596000364) _Computers in Biology and Medicine._ 1997; 27(1): 55-65.
 
 
@@ -340,15 +341,64 @@ Notes | Video Guide
 
 These were some topics we discussed in workshops before the course switched to the notes/chapter guide format, as well as some additional topics I think are important and am hoping to add. I'll move these to the top as I finish them. 
 
+### Topic xx: Bias
+
+Immortal time bias, selection bias, informed presence bias, and other common types of bias that creep in when you're working with observational data like EHRs.
+
+#### Readings:
+
+- Goldstein BA, Navar AM, Pencina MJ. [Risk prediction with electronic health records: the importance of model validation and clinical context.](https://jamanetwork.com/journals/jamacardiology/article-abstract/2566165) _JAMA Cardiology._ 2016; 1(9): 976-7.
+
+- Gianfrancesco MA, Tamang S, Yazdany J, Schmajuk G. [Potential biases in machine learning algorithms using electronic health record data.](https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2697394?casa_token=7t_7T6aCRtIAAAAA:IAqjadznQ2CNEtiGKzi-UlCNvmYwy0DqvvksrA4g06tNRCSTQ7nbHee86BN2aX8VaViuB0YaRg) _JAMA Internal Medicine._ 2018; 178(11): 1544-7.
+
+- Phelan M, Bhavsar NA, Goldstein BA. [Illustrating informed presence bias in electronic health records data: how patient interactions with a health system can impact inference.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5994954/) _eGEMs._ 2017; 5(1).
+
+- Agniel D, Kohane IS, Weber GM. [Biases in electronic health record data due to processes within the healthcare system: retrospective observational study.](https://www.bmj.com/content/361/bmj.k1479) _BMJ._ 2018 Apr 30;361.
+
+- Kaplan RM, Chambers DA, Glasgow RE. [Big data and large sample size: a cautionary note on the potential for bias.](https://ascpt.onlinelibrary.wiley.com/doi/pdfdirect/10.1111/cts.12178) _Clinical and Translational Science._ 2014; 7(4): 342-6.
+
+- Shariff SZ, Cuerden MS, Jain AK, Garg AX. [The secret of immortal time bias in epidemiologic studies.](https://jasn.asnjournals.org/content/jnephrol/19/5/841.full.pdf) _Journal of the American Society of Nephrology._ 2008; 19(5): 841-3.
+
+
 ### Topic xx: Missing Data
 
 #### Readings:
 
-- Batista GE, Monard MC. A study of K-nearest neighbour as an imputation method. His. 2002; 87(251-260): 48. [Link](https://sites.icmc.usp.br/gbatista/files/his2002.pdf)
+- Batista GE, Monard MC. [A study of K-nearest neighbour as an imputation method.](https://sites.icmc.usp.br/gbatista/files/his2002.pdf) His. 2002; 87(251-260): 48.
 
-- Jerez JM, Molina I, García-Laencina PJ, Alba E, Ribelles N, Martín M, Franco L. Missing data imputation using statistical and machine learning methods in a real breast cancer problem. _Artificial Intelligence in Medicine._ 2010; 50(2): 105-15. [Link](https://www.sciencedirect.com/science/article/pii/S0933365710000679?via%3Dihub)
+- Jerez JM, Molina I, García-Laencina PJ, Alba E, Ribelles N, Martín M, Franco L. [Missing data imputation using statistical and machine learning methods in a real breast cancer problem.](https://www.sciencedirect.com/science/article/pii/S0933365710000679?via%3Dihub) _Artificial Intelligence in Medicine._ 2010; 50(2): 105-15.
 
 
+### Topic xx: Gradient Boosting and XGBoost
+
+Boosting (Topic 14) is a powerful meta-algorithm for supervised learning that performs well in a variety of clinical contexts or in other situations where you're dealing with medium-sized, heterogeneous data. Gradient boosting is the most common modern formulation of boosting and XGBoost is a software package that extends the gradient boosting idea to a variety of different problem formulations. 
+
+#### Readings:
+
+- Chen T, Guestrin C. [Xgboost: A scalable tree boosting system.](https://dl.acm.org/doi/pdf/10.1145/2939672.2939785) In: _Proceedings of the 22nd ACM sigkdd International Conference on Knowledge Discovery and Data Mining_ 2016 Aug 13 (pp. 785-794).
+
+- Ogunleye A, Wang QG. [XGBoost model for chronic kidney disease diagnosis.](https://ieeexplore.ieee.org/abstract/document/8693581) _IEEE/ACM Transactions on Computational Biology and Bioinformatics._ 2019; 17(6): 2131-40.
+
+- Zhang Z, Zhao Y, Canes A, Steinberg D, Lyashevska O. [Predictive analytics with gradient boosting in clinical medicine.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6511546/) _Annals of Translational Medicine._ 2019; 7(7).
+
+#### Software and Tutorials:
+
+- Chen T, He T, Benesty M, Khotilovich V, Tang Y, Cho H. [Xgboost: extreme gradient boosting. R package version 0.4-2.](https://mran.microsoft.com/web/packages/xgboost/vignettes/xgboost.pdf) 2015; 1(4).
+
+
+### Topic xx: Multi-State Models and Time-Dependent Covariates
+
+Advanced topics in survival analysis. Multi-state models extend the competing risks framework to situations with more complex patterns of state transitions, such as patients experiencing disease progression and then death/recovery. 
+
+#### Readings:
+
+#### Software and Tutorials:
+
+- Putter H, Fiocco M, Geskus RB. [Tutorial in biostatistics: competing risks and multi‐state models.](https://onlinelibrary.wiley.com/doi/abs/10.1002/sim.2712?casa_token=xPwrli4dcesAAAAA:6BIMB8aMIJrUUvCVs2X--ntwDzvoAX58dl81acZqCGBSRL4rjQzTW521xd4NFq-Oauf1HultdUiywUg) _Statistics in Medicine._ 2007; 26(11): 2389-430.
+
+- Therneau T, Crowson C, Atkinson E. [Multi-state models and competing risks.](https://cran.r-project.org/web/packages/survival/vignettes/compete.pdf) CRAN-R Vignettes, 2021.
+
+- Emily Zabor Tutorial: "Survival Analysis in R". [Part 2: Landmark Analysis and Time-Dependent Covariates.](https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html) Accessed April 28, 2021.
 
 
 ### Topic xx: Power and Sample Size
@@ -357,21 +407,7 @@ Sample size calculations via inverting hypothesis tests, useful for grant submis
 
 #### Readings:
 
-- Mayr S, Erdfelder E, Buchner A, Faul F. A short tutorial of G*Power. _Tutorials in Quantitative Methods for Psychology._ 2007; 3(2): 51-9. [Link](http://www.tqmp.org/Content/vol03-2/p051/p051.pdf)
-
-
-### Topic xx: Bias
-
-Immortal time bias, selection bias, informed presence bias, and other common types of bias that creep in when you're working with observational data like EHRs.
-
-#### Readings:
-
-- Goldstein BA, Navar AM, Pencina MJ. Risk prediction with electronic health records: the importance of model validation and clinical context. _JAMA Cardiology._ 2016; 1(9): 976-7. [Link](https://jamanetwork.com/journals/jamacardiology/article-abstract/2566165)
-
-- Gianfrancesco MA, Tamang S, Yazdany J, Schmajuk G. Potential biases in machine learning algorithms using electronic health record data. _JAMA Internal Medicine._ 2018; 178(11): 1544-7. [Link](https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2697394?casa_token=7t_7T6aCRtIAAAAA:IAqjadznQ2CNEtiGKzi-UlCNvmYwy0DqvvksrA4g06tNRCSTQ7nbHee86BN2aX8VaViuB0YaRg)
-
-- Phelan M, Bhavsar NA, Goldstein BA. Illustrating informed presence bias in electronic health records data: how patient interactions with a health system can impact inference. _eGEMs._ 2017; 5(1). [Link](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5994954/)
-
+- Mayr S, Erdfelder E, Buchner A, Faul F. [A short tutorial of G*Power.](http://www.tqmp.org/Content/vol03-2/p051/p051.pdf) _Tutorials in Quantitative Methods for Psychology._ 2007; 3(2): 51-9.
 
 
 
@@ -401,38 +437,11 @@ Continuation of the content in "Introduction to Neural Networks" and an introduc
 
 
 
-
 ### Topic xx: Clinical Text Mining
 
 #### Readings:
 
-- Percha B. Modern Clinical Text Mining: A Guide and Review. [Link](https://www.preprints.org/manuscript/202010.0649/v1)
-
-
-
-### Topic xx: Gradient Boosting and XGBoost
-
-Boosting (Topic 14) is a powerful meta-algorithm for supervised learning that performs well in a variety of clinical contexts or in other situations where you're dealing with medium-sized, heterogeneous data. Gradient boosting is the most common modern formulation of boosting and XGBoost is a software package that extends the gradient boosting idea to a variety of different problem formulations. 
-
-#### Readings:
-
-- 
-
-
-### Topic xx: Multi-State Models and Time-Dependent Covariates
-
-Advanced topics in survival analysis. Multi-state models extend the competing risks framework to situations with more complex patterns of state transitions, such as patients experiencing disease progression and then death/recovery. 
-
-#### Readings:
-
-#### Software and Tutorials:
-
-- Putter H, Fiocco M, Geskus RB. Tutorial in biostatistics: competing risks and multi‐state models. _Statistics in Medicine._ 2007; 26(11): 2389-430. [Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/sim.2712?casa_token=xPwrli4dcesAAAAA:6BIMB8aMIJrUUvCVs2X--ntwDzvoAX58dl81acZqCGBSRL4rjQzTW521xd4NFq-Oauf1HultdUiywUg)
-
-- Therneau T, Crowson C, Atkinson E. Multi-state models and competing risks. CRAN-R Vignettes, 2021. [Link](https://cran.r-project.org/web/packages/survival/vignettes/compete.pdf)
-
-- Emily Zabor Tutorial: "Survival Analysis in R". Part 2: Landmark Analysis and Time-Dependent Covariates. Accessed April 28, 2021. [Link](https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html)
-
+- Percha B. [Modern Clinical Text Mining: A Guide and Review.](https://www.preprints.org/manuscript/202010.0649/v1) _Annual Review of Biomedical Data Science_ (forthcoming July 2021). 
 
 
 
@@ -443,13 +452,14 @@ Many clinical datasets are highly imbalanced. In a typical problem, you're tryin
 #### Readings:
 
 
+
 ### Topic xx: Introduction to Causal Inference
 
 #### Readings:
 
-- Hernán MA, Robins JM (2020). _Causal Inference: What If._ Boca Raton: Chapman & Hall/CRC. [Link](https://cdn1.sph.harvard.edu/wp-content/uploads/sites/1268/2021/03/ciwhatif_hernanrobins_30mar21.pdf)
+- Hernán MA, Robins JM (2020). [Causal Inference: What If.](https://cdn1.sph.harvard.edu/wp-content/uploads/sites/1268/2021/03/ciwhatif_hernanrobins_30mar21.pdf) Boca Raton: Chapman & Hall/CRC.
 
-- Hernán MA, Hsu J, Healy B. A second chance to get causal inference right: a classification of data science tasks. _Chance._ 2019; 32(1): 42-9. [Link](https://amstat.tandfonline.com/doi/pdf/10.1080/09332480.2019.1579578)
+- Hernán MA, Hsu J, Healy B. [A second chance to get causal inference right: a classification of data science tasks.](https://amstat.tandfonline.com/doi/pdf/10.1080/09332480.2019.1579578) _Chance._ 2019; 32(1): 42-9.
 
 #### Software and Tutorials:
 
