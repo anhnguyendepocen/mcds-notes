@@ -226,11 +226,11 @@ This short chapter outlines the basics of penalized regression for feature selec
 
 Here we examine the main workhorse of survival analysis: the Cox proportional hazards model. We re-examine the concepts of survival, hazard, and cumulative hazard and calculate a simple example of cumulative hazard using the Nelson-Aalen estimator. We then examine the basic form of the Cox model and the assumptions behind the model, talking about model interpretation, fitting, and prediction. Finally, we look at some model diagnostics and talk about strategies for dealing with situations where the model assumptions are violated. Part III of the video guide also contains a section on alternatives to the Cox model.
 
-[Notes](pdf/ch18.pdf) (16 pages) | Video Guide
+[Notes](pdf/ch18.pdf) (16 pages) | [Video Guide (Part I)](https://vimeo.com/544537188/b877c80c9d) | [Video Guide (Part II)]()
 
 #### Readings:
 
-- Emily Zabor Tutorial: "Survival Analysis in R". Part 1: Introduction to Survival Analysis. Accessed April 28, 2021. [Link](https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html)
+- Emily Zabor Tutorial: "Survival Analysis in R". [Part 1: Introduction to Survival Analysis.](https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html) Accessed April 28, 2021.
 
 #### Software and Tutorials:
 
@@ -246,6 +246,7 @@ Here we switch gears from supervised to unsupervised learning and discuss strate
 #### Readings:
 
 - James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ [Chapter 10: Unsupervised Learning.](https://www.statlearning.com/) New York: Springer; 2013.
+
 
 
 ### Topic 20: Principal Components Analysis
@@ -267,6 +268,8 @@ We first encountered survival trees in workshops 11 (Survival Data and the Kapla
 #### Readings:
 
 - Ishwaran H, Kogalur UB, Blackstone EH, Lauer MS. [Random survival forests.](https://projecteuclid.org/euclid.aoas/1223908043) _Annals of Applied Statistics._ 2008; 2(3): 841-60.
+
+- Intrator O, Kooperberg C. [Trees and splines in survival analysis.](https://journals.sagepub.com/doi/pdf/10.1177/096228029500400305) Statistical Methods in Medical Research. 1995; 4(3): 237-61.
 
 
 ### Topic 22: Competing Risks Analysis
