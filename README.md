@@ -272,14 +272,25 @@ Here we switch gears from supervised to unsupervised learning and discuss strate
 
 ### Topic 20: Principal Components Analysis
 
-Following on our discussion in Chapter 19, we examine the technique of Principal Components Analysis (PCA) and see how it can be applied to a variety of problems relevant to medicine and biology. (; 16 pages)
+Following on our discussion of unsupervised learning in Chapter 19, we examine the matrix decomposition technique Principal Components Analysis (PCA) and see how it can be applied to a variety of problems relevant to medicine and biology. 
 
-[Notes](pdf/ch20.pdf) | Video Guide
+[Notes](pdf/ch20.pdf) (16 pages) | [Video Guide](https://vimeo.com/544595085/faf2106b23) (27:40)
 
 #### Readings:
 
+- Martis RJ, Acharya UR, Mandana KM, Ray AK, Chakraborty C. [Application of principal component analysis to ECG signals for automated diagnosis of cardiac health.](https://www.sciencedirect.com/science/article/pii/S0957417412006690) _Expert Systems with Applications._ 2012; 39(14): 11792-800.
+
+- Baumgartner R, Ryner L, Richter W, Summers R, Jarmasz M, Somorjai R. [Comparison of two exploratory data analysis methods for fMRI: fuzzy clustering vs. principal component analysis.](https://www.sciencedirect.com/science/article/pii/S0730725X99001022) _Magnetic Resonance Imaging._ 2000; 18(1): 89-94.
+
+- Mathews JD, Buckley JD, Gledhill VX. [Pattern recognition in medicine—a place for the use of principal component analysis and factor analysis.](https://onlinelibrary.wiley.com/doi/pdf/10.1111/j.1445-5994.1974.tb03226.x) _Australian and New Zealand Journal of Medicine._ 1974; 4(5): 509-15. (Side note: often reading old papers/books is an excellent way to learn methods.)
+
 - James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ [Chapter 10: Unsupervised Learning.](https://www.statlearning.com/) New York: Springer; 2013.
 
+#### Software and Tutorials:
+
+- Documentation for [principal components analysis (PCA) using scikit-learn in Python](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html)
+
+- Tutorial on `prcomp` and `princomp` packages for [performing PCA in R](http://www.sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/118-principal-component-analysis-in-r-prcomp-vs-princomp/)
 
 
 ### Topic 21: Survival Trees and Cox Model Alternatives
@@ -302,7 +313,7 @@ Notes | Video Guide
 
 We discuss the problem of competing risks in survival analysis and why it's a bad idea to use the Kaplan-Meier estimator in these contexts. We examine two alternative approaches for competing risks regression (cause-specific hazards vs. subdistribution hazard) and see how the same ideas can be extended to survival trees.
 
-Notes | Slides | Video
+Notes | Video Guide
 
 #### Readings:
 
