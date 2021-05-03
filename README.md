@@ -215,7 +215,7 @@ We discuss the general idea of feature selection, comparing methods that are mor
 
 This short chapter outlines the basics of penalized regression for feature selection and model regularization, including the lasso (L1), ridge (L2) and elastic net penalties. We fit many regularized regression models with different regularization parameters to the same 10-person dataset and examine the effect of parameter changes on model coefficients. Regularization is an important topic for many areas of machine learning, not just regression.
 
-[Notes](pdf/ch17.pdf) (5 pages) | Video Guide
+[Notes](pdf/ch17.pdf) (5 pages) | [Video Guide](https://vimeo.com/544520306/266e7e0283) (18:31)
 
 #### Readings:
 
