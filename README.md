@@ -247,14 +247,25 @@ Here we examine the main workhorse of survival analysis: the Cox proportional ha
 
 ### Topic 19: Clustering
 
-Here we switch gears from supervised to unsupervised learning and discuss strategies for putting unlabeled data into groups, or clusters. We learn K-means, a classic clustering algorithm, and go through a step-by-step example of K-means applied to simulated flow cytometry data. We compare K-means and Gaussian mixture models, hard vs. soft clusterings, and the assumptions of each method, and observe the training of a Gaussian mixture model visually. (; 20 pages)
+Here we switch gears from supervised to unsupervised learning and discuss strategies for putting unlabeled data into groups, or clusters. We learn K-means, a classic clustering algorithm, and go through a step-by-step example of K-means applied to simulated flow cytometry data. We compare K-means and Gaussian mixture models, hard vs. soft clusterings, and the assumptions of each method, and observe the training of a Gaussian mixture model visually.
 
-[Notes](pdf/ch19.pdf) | Video Guide
+[Notes](pdf/ch19.pdf) (20 pages) | [Video Guide](https://vimeo.com/544574135/31e1b39a67) (38:58)
 
 #### Readings:
 
+- Rokach L. (2009) [A Survey of Clustering Algorithms.](https://link.springer.com/chapter/10.1007/978-0-387-09823-4_14) In: Maimon O., Rokach L. (eds) _Data Mining and Knowledge Discovery Handbook._ Springer, Boston, MA. https://doi.org/10.1007/978-0-387-09823-4_14
+
+- Xu D, Tian Y. [A comprehensive survey of clustering algorithms.](https://link.springer.com/article/10.1007/s40745-015-0040-1) Annals of Data Science. 2015; 2(2): 165-93.
+
+- Veloso R, Portela F, Santos MF, Silva A, Rua F, Abelha A, Machado J. [A clustering approach for predicting readmissions in intensive medicine.](https://www.sciencedirect.com/science/article/pii/S2212017314003740/pdf?md5=60bf240bf3d9babf14a13b0940aa7d25&pid=1-s2.0-S2212017314003740-main.pdf) Procedia Technology. 2014; 16: 1307-16.
+
 - James G, Witten D, Hastie T, Tibshirani R. _An Introduction to Statistical Learning._ [Chapter 10: Unsupervised Learning.](https://www.statlearning.com/) New York: Springer; 2013.
 
+#### Software and Tutorials:
+
+- Documentation for [clustering algorithms in scikit-learn](https://scikit-learn.org/stable/modules/clustering.html) (Python)
+
+- Tutorial on [cluster analysis, including K-means, in R](https://www.statmethods.net/advstats/cluster.html)
 
 
 ### Topic 20: Principal Components Analysis
