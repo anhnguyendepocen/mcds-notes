@@ -2,7 +2,9 @@
 
 Modern Clinical Data Science is a pilot course and discussion group for data-science-interested physicians at Mount Sinai. Clinical data science is challenging because one needs to understand elements of biostatistics, epidemiology, and causal inference in addition to data engineering, programming, and machine learning. My goal here is to provide a set of notes and references that can serve as a starting point for clinicians who (a) want to understand what biostats and data science folks are talking about and (b) start working on their own analyses with electronic health record (EHR) data.
 
-Each topic contains notes and a slide presentation of key ideas (chapter guide), as well as a list of readings and pointers to relevant software. The format of these sections was affected by the COVID-19 pandemic - we were stuck with Zoom - and evolved over time, so I may modify earlier material or videos as I continue to refine these workshops.
+Each topic contains notes and a slide presentation of key ideas (video guide), as well as a list of readings and pointers to relevant software. The video guides were created so that students who couldn't make it to class could keep up. The actual discussions were a lot more fun.
+
+I may modify any/all of this material as I continue to refine these workshops.
 
 ---
 
@@ -292,6 +294,7 @@ Following on our discussion of unsupervised learning in Chapter 19, we examine t
 - Tutorial on `prcomp` and `princomp` packages for [performing PCA in R](http://www.sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/118-principal-component-analysis-in-r-prcomp-vs-princomp/)
 
 
+
 ### Topic 21: Survival Trees and Cox Model Alternatives
 
 We first encountered survival trees in workshops 11 (Survival Data and the Kaplan-Meier Curve) and 18 (Cox Proportional Hazards Model). Here we revisit them in more detail, showing how they apply ideas from decision trees/random forests to survival data.
@@ -299,6 +302,8 @@ We first encountered survival trees in workshops 11 (Survival Data and the Kapla
 Notes | Video Guide 
 
 #### Readings:
+
+- Wang H, Li G. [A selective review on random survival forests for high dimensional data.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6364686/) _Quantitative bio-science._ 2017; 36(2): 85.
 
 - Ishwaran H, Kogalur UB, Blackstone EH, Lauer MS. [Random survival forests.](https://projecteuclid.org/euclid.aoas/1223908043) _Annals of Applied Statistics._ 2008; 2(3): 841-60.
 
@@ -324,9 +329,16 @@ Notes | Video Guide
 
 - Andersen PK, Geskus RB, de Witte T, Putter H. [Competing risks in epidemiology: possibilities and pitfalls.](https://academic.oup.com/ije/article/41/3/861/829598) _International Journal of Epidemiology._ 2012; 41(3): 861-70.
 
+- Pintilie M. [Competing risks: a practical perspective.](https://www.amazon.com/Competing-Risks-Perspective-Melania-Pintilie/dp/0470870680/ref=sr_1_1?dchild=1&keywords=competing+risks%3A+a+practical+perspective&qid=1620147036&sr=8-1) John Wiley & Sons; 2006.
+
 - [Columbia School of Public Health Resource: Population Health Methods, Competing Risks Analysis](https://www.publichealth.columbia.edu/research/population-health-methods/competing-risk-analysis), accessed April 28, 2021.
 
+- Ishwaran H, Gerds TA, Kogalur UB, Moore RD, Gange SJ, Lau BM. [Random survival forests for competing risks.](https://academic.oup.com/biostatistics/article/15/4/757/266340?login=true) Biostatistics. 2014; 15(4): 757-73. 
+
+
 #### Software and Tutorials:
+
+- Putter H, Fiocco M, Geskus RB. [Tutorial in biostatistics: competing risks and multi‐state models.](https://onlinelibrary.wiley.com/doi/abs/10.1002/sim.2712?casa_token=xPwrli4dcesAAAAA:6BIMB8aMIJrUUvCVs2X--ntwDzvoAX58dl81acZqCGBSRL4rjQzTW521xd4NFq-Oauf1HultdUiywUg) _Statistics in Medicine._ 2007; 26(11): 2389-430.
 
 - Scrucca L, Santucci A, Aversa F. [Competing risk analysis using R: an easy guide for clinicians.](https://www.nature.com/articles/1705727) _Bone Marrow Transplantation._ 2007; 40(4): 381-7.
 
@@ -392,9 +404,9 @@ Advanced topics in survival analysis. Multi-state models extend the competing ri
 
 #### Readings:
 
-#### Software and Tutorials:
+- Andersen PK, Abildstrom SZ, Rosthøj S. [Competing risks as a multi-state model.](https://journals.sagepub.com/doi/pdf/10.1191/0962280202sm281ra) _Statistical Methods in Medical Research._ 2002; 11(2): 203-15.
 
-- Putter H, Fiocco M, Geskus RB. [Tutorial in biostatistics: competing risks and multi‐state models.](https://onlinelibrary.wiley.com/doi/abs/10.1002/sim.2712?casa_token=xPwrli4dcesAAAAA:6BIMB8aMIJrUUvCVs2X--ntwDzvoAX58dl81acZqCGBSRL4rjQzTW521xd4NFq-Oauf1HultdUiywUg) _Statistics in Medicine._ 2007; 26(11): 2389-430.
+#### Software and Tutorials:
 
 - Therneau T, Crowson C, Atkinson E. [Multi-state models and competing risks.](https://cran.r-project.org/web/packages/survival/vignettes/compete.pdf) CRAN-R Vignettes, 2021.
 

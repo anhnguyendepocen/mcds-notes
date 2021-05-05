@@ -6,17 +6,15 @@ We just encountered the Kaplan-Meier estimate of the survival function in Chapte
 
 \section{Survival and Hazard Functions}
 
-Consider a situation where we have some process that generates events, and we're trying to model the time to first event. Assume the probability of the event's occurring at each time, $t$, is given by the function $f(t)$. The cumulative probability of the event's having occurred by time $t$ is
-$$ F(t) = \int_0^t f(t) dt$$
-and the probability of an individual not having experienced the event by time $t$ is
+Consider a situation where we have some process that generates events, and we're trying to model the time to first event. The probability density for when the event occurs is $f(t)$. The cumulative probability of the event's having occurred by time $t$, also called the \textbf{cumulative incidence}, is
+$$ F(t) = \int_0^t f(t) dt.$$
+The probability of an individual's \emph{not} having experienced the event by time $t$ is
 $$ S(t) = 1 - F(t), $$
-the \textbf{survival function}. The probability of experiencing the event in an infinitesimally small interval starting at $t$, given that one has not experienced it by time $t$, is:
+which we call the \textbf{survival}. The probability of experiencing the event in an infinitesimally small interval starting at $t$, given that one has not experienced it by time $t$, is:
 $$ \lambda(t) = \frac{f(t)}{S(t)} $$
 and is called the \textbf{hazard}. The \textbf{cumulative hazard} function is equal to
 $$ \Lambda(t) = \int_0^t \lambda(t') dt' = -\log S(t) $$
 so $S(t) = \exp(-\Lambda(t))$. 
-
-None of these expressions should be immediately obvious to you, because deriving them requires calculus. It's a great exercise to go through the derivations, but for now, let's focus on capturing the intuition.
 
 Here is a graphical representation of some of these quantities. Remember that the probability distribution $f(t)$ must integrate to one.
 

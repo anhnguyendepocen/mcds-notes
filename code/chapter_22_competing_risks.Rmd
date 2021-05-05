@@ -1,0 +1,137 @@
+---
+title: "Chapter 22: Competing Risks Models"
+output: html_notebook
+---
+
+## Libraries
+
+```{r setup}
+library(ggplot2)
+library(scales)
+library(dplyr)
+library(survival)
+library(survminer)
+library(lubridate)
+library(tidyr)
+library(stringr)
+library(wesanderson)
+library(randomForest)
+library(xtable)
+library(rpart)
+library(rpart.plot)
+library(glmnet)
+```
+
+## Simulated Survival Data (ESL Dataset)
+
+```{r}
+load("../data/mixture.example.RData")
+set.seed(100)
+df <- data.frame(x1 = mixture.example$x[,1], 
+                 x2 = mixture.example$x[,2]) %>%
+  mutate(r1 = 0 - 0.3 * x1 + 0.2 * x2,    # risk score for outcome 1 (discharge)
+         r2 = -1 + 0.8 * x1 + 0.0 * x2,    # risk score for outcome 2 (death)
+         y1 = rexp(length(x1), exp(r1)),  # outcome 1 (discharge)
+         y2 = rexp(length(x1), exp(r2)),  # outcome 2 (death)
+         yC = rexp(length(x1), 1)) %>%  # censoring distribution (transfer)
+  mutate(ftime1C = if_else(y1 < yC, y1, yC),  # follow-up time for outcome 1, uninformative censoring
+         ctime1C = if_else(y1 < yC, 1, 0),    
+         ftime2C = if_else(y2 < yC, y2, yC),  # follow-up time for outcome 2, uninformative censoring
+         ctime2C = if_else(y2 < yC, 1, 0),    
+         ftime12 = case_when(y1 < y2 & y1 < yC ~ y1, 
+                             y2 < yC ~ y2, 
+                             TRUE ~ yC), 
+         ctime12 = case_when(y1 < y2 & y1 < yC ~ "discharge", 
+                             y2 < yC ~ "death", 
+                             TRUE ~ "censored"))
+cor(df$y1, df$y2)
+summary(as.factor(df$ctime12))
+```
+
+Plot of raw disease severity and socioeconomic scores.
+
+```{r}
+p <- ggplot(df) + geom_point(aes(x = x1, y = x2), colour = "gray40") + 
+  xlab("Disease Severity Score (x1)") + 
+  ylab("Social Determinants Score (x2)") + 
+  theme_bw()
+print(p)
+ggsave(p, filename = "../img/esl-just-data-no-classes.png", height=4, width=4, units="in", dpi=300)
+```
+
+Plot survival times for a few different patients.
+
+```{r}
+t <- seq(0, 5, 0.01)
+y1_60 <- dexp(t, exp(df$r1[60]))
+y1_32 <- dexp(t, exp(df$r1[32]))
+y2_60 <- dexp(t, exp(df$r2[60]))
+y2_32 <- dexp(t, exp(df$r2[32]))
+yC <- dexp(t, 1)
+df_y60 <- data.frame(t = rep(t, 3), ft = c(y1_60, y2_60, yC), 
+                     group = c(rep("discharge", length(y1_60)), 
+                               rep("death", length(y2_60)), 
+                               rep("censoring",length(yC))))
+df_y32 <- data.frame(t = rep(t, 3), ft = c(y1_32, y2_32, yC), 
+                     group = c(rep("discharge", length(y1_32)), 
+                               rep("death", length(y2_32)), 
+                               rep("censoring",length(yC))))
+
+p1 <- ggplot(df_y60) + geom_line(aes(x = t, y = ft, colour = group, linetype = group)) + 
+  theme_bw() + ylab("f(t) for Person 60") + xlab("t") + 
+  scale_colour_manual(name = "Outcome", breaks = c("death", "discharge", "censoring"), 
+                      values = c("black", "black", "gray70")) + 
+  scale_linetype_manual(name = "Outcome", breaks = c("death", "discharge", "censoring"), 
+                        values = c("dashed", "solid", "solid"))
+
+p2 <- ggplot(df_y32) + geom_line(aes(x = t, y = ft, colour = group, linetype = group)) + 
+  theme_bw() + ylab("f(t) for Person 60") + xlab("t") + 
+  scale_colour_manual(name = "Outcome", breaks = c("death", "discharge", "censoring"), 
+                      values = c("black", "black", "gray70")) + 
+  scale_linetype_manual(name = "Outcome", breaks = c("death", "discharge", "censoring"), 
+                        values = c("dashed", "solid", "solid"))
+
+print(p1)
+print(p2)
+
+ggsave(p1, filename = "../img/cmprsk-example-person-60.png", height = 3, width = 5, units = "in", dpi = 300)
+ggsave(p2, filename = "../img/cmprsk-example-person-32.png", height = 3, width = 5, units = "in", dpi = 300)
+```
+
+Sample outcomes for person 32.
+
+```{r}
+
+```
+
+
+Cox models.
+
+```{r}
+m1C <- coxph(Surv(ftime1C, ctime1C) ~ x1 + x2, data = df)
+m1C
+summary(as.factor(df$ctime1C))
+
+m2C <- coxph(Surv(ftime2C, ctime2C) ~ x1 + x2, data = df)
+m2C
+summary(as.factor(df$ctime2C))
+
+m12a <- coxph(Surv(ftime12, ctime12 == "discharge") ~ x1 + x2, data = df)
+m12a
+summary(as.factor(df$ctime12 == "discharge"))
+
+m12b <- coxph(Surv(ftime12, ctime12 == "death") ~ x1 + x2, data = df)
+m12b
+summary(as.factor(df$ctime12 == "death"))
+```
+
+
+```{r}
+x = seq(0, 150, 0.1)
+y = dlnorm(x, 3, 1.0)
+colors=c("#00BFC4", "#F8766D")
+p <- ggplot() + geom_ribbon(aes(x = x, ymin = 0, ymax = y)) + 
+  theme_light() + xlab("Time (days)") + ylab("f(t)") 
+print(p)
+ggsave(p, filename = "../img/cmprsk-example-ft1.png", height = 3, width = 5, units = "in", dpi = 300)
+```
