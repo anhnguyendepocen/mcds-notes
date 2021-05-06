@@ -149,6 +149,8 @@ This chapter is our entrypoint into time-to-event data and survival models. We t
 
 #### Readings:
 
+- Kleinbaum DG, Klein M. [Kaplan-Meier survival curves and the log-rank test.](https://link.springer.com/content/pdf/10.1007/978-1-4419-6646-9_2.pdf) In: _Survival Analysis_ 2012 (pp. 55-96). Springer, New York, NY. 
+
 - Clark TG, Bradburn MJ, Love SB, Altman DG. [Survival analysis part I: basic concepts and first analyses.](https://www.nature.com/articles/6601118) _British Journal of Cancer. 2003; 89(2): 232-8.
 
 #### Software and Tutorials:
@@ -294,28 +296,7 @@ Following on our discussion of unsupervised learning in Chapter 19, we examine t
 - Tutorial on `prcomp` and `princomp` packages for [performing PCA in R](http://www.sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/118-principal-component-analysis-in-r-prcomp-vs-princomp/)
 
 
-
-### Topic 21: Survival Trees and Cox Model Alternatives
-
-We first encountered survival trees in workshops 11 (Survival Data and the Kaplan-Meier Curve) and 18 (Cox Proportional Hazards Model). Here we revisit them in more detail, showing how they apply ideas from decision trees/random forests to survival data.
-
-Notes | Video Guide 
-
-#### Readings:
-
-- Wang H, Li G. [A selective review on random survival forests for high dimensional data.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6364686/) _Quantitative bio-science._ 2017; 36(2): 85.
-
-- Ishwaran H, Kogalur UB, Blackstone EH, Lauer MS. [Random survival forests.](https://projecteuclid.org/euclid.aoas/1223908043) _Annals of Applied Statistics._ 2008; 2(3): 841-60.
-
-- Intrator O, Kooperberg C. [Trees and splines in survival analysis.](https://journals.sagepub.com/doi/pdf/10.1177/096228029500400305) Statistical Methods in Medical Research. 1995; 4(3): 237-61.
-
-- Bellot A, van der Schaar M. [Boosted trees for risk prognosis.](http://proceedings.mlr.press/v85/bellot18a/bellot18a.pdf) _Machine Learning for Healthcare Conference._ 2018: 2-16.
-
-- Ohno-Machado L. [A comparison of Cox proportional hazards and artificial neural network models for medical prognosis.](https://www.sciencedirect.com/science/article/pii/S0010482596000364) _Computers in Biology and Medicine._ 1997; 27(1): 55-65.
-
-
-
-### Topic 22: Competing Risks Analysis
+### Topic 21: Competing Risks Analysis
 
 We discuss the problem of competing risks in survival analysis and why it's a bad idea to use the Kaplan-Meier estimator in these contexts. We examine two alternative approaches for competing risks regression (cause-specific hazards vs. subdistribution hazard) and see how the same ideas can be extended to survival trees.
 
@@ -346,6 +327,39 @@ Notes | Video Guide
 
 - Emily Zabor Tutorial: "Survival Analysis in R". [Part 3: Competing Risks.](https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html) Accessed April 28, 2021.
 
+
+### Topic 22: Survival Trees and Cox Model Alternatives
+
+We first encountered survival trees in workshops 11 (Survival Data and the Kaplan-Meier Curve) and 18 (Cox Proportional Hazards Model). Here we revisit them in more detail, showing how they apply ideas from decision trees/random forests to survival and competing risks data. 
+
+Notes | Video Guide 
+
+#### Readings:
+
+- Bou-Hamad I, Larocque D, Ben-Ameur H. [A review of survival trees.](https://projecteuclid.org/euclid.ssu/1315833185) _Statistics Surveys._ 2011; 5: 44-71.
+
+- Fu W, Simonoff JS. [Survival trees for left-truncated and right-censored data, with application to time-varying covariate data.](https://academic.oup.com/biostatistics/article/18/2/352/2739324) _Biostatistics._ 2017; 18(2): 352-69. 
+
+- Wang H, Li G. [A selective review on random survival forests for high dimensional data.](https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART002289376#none) _Quantitative Bio-Science._ 2017; 36(2): 85.
+
+- Ishwaran H, Kogalur UB, Blackstone EH, Lauer MS. [Random survival forests.](https://projecteuclid.org/euclid.aoas/1223908043) _Annals of Applied Statistics._ 2008; 2(3): 841-60.
+
+- Intrator O, Kooperberg C. [Trees and splines in survival analysis.](https://journals.sagepub.com/doi/pdf/10.1177/096228029500400305) Statistical Methods in Medical Research. 1995; 4(3): 237-61.
+
+- Bellot A, van der Schaar M. [Boosted trees for risk prognosis.](http://proceedings.mlr.press/v85/bellot18a/bellot18a.pdf) _Machine Learning for Healthcare Conference._ 2018: 2-16.
+
+- Ohno-Machado L. [A comparison of Cox proportional hazards and artificial neural network models for medical prognosis.](https://www.sciencedirect.com/science/article/pii/S0010482596000364) _Computers in Biology and Medicine._ 1997; 27(1): 55-65.
+
+- Shimokawa A, Kawasaki Y, Miyaoka E. [Comparison of splitting methods on survival tree.](https://www.degruyter.com/document/doi/10.1515/ijb-2014-0029/html) _The International Journal of Biostatistics._ 2015; 11(1): 175-88. 
+
+
+#### Software and Tutorials:
+
+- Therneau T, Atkinson EJ [An Introduction to Recursive Partitioning Using the rpart Routines](https://cran.r-project.org/web/packages/rpart/vignettes/longintro.pdf) CRAN Vignette for rpart package.
+
+- Documentation for the ['LTRCtrees'](https://cran.r-project.org/web/packages/LTRCtrees/vignettes/LTRCtrees.html) package in R
+
+- Documentation for the ['randomForestSRC'](https://kogalur.github.io/randomForestSRC/index.html) package in R
 
 ---
 

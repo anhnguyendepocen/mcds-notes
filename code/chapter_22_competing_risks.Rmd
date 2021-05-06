@@ -1,5 +1,5 @@
 ---
-title: "Chapter 22: Competing Risks Models"
+title: "Chapter 21: Competing Risks Models and Chapter 22: Survival Trees"
 output: html_notebook
 ---
 
@@ -29,7 +29,7 @@ load("../data/mixture.example.RData")
 set.seed(100)
 df <- data.frame(x1 = mixture.example$x[,1], 
                  x2 = mixture.example$x[,2]) %>%
-  mutate(r1 = 0 - 0.3 * x1 + 0.2 * x2,    # risk score for outcome 1 (discharge)
+  mutate(r1 = 2 - 1.5 * x1 + 0.2 * x2,    # risk score for outcome 1 (discharge)
          r2 = -1 + 0.8 * x1 + 0.0 * x2,    # risk score for outcome 2 (death)
          y1 = rexp(length(x1), exp(r1)),  # outcome 1 (discharge)
          y2 = rexp(length(x1), exp(r2)),  # outcome 2 (death)
@@ -85,7 +85,7 @@ p1 <- ggplot(df_y60) + geom_line(aes(x = t, y = ft, colour = group, linetype = g
                         values = c("dashed", "solid", "solid"))
 
 p2 <- ggplot(df_y32) + geom_line(aes(x = t, y = ft, colour = group, linetype = group)) + 
-  theme_bw() + ylab("f(t) for Person 60") + xlab("t") + 
+  theme_bw() + ylab("f(t) for Person 32") + xlab("t") + 
   scale_colour_manual(name = "Outcome", breaks = c("death", "discharge", "censoring"), 
                       values = c("black", "black", "gray70")) + 
   scale_linetype_manual(name = "Outcome", breaks = c("death", "discharge", "censoring"), 
@@ -101,37 +101,168 @@ ggsave(p2, filename = "../img/cmprsk-example-person-32.png", height = 3, width =
 Sample outcomes for person 32.
 
 ```{r}
+n = 100
+y1_32 <- rexp(n, exp(df$r1[32]))
+y2_32 <- rexp(n, exp(df$r2[32]))
+yC_32 <- rexp(n, 1)
+df_samples <- data.frame(y = c(y1_32, y2_32, yC_32), 
+                         n = c(1:n, 1:n, 1:n),
+                         group = c(rep("discharge", n), 
+                                   rep("death", n), 
+                                   rep("censoring", n)))
+df_samples <- df_samples %>%
+  arrange(y) %>%
+  group_by(n) %>%
+  slice(1)
 
+p <- ggplot(df_samples) + 
+  geom_histogram(aes(x = y, fill = group, colour = group), position = "stack", alpha = 0.8, bins = 30) + 
+  theme_bw() + xlab("Follow-up Time") + ylab("Count") + 
+  scale_fill_manual(name = "Outcome", breaks = c("death", "discharge", "censoring"), 
+                      values = c("black", "white", "gray70")) + 
+  scale_colour_manual(name = "Outcome", breaks = c("death", "discharge", "censoring"), 
+                      values = c("black", "black", "gray30"))
+print(p)
+ggsave(p, filename = "../img/cmprsk-example-person-32-samples.png", height = 3, width = 5, 
+       units = "in", dpi = 300)
 ```
 
-
-Cox models.
+What our real dataset would look like.
 
 ```{r}
-m1C <- coxph(Surv(ftime1C, ctime1C) ~ x1 + x2, data = df)
-m1C
-summary(as.factor(df$ctime1C))
+df_real <- df %>% select(x1, x2, ftime12, ctime12)
+df_real[10:20,]
+```
 
+Simulation 1: death and censoring only
+
+```{r}
 m2C <- coxph(Surv(ftime2C, ctime2C) ~ x1 + x2, data = df)
 m2C
 summary(as.factor(df$ctime2C))
 
-m12a <- coxph(Surv(ftime12, ctime12 == "discharge") ~ x1 + x2, data = df)
-m12a
-summary(as.factor(df$ctime12 == "discharge"))
+s <- survfit(Surv(ftime2C, ctime2C) ~ 1, data = df)
+p <- ggsurvplot(s)
 
+png(filename = "../img/cmprsk-example-km-sim-1.png", height=4, width=5, units="in", res=300)
+print(p)
+dev.off()
+
+print(p)
+```
+
+Simulation 2: death treating discharge same as censoring
+
+```{r}
 m12b <- coxph(Surv(ftime12, ctime12 == "death") ~ x1 + x2, data = df)
 m12b
 summary(as.factor(df$ctime12 == "death"))
+
+s <- survfit(Surv(ftime12, ctime12 == "death") ~ 1, data = df)
+p <- ggsurvplot(s)
+
+png(filename = "../img/cmprsk-example-km-sim-2.png", height=4, width=5, units="in", res=300)
+print(p)
+dev.off()
+
+print(p)
 ```
 
+Kaplan-Meier curves (overall). 
 
 ```{r}
-x = seq(0, 150, 0.1)
-y = dlnorm(x, 3, 1.0)
-colors=c("#00BFC4", "#F8766D")
-p <- ggplot() + geom_ribbon(aes(x = x, ymin = 0, ymax = y)) + 
-  theme_light() + xlab("Time (days)") + ylab("f(t)") 
+df_km <- data.frame(ftime = c(df$ftime2C, df$ftime12), 
+                    ctime = c(df$ctime2C, ifelse(df$ctime12 == "death", 1, 0)), 
+                    group = c(rep("no discharges", dim(df)[1]), rep("discharges\nas censoring", dim(df)[1])), 
+                    x1 = c(df$x1, df$x1), x2 = c(df$x2, df$x2))
+
+s <- survfit(Surv(ftime, ctime) ~ group, data = df_km, stype = 1, ctype = 1)
+s_df <- data.frame(time = s$time, surv = s$surv, cumhaz = s$cumhaz, 
+                   censor = s$n.censor, group = rep(names(s$strata), each = 200))
+p <- ggplot(s_df) + 
+  geom_step(aes(x = time, y = surv, colour = group), size = 1) + 
+  theme_light() + xlab("Time") + ylab("Survival Probability (%)") + ylim(0, 1) + 
+  geom_point(aes(x = time, y = surv, colour = group), data = subset(s_df, censor == 1), shape = 3, size = 3)
+ggsave(p, filename = "../img/cmprsk-example-km-all.png", height=4, width=6, units="in", dpi=300)
 print(p)
-ggsave(p, filename = "../img/cmprsk-example-ft1.png", height = 3, width = 5, units = "in", dpi = 300)
+
+p <- ggplot(s_df) + 
+  geom_step(aes(x = time, y = cumhaz, colour = group), size = 1) + 
+  theme_light() + xlab("Time") + ylab("Cumulative Hazard") +
+  geom_point(aes(x = time, y = cumhaz, colour = group), data = subset(s_df, censor == 1), shape = 3, size = 3)
+ggsave(p, filename = "../img/cmprsk-example-na-all.png", height=4, width=6, units="in", dpi=300)
+print(p)
 ```
+
+Kaplan-Meier curves for discharge and death.
+
+```{r}
+s <- survfit(Surv(ftime12, ctime12 == "death") ~ 1, data = df, stype = 1, ctype = 1)
+s_df <- data.frame(time = s$time, surv = s$surv, cumhaz = s$cumhaz, 
+                   censor = s$n.censor, model = "death")
+s2 <- survfit(Surv(ftime12, ctime12 == "discharge") ~ 1, data = df, stype = 1, ctype = 1)
+s_df2 <- data.frame(time = s2$time, surv = s2$surv, cumhaz = s2$cumhaz, 
+                   censor = s2$n.censor, model = "discharge")
+s_df <- rbind(s_df, s_df2)
+
+p <- ggplot(s_df) + 
+  geom_step(aes(x = time, y = 1 - surv, colour = model), size = 1) + 
+  theme_light() + xlab("Time") + ylab("Probability (Kaplan-Meier)") + ylim(0, 1) + 
+  # geom_point(aes(x = time, y = surv, colour = model), 
+  # subset = subset(s_df, censor == 1), shape = 3, size = 3) + 
+  scale_colour_discrete(name = "Outcome")
+ggsave(p, filename = "../img/cmprsk-example-km-two-outcomes.png", height=4, width=6, units="in", dpi=300)
+print(p)
+
+s3 <- cuminc(df$ftime12, as.factor(df$ctime12), cencode = "censored")
+s3_df <- data.frame(time = c(s3$`1 death`$time, s3$`1 discharge`$time), 
+                    est = c(s3$`1 death`$est, s3$`1 discharge`$est), 
+                    model = c(rep("death", length(s3$`1 death`$time)), 
+                              rep("discharge", length(s3$`1 discharge`$time))))
+p <- ggplot(s3_df) + 
+  geom_step(aes(x = time, y = est, colour = model), size = 1) + 
+  theme_light() + xlab("Time") + ylab("Cumulative Incidence") + ylim(0, 1) + 
+  scale_colour_discrete(name = "Outcome")
+ggsave(p, filename = "../img/cmprsk-example-cuminc-two-outcomes.png", height=4, width=6, units="in", dpi=300)
+print(p)
+```
+
+Fix factor issue.
+
+```{r}
+df$ctime12 = as.factor(df$ctime12)
+```
+
+Cox model for simulated data.
+
+```{r}
+m_cox <- coxph(Surv(ftime12, ctime12) ~ x1 + x2, data = df, id = row.names(df))
+summary(m_cox)
+```
+
+Fine-Gray model for simulated data. 
+
+```{r}
+m_fg <- crr(df$ftime12, df$ctime12, select(df, c("x1", "x2")), failcode = "death", cencode = "censored")
+summary(m_fg)
+m_fg2 <- crr(df$ftime12, df$ctime12, select(df, c("x1", "x2")), failcode = "discharge", cencode = "censored")
+summary(m_fg2)
+```
+
+Predictions.
+
+```{r}
+p_cox <- predict(m_cox, type = "risk")
+```
+
+## Chapter 22: Survival Trees
+
+Building a single survival tree from our simulated data.
+
+```{r}
+palette <- colorRampPalette(colors=c("#00BFC4", "#F8766D"))
+tree_m <- rpart(Surv(ftime12, ctime12 == "death") ~ x1 + x2, data = df)
+rpart.plot(tree_m, box.palette=palette(20))
+```
+
+
