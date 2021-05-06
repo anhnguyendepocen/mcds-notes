@@ -300,7 +300,7 @@ Following on our discussion of unsupervised learning in Chapter 19, we examine t
 
 We discuss the problem of competing risks in survival analysis and why it's a bad idea to use the Kaplan-Meier estimator in these contexts. We examine two alternative approaches for competing risks regression (cause-specific hazards vs. subdistribution hazard) and see how the same ideas can be extended to survival trees.
 
-Notes | Video Guide
+[Slides](pdf/ch21-slides.pdf)
 
 #### Readings:
 
@@ -332,7 +332,7 @@ Notes | Video Guide
 
 We first encountered survival trees in workshops 11 (Survival Data and the Kaplan-Meier Curve) and 18 (Cox Proportional Hazards Model). Here we revisit them in more detail, showing how they apply ideas from decision trees/random forests to survival and competing risks data. 
 
-Notes | Video Guide 
+[Slides](pdf/ch22-slides.pdf)
 
 #### Readings:
 

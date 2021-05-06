@@ -265,4 +265,21 @@ tree_m <- rpart(Surv(ftime12, ctime12 == "death") ~ x1 + x2, data = df)
 rpart.plot(tree_m, box.palette=palette(20))
 ```
 
+```{r}
+library(partykit)
+tree_m2 = as.party(tree_m)
+png("../img/survival-tree-example-simulated.png", height=9, width=15, units="in", res=400)
+plot(tree_m2, )
+dev.off()
+```
+
+Competing risks analysis.
+
+```{r}
+df2 <- df
+df2$ctime12 = as.factor(ifelse(df2$ctime12 == "censored", 0, df2$ctime12))
+wihs.obj <- rfsrc(Surv(ftime12, ctime12) ~ x1 + x2, data=df, nsplit=4, ntree=100)
+#  Plot the ensemble cs-CIF, and cs-CHF.
+plot.competing.risk(wihs.obj)
+```
 
