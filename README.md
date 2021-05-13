@@ -361,6 +361,15 @@ We first encountered survival trees in workshops 11 (Survival Data and the Kapla
 
 - Documentation for the ['randomForestSRC'](https://kogalur.github.io/randomForestSRC/index.html) package in R
 
+
+### Topic 23: Clinical Text Mining
+
+[Slides](pdf/nlp-review-mcds-2021.pdf)
+
+#### Readings:
+
+- Percha B. [Modern Clinical Text Mining: A Guide and Review.](https://www.preprints.org/manuscript/202010.0649/v1) _Annual Review of Biomedical Data Science_ (forthcoming July 2021). 
+
 ---
 
 ## Past/Future Topics and Readings 
@@ -463,11 +472,7 @@ Continuation of the content in "Introduction to Neural Networks" and an introduc
 
 
 
-### Topic xx: Clinical Text Mining
 
-#### Readings:
-
-- Percha B. [Modern Clinical Text Mining: A Guide and Review.](https://www.preprints.org/manuscript/202010.0649/v1) _Annual Review of Biomedical Data Science_ (forthcoming July 2021). 
 
 
 
