@@ -178,6 +178,8 @@ This chapter introduces us to ensemble methods, in which input from tens or hund
 [Notes](pdf/ch13.pdf) (13 pages) | [Video Guide](https://vimeo.com/511768261/79b849a212) (37:58)
 
 #### Readings:
+**[Random survival forests](https://projecteuclid.org/euclid.aoas/1223908043)**  
+Hemant Ishwaran et al. Annals of Applied Statistics 2008
 
 
 ### Topic 14: Introduction to Boosting
