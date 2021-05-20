@@ -472,10 +472,6 @@ Continuation of the content in "Introduction to Neural Networks" and an introduc
 
 
 
-
-
-
-
 ### Topic xx: Imbalanced Datasets
 
 Many clinical datasets are highly imbalanced. In a typical problem, you're trying to identify members of a class, such as patients with a particular type of cancer, from among a background of many orders of magnitude more patients who do not have the cancer. Traditional methods for training and evaluating models suffer some limitations in these cases.
